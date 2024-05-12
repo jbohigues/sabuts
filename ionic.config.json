@@ -1,0 +1,7 @@
+{
+  "name": "preguntados-raval",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
