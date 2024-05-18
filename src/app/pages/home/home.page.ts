@@ -11,7 +11,7 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { personCircle } from 'ionicons/icons';
+import { personCircle, closeOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-home',
@@ -32,6 +32,6 @@ import { personCircle } from 'ionicons/icons';
 })
 export class HomePage {
   constructor() {
-    addIcons({ personCircle });
+    addIcons({ personCircle, closeOutline });
   }
 }
