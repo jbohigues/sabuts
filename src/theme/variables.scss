@@ -1,2 +1,11 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+
+:root {
+  //Reset ionic
+  --ion-color-primary: #f83d3dd3;
+
+  --bg-input: #d4d4d434;
+
+  --border-input: #aaaaaa;
+}
