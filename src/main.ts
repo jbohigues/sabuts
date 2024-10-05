@@ -20,8 +20,6 @@ import {
 } from '@angular/fire/analytics';
 // import { initializeAppCheck, ReCaptchaEnterpriseProvider, provideAppCheck } from '@angular/fire/app-check';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { getFunctions, provideFunctions } from '@angular/fire/functions';
-import { getPerformance, providePerformance } from '@angular/fire/performance';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 
 if (environment.production) {
@@ -38,12 +36,10 @@ bootstrapApplication(AppComponent, {
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
-    ScreenTrackingService,
-    UserTrackingService,
     provideFirestore(() => getFirestore()),
-    provideFunctions(() => getFunctions()),
-    providePerformance(() => getPerformance()),
     provideStorage(() => getStorage()),
+    ScreenTrackingService, // forma parte de Analytics
+    UserTrackingService, // forma parte de Analytics
 
     //! TODO get a reCAPTCHA Enterprise here https://console.cloud.google.com/security/recaptcha?project=_
     // provideAppCheck(() => {
