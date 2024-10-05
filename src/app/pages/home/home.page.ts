@@ -13,27 +13,7 @@ import {
   IonList,
   IonItem,
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import {
-  alertCircle,
-  bulb,
-  checkmarkCircle,
-  closeCircle,
-  ellipsisHorizontal,
-  helpCircle,
-  informationCircle,
-  moon,
-  shield,
-  sparkles,
-  star,
-  sunny,
-  thumbsUp,
-  trash,
-  warning,
-  alert,
-  personCircle,
-  closeOutline,
-} from 'ionicons/icons';
+
 import { CreateUserDto } from 'src/app/shared/dto/user-dto';
 import { Colors } from 'src/app/shared/enums/colors';
 import { IconsToast } from 'src/app/shared/enums/iconsToast';
@@ -68,27 +48,6 @@ export class HomePage {
     private firestoreService: FirestoreService,
     private validatorService: ValidatorService
   ) {
-    addIcons({
-      'thumbs-up': thumbsUp,
-      'help-circle': helpCircle,
-      'alert-circle': alertCircle,
-      'close-circle': closeCircle,
-      'checkmark-circle': checkmarkCircle,
-      'information-circle': informationCircle,
-      'ellipsis-horizontal': ellipsisHorizontal,
-      star,
-      bulb,
-      moon,
-      alert,
-      trash,
-      sunny,
-      shield,
-      warning,
-      sparkles,
-      personCircle,
-      closeOutline,
-    });
-
     this.loadUsers();
   }
 
@@ -106,6 +65,7 @@ export class HomePage {
   async createUser() {
     let user: CreateUserDto = {
       email: 'prueba',
+      password: '1234',
       firstName: 'prueba',
       lastName: 'prueba',
       userName: 'prueba',

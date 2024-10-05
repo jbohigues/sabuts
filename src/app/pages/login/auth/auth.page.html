@@ -1,0 +1,49 @@
+<app-header title="Iniciar sessió"></app-header>
+
+<ion-content [fullscreen]="true">
+  <section>
+    <article>
+      <!-- <app-auth></app-auth> -->
+      <form [formGroup]="formAuth" (ngSubmit)="submit()">
+        <app-logo></app-logo>
+        <app-custom-input
+          icon="mail-outline"
+          type="email"
+          label="Correu electrònic"
+          [placeholder]="'exemple@gmail.com'"
+          autocomplete="username"
+          [control]="formAuth.controls.email"
+        ></app-custom-input>
+
+        @if (formAuth.controls.email.errors && formAuth.controls.email.touched)
+        { @if (formAuth.controls.email.errors['required']) {
+        <p>El correu és obligatori</p>
+        } @else if (formAuth.controls.email.errors['email']) {
+        <p>El correu no té un format correcte</p>
+        } }
+
+        <app-custom-input
+          icon="lock-closed-outline"
+          type="password"
+          label="Contrasenya"
+          [placeholder]="'*******'"
+          autocomplete="current-password"
+          [control]="formAuth.controls.password"
+        ></app-custom-input>
+        @if (formAuth.controls.email.errors && formAuth.controls.email.touched)
+        { @if (formAuth.controls.email.errors['required']) {
+        <p>La contrasenya és obligatoria</p>
+        } }
+
+        <ion-button expand="block" type="submit" [disabled]="formAuth.invalid">
+          Accedir
+          <ion-icon slot="end" name="log-in-outline"></ion-icon>
+        </ion-button>
+        <ion-button class="ion-margin-top" expand="block" routerLink="sign_up">
+          Registrar-te
+          <ion-icon slot="end" name="person-add-outline"></ion-icon>
+        </ion-button>
+      </form>
+    </article>
+  </section>
+</ion-content>
