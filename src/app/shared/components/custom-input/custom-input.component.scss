@@ -1,0 +1,10 @@
+.custom-input {
+  margin: 1rem 0;
+  border: 1px solid var(--border-input);
+  border-radius: 0.5rem;
+  --background: var(--bg-input) !important;
+
+  &:has(input:focus) {
+    border-color: var(--ion-color-primary);
+  }
+}
