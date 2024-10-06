@@ -5,7 +5,23 @@
   //Reset ionic
   --ion-color-primary: #f83d3dd3;
 
+  --text-white: #ffffff;
+
   --bg-input: #d4d4d434;
 
   --border-input: #aaaaaa;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text-white);
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.error {
+  color: var(--ion-color-primary);
 }
