@@ -1,0 +1,27 @@
+section {
+  display: flex;
+  padding-top: 5dvh;
+  max-width: 90dvw;
+  margin: 0 auto;
+
+  article {
+    margin: 0 auto;
+    min-width: 50dvw;
+  }
+}
+
+@media (orientation: landscape) {
+  section {
+    padding-bottom: 10dvh;
+  }
+
+  ion-content {
+    --offset-bottom: -50px !important;
+  }
+}
+
+@media (width < 768px) {
+  ion-content {
+    --offset-bottom: -64px !important;
+  }
+}
