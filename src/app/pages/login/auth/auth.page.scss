@@ -1,14 +1,7 @@
-section {
-  display: flex;
-  padding-top: 15%;
-  height: 100%;
+app-login-layout {
+  height: 100dvh;
+}
 
-  article {
-    margin: 0 auto;
-    min-width: 50dvw;
-
-    form {
-      text-align: center;
-    }
-  }
+a {
+  display: block;
 }

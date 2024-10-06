@@ -1,15 +1,54 @@
-<!-- <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>signUp</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-login-layout pageTitle="Registre">
+  <form [formGroup]="formAuth" (ngSubmit)="submit()">
+    <app-logo></app-logo>
+    <app-custom-input
+      icon="person-outline"
+      type="text"
+      label="Nom"
+      [placeholder]="'Juan'"
+      autocomplete="username"
+      [control]="formAuth.controls.name"
+    ></app-custom-input>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">signUp</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content> -->
+    @if (formAuth.controls.name.errors && formAuth.controls.name.touched) { @if
+    (formAuth.controls.name.errors['required']) {
+    <p>El nom és obligatori</p>
+    } @else if (formAuth.controls.name.errors['minLength']) {
+    <p>El nom ha de tindre mínim 4 caràcters</p>
+    } }
 
-<h1>SIGN UP</h1>
+    <app-custom-input
+      icon="mail-outline"
+      type="email"
+      label="Correu electrònic"
+      [placeholder]="'exemple@gmail.com'"
+      autocomplete="username"
+      [control]="formAuth.controls.email"
+    ></app-custom-input>
+
+    @if (formAuth.controls.email.errors && formAuth.controls.email.touched) {
+    @if (formAuth.controls.email.errors['required']) {
+    <p>El correu és obligatori</p>
+    } @else if (formAuth.controls.email.errors['email']) {
+    <p>El correu no té un format correcte</p>
+    } }
+
+    <app-custom-input
+      icon="lock-closed-outline"
+      type="password"
+      label="Contrasenya"
+      [placeholder]="'*******'"
+      autocomplete="current-password"
+      [control]="formAuth.controls.password"
+    ></app-custom-input>
+    @if (formAuth.controls.email.errors && formAuth.controls.email.touched) {
+    @if (formAuth.controls.email.errors['required']) {
+    <p>La contrasenya és obligatoria</p>
+    } }
+
+    <ion-button expand="block" type="submit" [disabled]="formAuth.invalid">
+      Registrar-me
+      <ion-icon slot="end" name="log-in-outline"></ion-icon>
+    </ion-button>
+  </form>
+</app-login-layout>
