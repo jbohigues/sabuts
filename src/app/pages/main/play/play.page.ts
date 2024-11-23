@@ -5,10 +5,10 @@ import { IonContent, IonButton } from '@ionic/angular/standalone';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.page.html',
-  styleUrls: ['./profile.page.scss'],
+  selector: 'app-play',
+  templateUrl: './play.page.html',
+  styleUrls: ['./play.page.scss'],
   standalone: true,
   imports: [IonContent, CommonModule, FormsModule, HeaderComponent],
 })
-export class ProfilePage {}
+export class PlayPage {}

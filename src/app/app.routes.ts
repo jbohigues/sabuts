@@ -5,11 +5,11 @@ import { NoAuthGuard } from './guards/no-auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth',
     pathMatch: 'full',
+    redirectTo: 'home',
   },
   {
-    path: 'home',
+    path: '',
     loadChildren: () => import('./routes/main.routes').then((m) => m.routes),
     canActivate: [AuthGuard],
   },
@@ -17,5 +17,9 @@ export const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('./routes/auth.routes').then((m) => m.routes),
     canActivate: [NoAuthGuard],
+  },
+  {
+    path: 'play',
+    loadComponent: () => import('./pages/main/play/play.page').then( m => m.PlayPage)
   },
 ];

@@ -4,6 +4,7 @@ import {
   IonTitle,
   IonButtons,
   IonBackButton,
+  IonMenuButton,
 } from '@ionic/angular/standalone';
 import { Component, Input } from '@angular/core';
 
@@ -11,7 +12,14 @@ import { Component, Input } from '@angular/core';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  imports: [IonBackButton, IonButtons, IonHeader, IonToolbar, IonTitle],
+  imports: [
+    IonBackButton,
+    IonButtons,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonMenuButton,
+  ],
   standalone: true,
 })
 export class HeaderComponent {
