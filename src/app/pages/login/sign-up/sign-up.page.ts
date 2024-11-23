@@ -7,16 +7,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonButton,
-  IonIcon,
-} from '@ionic/angular/standalone';
+import { IonButton, IonIcon } from '@ionic/angular/standalone';
 import { LoginLayoutComponent } from '../../../layouts/loginLayout/loginLayout.component';
-import { UserModel } from 'src/app/models/users.model';
+import { UserModelWithPassword } from 'src/app/models/users.model';
 import { LoginService } from 'src/app/services/login.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Colors } from 'src/app/shared/enums/colors';
@@ -33,10 +26,6 @@ import { FirestoreService } from 'src/app/services/firestore.service';
   imports: [
     IonIcon,
     IonButton,
-    IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -53,6 +42,7 @@ export class SignUpPage {
 
   // Objects
   formAuth = new FormGroup({
+    uid: new FormControl(''),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
@@ -64,14 +54,21 @@ export class SignUpPage {
       await loading.present();
 
       this.loginService
-        .signUp(this.formAuth.value as UserModel)
-        .then((res) => {
-          console.log(res);
+        .signUp(this.formAuth.value as UserModelWithPassword)
+        .then(async (res) => {
+          const uid = res.user.uid;
+          this.formAuth.controls.uid.setValue(uid); // Guardamos el id del usuario obtenido en el formulario
+          this.setUserInfo(uid);
+
+          // Actualizamos el nombre al hacer el registro
           if (res && this.formAuth.value.name) {
-            this.loginService.updateProfileOfUser(this.formAuth.value.name);
+            await this.loginService.updateProfileOfUser(
+              this.formAuth.value.name
+            );
           }
         })
         .catch((e) => {
+          console.error('PETAAA');
           console.error(e);
 
           const message = e.message.includes('email-already-in-use')
@@ -102,7 +99,14 @@ export class SignUpPage {
       this.firestoreService
         .setDocument(path, user)
         .then((res) => {
-          console.log(res);
+          this.utilsService.saveInLocalStorage('user', user);
+          this.utilsService.routerLink('/home');
+          this.formAuth.reset();
+          this.utilsService.presentToast(
+            'Usuari creat amb èxit',
+            Colors.success,
+            IconsToast.success_thumbs_up
+          );
         })
         .catch((e) => {
           console.error(e);

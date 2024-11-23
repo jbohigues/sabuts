@@ -11,6 +11,7 @@ import { HeaderComponent } from '../../shared/components/header/header.component
 })
 export class LoginLayoutComponent implements OnInit {
   @Input() pageTitle!: string;
+  @Input() backButton!: string;
 
   ngOnInit(): void {}
 }

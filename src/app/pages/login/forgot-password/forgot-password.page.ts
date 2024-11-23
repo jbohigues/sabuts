@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
 import {
-  IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonButton,
-  IonIcon,
-} from '@ionic/angular/standalone';
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { IonButton, IonIcon } from '@ionic/angular/standalone';
 import { LoginLayoutComponent } from '../../../layouts/loginLayout/loginLayout.component';
+import { FirestoreService } from 'src/app/services/firestore.service';
+import { LoginService } from 'src/app/services/login.service';
+import { UtilsService } from 'src/app/services/utils.service';
+import { Colors } from 'src/app/shared/enums/colors';
+import { IconsToast } from 'src/app/shared/enums/iconsToast';
+import { CustomInputComponent } from '../../../shared/components/custom-input/custom-input.component';
+import { LogoComponent } from '../../../shared/components/logo/logo.component';
 
 @Component({
   selector: 'app-forgot-password',
@@ -19,17 +23,54 @@ import { LoginLayoutComponent } from '../../../layouts/loginLayout/loginLayout.c
   imports: [
     IonIcon,
     IonButton,
-    IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    CommonModule,
-    FormsModule,
+    CustomInputComponent,
+    ReactiveFormsModule,
+    LogoComponent,
     LoginLayoutComponent,
   ],
 })
-export class ForgotPasswordPage implements OnInit {
-  constructor() {}
+export class ForgotPasswordPage {
+  // Injects
+  loginService = inject(LoginService);
+  utilsService = inject(UtilsService);
+  firestoreService = inject(FirestoreService);
 
-  ngOnInit() {}
+  // Objects
+  formAuth = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+  });
+
+  async submit() {
+    if (this.formAuth.valid && this.formAuth.value.email) {
+      const loading = await this.utilsService.loading();
+      await loading.present();
+
+      this.loginService
+        .sendRecoveryEmail(this.formAuth.value.email)
+        .then((res) => {
+          this.utilsService.routerLink('/auth');
+          this.utilsService.presentToast(
+            'Hem enviat un enllaç al seu correu electrònic',
+            Colors.medium,
+            IconsToast.secondary_alert
+          );
+        })
+        .catch((e) => {
+          console.error(e);
+
+          const message = e.message.includes('invalid-email')
+            ? 'Error: el correu electrònic no té el format correcte'
+            : 'Error al enviar el correu de recuperació';
+
+          this.utilsService.presentToast(
+            message,
+            Colors.danger,
+            IconsToast.danger_close_circle
+          );
+        })
+        .finally(() => {
+          loading.dismiss();
+        });
+    }
+  }
 }

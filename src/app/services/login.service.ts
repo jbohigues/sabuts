@@ -4,8 +4,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
-import { CreateUserModelDto, UserModel } from '../models/users.model';
+import { UserModelWithPassword } from '../models/users.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +14,11 @@ import { CreateUserModelDto, UserModel } from '../models/users.model';
 export class LoginService {
   private auth: Auth = inject(Auth);
 
-  signIn(user: UserModel) {
+  signIn(user: UserModelWithPassword) {
     return signInWithEmailAndPassword(this.auth, user.email, user.password);
   }
 
-  signUp(user: CreateUserModelDto) {
+  signUp(user: UserModelWithPassword) {
     return createUserWithEmailAndPassword(this.auth, user.email, user.password);
   }
 
@@ -26,5 +27,9 @@ export class LoginService {
     const user = this.auth.currentUser;
     if (user) return updateProfile(user, { displayName });
     return null;
+  }
+
+  sendRecoveryEmail(email: string) {
+    return sendPasswordResetEmail(this.auth, email);
   }
 }
