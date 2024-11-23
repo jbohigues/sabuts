@@ -1,11 +1,11 @@
 export enum Colors {
-  primary = 'primary',
-  secondary = 'secondary',
-  tertiary = 'tertiary',
-  success = 'success',
-  warning = 'warning',
-  danger = 'danger',
-  light = 'light',
-  medium = 'medium',
-  dark = 'dark',
+  primary = 'primary', // Rojo
+  secondary = 'secondary', // Azul
+  tertiary = 'tertiary', // Morado
+  success = 'success', // Verde
+  warning = 'warning', // Amarillo
+  danger = 'danger', // Rojo
+  light = 'light', // Negro
+  medium = 'medium', // Gris
+  dark = 'dark', // Blanco
 }

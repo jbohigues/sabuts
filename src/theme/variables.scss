@@ -3,13 +3,17 @@
 
 :root {
   //Reset ionic
-  --ion-color-primary: #f83d3dd3;
+  --ion-color-primary: #f04d4dc4;
 
   --text-white: #ffffff;
 
   --bg-input: #d4d4d434;
 
   --border-input: #aaaaaa;
+}
+
+app-login-layout {
+  height: 100dvh;
 }
 
 a {
