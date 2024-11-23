@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -6,7 +6,10 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
+  IonButton,
 } from '@ionic/angular/standalone';
+import { LoginService } from 'src/app/services/login.service';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +17,7 @@ import {
   styleUrls: ['./home.page.scss'],
   standalone: true,
   imports: [
+    IonButton,
     IonContent,
     IonHeader,
     IonTitle,
@@ -22,8 +26,11 @@ import {
     FormsModule,
   ],
 })
-export class HomePage implements OnInit {
-  constructor() {}
+export class HomePage {
+  private loginService = inject(LoginService);
+  private utilsService = inject(UtilsService);
 
-  ngOnInit() {}
+  signOut() {
+    this.loginService.signOut();
+  }
 }

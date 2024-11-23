@@ -7,12 +7,18 @@ import {
   sendPasswordResetEmail,
 } from 'firebase/auth';
 import { UserModelWithPassword } from '../models/users.model';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
   private auth: Auth = inject(Auth);
+  private utilservice = inject(UtilsService);
+
+  getAuth() {
+    return this.auth;
+  }
 
   signIn(user: UserModelWithPassword) {
     return signInWithEmailAndPassword(this.auth, user.email, user.password);
@@ -20,6 +26,12 @@ export class LoginService {
 
   signUp(user: UserModelWithPassword) {
     return createUserWithEmailAndPassword(this.auth, user.email, user.password);
+  }
+
+  signOut() {
+    this.auth.signOut();
+    localStorage.removeItem('user');
+    this.utilservice.routerLink('/auth');
   }
 
   // Esto solo actualiza nombre y foto

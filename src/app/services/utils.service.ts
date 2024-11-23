@@ -8,9 +8,9 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class UtilsService {
-  router = inject(Router);
-  toastController = inject(ToastController);
-  loadingController = inject(LoadingController);
+  private router = inject(Router);
+  private toastController = inject(ToastController);
+  private loadingController = inject(LoadingController);
 
   loading() {
     return this.loadingController.create({ spinner: 'crescent' });
