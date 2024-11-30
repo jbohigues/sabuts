@@ -1,0 +1,28 @@
+<app-header title="Partides" [menuButton]="true"></app-header>
+
+<ion-content
+  class="ion-padding"
+  [scrollEvents]="true"
+  (ionScroll)="onScroll($event)"
+>
+  <ion-button expand="block" (click)="startNewGame()">
+    <ion-icon name="add" slot="start"></ion-icon>
+    Start New Game
+  </ion-button>
+
+  <ion-list>
+    @for (game of games; track game.id) {
+    <ion-item>
+      <ion-label>
+        <h2>{{game.title}}</h2>
+        <p>Players: {{game.players}}</p>
+        <p>Status: {{game.status}}</p>
+      </ion-label>
+    </ion-item>
+    }
+  </ion-list>
+  <app-scroll-to-top
+    [show]="showScrollButton"
+    (scrollToTop)="scrollToTop()"
+  ></app-scroll-to-top>
+</ion-content>

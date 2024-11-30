@@ -1,0 +1,20 @@
+.user-profile {
+  padding: 20px 0;
+
+  ion-avatar {
+    width: 128px;
+    height: 128px;
+    margin-bottom: 15px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 5px 0;
+    color: var(--ion-color-medium);
+  }
+}

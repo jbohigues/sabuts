@@ -14,13 +14,8 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'auth',
-    loadChildren: () => import('@routes/auth.routes').then((m) => m.routes),
+    path: 'login',
+    loadChildren: () => import('@routes/login.routes').then((m) => m.routes),
     canActivate: [NoAuthGuard],
-  },
-  {
-    path: 'play',
-    loadComponent: () =>
-      import('@pages/main/play/play.page').then((m) => m.PlayPage),
   },
 ];

@@ -19,7 +19,15 @@
 export interface UserModel {
   uid: string;
   name: string;
+  lastName: string;
+  userName: string;
   email: string;
+  avatarid: string;
+  totalPoints: number;
+  createdAt: Date;
+  updatedAt: Date;
+  isAdmin: boolean;
+  active: boolean;
 }
 
 export interface UserModelWithPassword extends UserModel {

@@ -4,7 +4,9 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('@pages/main/main.page').then((m) => m.MainPage),
+      import('@layouts/mainLayout/mainLayout.component').then(
+        (m) => m.MainLayoutComponent
+      ),
     children: [
       {
         path: 'home',
@@ -12,15 +14,25 @@ export const routes: Routes = [
           import('@pages/main/home/home.page').then((m) => m.HomePage),
       },
       {
-        path: 'play',
+        path: 'games',
         loadComponent: () =>
-          import('@pages/main/play/play.page').then((m) => m.PlayPage),
+          import('@pages/main/games/games.page').then((m) => m.GamesPage),
       },
       {
         path: 'profile',
         loadComponent: () =>
           import('@pages/main/profile/profile.page').then((m) => m.ProfilePage),
       },
+      {
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full',
+      },
     ],
+  },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full',
   },
 ];

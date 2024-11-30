@@ -13,7 +13,7 @@ export const AuthGuard: CanActivateFn = (route, state) => {
     loginService.getAuth().onAuthStateChanged((auth) => {
       if (auth && user) resolve(true);
       else {
-        utilsService.routerLink('/auth');
+        utilsService.routerLink('/login');
         resolve(false);
       }
     });

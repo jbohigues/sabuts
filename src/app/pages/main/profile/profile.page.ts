@@ -1,14 +1,75 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent } from '@ionic/angular/standalone';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  IonContent,
+  IonAvatar,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonButton,
+} from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
+import { CustomInputComponent } from '../../../shared/components/custom-input/custom-input.component';
+import { ScrollToTopComponent } from '../../../shared/components/scroll-to-top/scroll-to-top.component';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, HeaderComponent],
+  imports: [
+    IonContent,
+    CommonModule,
+    FormsModule,
+    HeaderComponent,
+    IonAvatar,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonButton,
+    CustomInputComponent,
+    ScrollToTopComponent,
+  ],
 })
-export class ProfilePage {}
+export class ProfilePage {
+  @ViewChild(IonContent, { static: false }) content!: IonContent;
+  showScrollButton = false;
+
+  profile = {
+    name: 'John Doe',
+    email: 'john@example.com',
+    avatar: 'assets/avatar-placeholder.png',
+    gamesPlayed: 20,
+    gamesWon: 10,
+    totalPoints: 1500,
+  };
+
+  // Objects
+  formAuth = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
+  });
+
+  constructor() {}
+
+  updateProfile() {
+    // Implement profile update logic
+    console.log('Updating profile...');
+  }
+
+  onScroll(event: CustomEvent) {
+    const scrollTop = event.detail.scrollTop;
+    this.showScrollButton = scrollTop > 100;
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop(500);
+  }
+}

@@ -25,5 +25,6 @@ import { Component, Input } from '@angular/core';
 export class HeaderComponent {
   @Input() title!: string;
   @Input() backButton!: string;
+  @Input() menuButton: boolean = false;
   constructor() {}
 }

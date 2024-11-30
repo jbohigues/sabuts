@@ -18,9 +18,9 @@ import { IconsToast } from '@sharedEnums/iconsToast';
 import { FirestoreService } from '@services/firestore.service';
 
 @Component({
-  selector: 'app-auth',
-  templateUrl: './auth.page.html',
-  styleUrls: ['./auth.page.scss'],
+  selector: 'app-login',
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
   standalone: true,
   imports: [
     IonIcon,
@@ -32,7 +32,7 @@ import { FirestoreService } from '@services/firestore.service';
     LoginLayoutComponent,
   ],
 })
-export class AuthPage {
+export class LoginPage {
   // Injects
   loginService = inject(LoginService);
   utilsService = inject(UtilsService);
@@ -80,7 +80,10 @@ export class AuthPage {
         .getDocument(path)
         .then((res) => {
           const user = res as UserModel;
+          console.log(user);
+
           this.utilsService.saveInLocalStorage('user', user);
+          console.log('routerLink');
           this.utilsService.routerLink('/home');
           this.formAuth.reset();
           this.utilsService.presentToast(

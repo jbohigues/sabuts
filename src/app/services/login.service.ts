@@ -31,7 +31,7 @@ export class LoginService {
   signOut() {
     this.auth.signOut();
     localStorage.removeItem('user');
-    this.utilservice.routerLink('/auth');
+    this.utilservice.routerLink('/login');
   }
 
   // Esto solo actualiza nombre y foto

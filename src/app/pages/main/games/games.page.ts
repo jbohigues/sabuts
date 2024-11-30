@@ -1,44 +1,47 @@
 import { Component, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import {
   IonContent,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
+  IonButton,
+  IonIcon,
   IonList,
   IonItem,
-  IonIcon,
   IonLabel,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
 import { ScrollToTopComponent } from '../../../shared/components/scroll-to-top/scroll-to-top.component';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  selector: 'app-games',
+  templateUrl: './games.page.html',
+  styleUrls: ['./games.page.scss'],
   standalone: true,
   imports: [
     IonContent,
-    CommonModule,
-    FormsModule,
     HeaderComponent,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
+    IonButton,
+    IonIcon,
     IonList,
     IonItem,
-    IonIcon,
     IonLabel,
     ScrollToTopComponent,
   ],
 })
-export class HomePage {
+export class GamesPage {
   @ViewChild(IonContent, { static: false }) content!: IonContent;
   showScrollButton = false;
+
+  games = [
+    { id: 1, title: 'Game 1', players: 4, status: 'In Progress' },
+    { id: 2, title: 'Game 2', players: 2, status: 'Waiting' },
+    { id: 3, title: 'Game 3', players: 3, status: 'Completed' },
+  ];
+
+  constructor() {}
+
+  startNewGame() {
+    // Implement new game logic
+    console.log('Starting new game...');
+  }
 
   onScroll(event: CustomEvent) {
     const scrollTop = event.detail.scrollTop;

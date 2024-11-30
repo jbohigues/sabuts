@@ -1,0 +1,41 @@
+<ion-split-pane contentId="main-content">
+  <ion-menu contentId="main-content" type="overlay">
+    <ion-content>
+      <div class="ion-padding">
+        <div class="user-profile ion-text-center">
+          <ion-avatar style="margin: 0 auto">
+            <img src="/assets/images/escut.webp" alt="user avatar" />
+          </ion-avatar>
+          <h2>{{ user?.name }}</h2>
+          <p>Games Won: {{ user?.totalPoints }}</p>
+          <p>Total Points: {{ user?.totalPoints }}</p>
+        </div>
+      </div>
+
+      <ion-button expand="block" (click)="signOut()" class="ion-margin">
+        <ion-icon slot="start" name="log-out"></ion-icon>
+        Logout
+      </ion-button>
+    </ion-content>
+  </ion-menu>
+
+  <div class="ion-page" id="main-content">
+    <ion-router-outlet></ion-router-outlet>
+    <ion-tabs>
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="home">
+          <ion-icon name="home-outline"></ion-icon>
+          Inici
+        </ion-tab-button>
+        <ion-tab-button tab="games">
+          <ion-icon name="game-controller-outline"></ion-icon>
+          Partides
+        </ion-tab-button>
+        <ion-tab-button tab="profile">
+          <ion-icon name="person-outline"></ion-icon>
+          Perfil
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </div>
+</ion-split-pane>
