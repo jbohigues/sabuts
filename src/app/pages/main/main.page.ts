@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -12,8 +12,7 @@ import {
   IonMenu,
   IonButton,
 } from '@ionic/angular/standalone';
-import { LoginService } from 'src/app/services/login.service';
-import { UtilsService } from 'src/app/services/utils.service';
+import { LoginService } from '@services/login.service';
 
 @Component({
   selector: 'app-main',
@@ -36,7 +35,6 @@ import { UtilsService } from 'src/app/services/utils.service';
 })
 export class MainPage {
   private loginService = inject(LoginService);
-  private utilsService = inject(UtilsService);
 
   signOut() {
     this.loginService.signOut();

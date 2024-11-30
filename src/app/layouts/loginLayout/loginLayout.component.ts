@@ -1,6 +1,6 @@
 import { Component, Input, type OnInit } from '@angular/core';
 import { IonContent } from '@ionic/angular/standalone';
-import { HeaderComponent } from '../../shared/components/header/header.component';
+import { HeaderComponent } from '@sharedComponents/header/header.component';
 
 @Component({
   selector: 'app-login-layout',

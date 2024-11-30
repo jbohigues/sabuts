@@ -22,7 +22,15 @@
     "esModuleInterop": true,
     "paths": {
       "@ionic/angular": ["node_modules/@ionic/angular"],
-      "@ionic/angular/standalone": ["node_modules/@ionic/angular/standalone"]
+      "@ionic/angular/standalone": ["node_modules/@ionic/angular/standalone"],
+      "@routes/*": ["src/app/routes/*"],
+      "@guards/*": ["src/app/guards/*"],
+      "@layouts/*": ["src/app/layouts/*"],
+      "@models/*": ["src/app/models/*"],
+      "@pages/*": ["src/app/pages/*"],
+      "@services/*": ["src/app/services/*"],
+      "@sharedComponents/*": ["src/app/shared/components/*"],
+      "@sharedEnums/*": ["src/app/shared/enums/*"]
     }
   },
   "angularCompilerOptions": {

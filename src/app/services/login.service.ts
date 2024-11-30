@@ -6,8 +6,8 @@ import {
   updateProfile,
   sendPasswordResetEmail,
 } from 'firebase/auth';
-import { UserModelWithPassword } from '../models/users.model';
-import { UtilsService } from './utils.service';
+import { UserModelWithPassword } from '@models/users.model';
+import { UtilsService } from '@services/utils.service';
 
 @Injectable({
   providedIn: 'root',

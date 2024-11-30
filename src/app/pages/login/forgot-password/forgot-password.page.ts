@@ -6,14 +6,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { IonButton, IonIcon } from '@ionic/angular/standalone';
-import { LoginLayoutComponent } from '../../../layouts/loginLayout/loginLayout.component';
-import { FirestoreService } from 'src/app/services/firestore.service';
-import { LoginService } from 'src/app/services/login.service';
-import { UtilsService } from 'src/app/services/utils.service';
-import { Colors } from 'src/app/shared/enums/colors';
-import { IconsToast } from 'src/app/shared/enums/iconsToast';
-import { CustomInputComponent } from '../../../shared/components/custom-input/custom-input.component';
-import { LogoComponent } from '../../../shared/components/logo/logo.component';
+import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
+import { FirestoreService } from '@services/firestore.service';
+import { LoginService } from '@services/login.service';
+import { UtilsService } from '@services/utils.service';
+import { Colors } from '@sharedEnums/colors';
+import { IconsToast } from '@sharedEnums/iconsToast';
+import { CustomInputComponent } from '@sharedComponents/custom-input/custom-input.component';
+import { LogoComponent } from '@sharedComponents/logo/logo.component';
 
 @Component({
   selector: 'app-forgot-password',

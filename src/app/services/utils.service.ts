@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { LoadingController, ToastController } from '@ionic/angular';
-import { Colors } from '../shared/enums/colors';
-import { IconsToast } from '../shared/enums/iconsToast';
+import { Colors } from '@sharedEnums/colors';
+import { IconsToast } from '@sharedEnums/iconsToast';
 import { Router } from '@angular/router';
 
 @Injectable({
