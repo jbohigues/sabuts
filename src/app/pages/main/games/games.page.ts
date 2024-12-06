@@ -6,9 +6,10 @@ import {
   IonList,
   IonItem,
   IonLabel,
+  IonFab,
+  IonFabButton,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
-import { ScrollToTopComponent } from '../../../shared/components/scroll-to-top/scroll-to-top.component';
 
 @Component({
   selector: 'app-games',
@@ -23,7 +24,8 @@ import { ScrollToTopComponent } from '../../../shared/components/scroll-to-top/s
     IonList,
     IonItem,
     IonLabel,
-    ScrollToTopComponent,
+    IonFab,
+    IonFabButton,
   ],
 })
 export class GamesPage {
@@ -49,6 +51,6 @@ export class GamesPage {
   }
 
   scrollToTop() {
-    this.content.scrollToTop(500);
+    this.content.scrollToTop(800);
   }
 }

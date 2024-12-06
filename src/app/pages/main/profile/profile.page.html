@@ -1,6 +1,18 @@
 <app-header title="Perfil" [menuButton]="true"></app-header>
 
-<ion-content class="ion-padding" [scrollEvents]="true">
+<ion-content
+  class="ion-padding"
+  fixed-slot-placement="before"
+  [scrollEvents]="true"
+  (ionScroll)="onScroll($event)"
+>
+  @if (showScrollButton) {
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button size="small" (click)="scrollToTop()">
+      <ion-icon name="arrow-up"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  }
   <div class="ion-text-center">
     <ion-avatar style="margin: 0 auto; width: 128px; height: 128px">
       <img src="/assets/images/escut.webp" alt="Profile picture" />
@@ -55,8 +67,4 @@
   <ion-button expand="block" (click)="updateProfile()" class="ion-margin-top">
     Save Changes
   </ion-button>
-  <app-scroll-to-top
-    [show]="showScrollButton"
-    (scrollToTop)="scrollToTop()"
-  ></app-scroll-to-top>
 </ion-content>

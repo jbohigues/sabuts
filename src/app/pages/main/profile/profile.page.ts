@@ -4,7 +4,6 @@ import {
   FormControl,
   FormGroup,
   FormsModule,
-  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import {
@@ -14,10 +13,12 @@ import {
   IonItem,
   IonLabel,
   IonButton,
+  IonIcon,
+  IonFab,
+  IonFabButton,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
 import { CustomInputComponent } from '../../../shared/components/custom-input/custom-input.component';
-import { ScrollToTopComponent } from '../../../shared/components/scroll-to-top/scroll-to-top.component';
 
 @Component({
   selector: 'app-profile',
@@ -34,8 +35,10 @@ import { ScrollToTopComponent } from '../../../shared/components/scroll-to-top/s
     IonItem,
     IonLabel,
     IonButton,
+    IonIcon,
+    IonFab,
+    IonFabButton,
     CustomInputComponent,
-    ScrollToTopComponent,
   ],
 })
 export class ProfilePage {
@@ -70,6 +73,6 @@ export class ProfilePage {
   }
 
   scrollToTop() {
-    this.content.scrollToTop(500);
+    this.content.scrollToTop(800);
   }
 }

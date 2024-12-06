@@ -11,9 +11,10 @@ import {
   IonItem,
   IonIcon,
   IonLabel,
+  IonFab,
+  IonFabButton,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
-import { ScrollToTopComponent } from '../../../shared/components/scroll-to-top/scroll-to-top.component';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,8 @@ import { ScrollToTopComponent } from '../../../shared/components/scroll-to-top/s
   styleUrls: ['./home.page.scss'],
   standalone: true,
   imports: [
+    IonFabButton,
+    IonFab,
     IonContent,
     CommonModule,
     FormsModule,
@@ -33,7 +36,6 @@ import { ScrollToTopComponent } from '../../../shared/components/scroll-to-top/s
     IonItem,
     IonIcon,
     IonLabel,
-    ScrollToTopComponent,
   ],
 })
 export class HomePage {
@@ -46,6 +48,6 @@ export class HomePage {
   }
 
   scrollToTop() {
-    this.content.scrollToTop(500);
+    this.content.scrollToTop(800);
   }
 }

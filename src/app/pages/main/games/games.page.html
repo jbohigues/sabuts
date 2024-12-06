@@ -2,9 +2,17 @@
 
 <ion-content
   class="ion-padding"
+  fixed-slot-placement="before"
   [scrollEvents]="true"
   (ionScroll)="onScroll($event)"
 >
+  @if (showScrollButton) {
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button size="small" (click)="scrollToTop()">
+      <ion-icon name="arrow-up"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  }
   <ion-button expand="block" (click)="startNewGame()">
     <ion-icon name="add" slot="start"></ion-icon>
     Start New Game
@@ -21,8 +29,4 @@
     </ion-item>
     }
   </ion-list>
-  <app-scroll-to-top
-    [show]="showScrollButton"
-    (scrollToTop)="scrollToTop()"
-  ></app-scroll-to-top>
 </ion-content>

@@ -1,6 +1,18 @@
 <app-header title="Inici" [menuButton]="true"></app-header>
 
-<ion-content class="ion-padding" [scrollEvents]="true">
+<ion-content
+  class="ion-padding"
+  fixed-slot-placement="before"
+  [scrollEvents]="true"
+  (ionScroll)="onScroll($event)"
+>
+  @if (showScrollButton) {
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button size="small" (click)="scrollToTop()">
+      <ion-icon name="arrow-up"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  }
   <ion-card>
     <ion-card-header>
       <ion-card-title>Welcome to Our Game App!</ion-card-title>
@@ -133,8 +145,4 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
-  <app-scroll-to-top
-    [show]="showScrollButton"
-    (scrollToTop)="scrollToTop()"
-  ></app-scroll-to-top>
 </ion-content>
