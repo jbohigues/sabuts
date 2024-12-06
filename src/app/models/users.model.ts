@@ -16,6 +16,11 @@
 //   id: string;
 // }
 
+export interface UserCredentials {
+  email: string;
+  password: string;
+}
+
 export interface UserModel {
   uid: string;
   name: string;

@@ -1,10 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
+import { Auth, user } from '@angular/fire/auth';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
   sendPasswordResetEmail,
+  User,
 } from 'firebase/auth';
 import { UserModelWithPassword } from '@models/users.model';
 import { UtilsService } from '@services/utils.service';
@@ -13,11 +14,15 @@ import { UtilsService } from '@services/utils.service';
   providedIn: 'root',
 })
 export class LoginService {
-  private auth: Auth = inject(Auth);
+  private readonly auth: Auth = inject(Auth);
   private utilservice = inject(UtilsService);
 
   getAuth() {
     return this.auth;
+  }
+
+  getCurrentUser(): User | null {
+    return this.auth.currentUser;
   }
 
   signIn(user: UserModelWithPassword) {

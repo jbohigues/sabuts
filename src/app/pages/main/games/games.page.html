@@ -13,20 +13,36 @@
     </ion-fab-button>
   </ion-fab>
   }
+
+  <ion-refresher slot="fixed" (ionRefresh)="refreshGames($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <h2>Total de partides: {{games.length}}</h2>
   <ion-button expand="block" (click)="startNewGame()">
     <ion-icon name="add" slot="start"></ion-icon>
-    Start New Game
+    Crear nova partida
   </ion-button>
 
+  @if (games.length > 0) {
   <ion-list>
     @for (game of games; track game.id) {
     <ion-item>
       <ion-label>
-        <h2>{{game.title}}</h2>
-        <p>Players: {{game.players}}</p>
+        <h2>Torn de: {{game.currentPlayerId}}</h2>
+        <p>Jugador 1: {{game.player1.name}}</p>
+        <p>Jugador 2: {{game.player2.name}}</p>
         <p>Status: {{game.status}}</p>
       </ion-label>
+      <ion-icon
+        name="trash-outline"
+        slot="end"
+        (click)="confirmDelete(game)"
+      ></ion-icon>
     </ion-item>
     }
   </ion-list>
+  } @else {
+  <p>No hi han partides</p>
+  }
 </ion-content>

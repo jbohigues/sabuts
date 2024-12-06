@@ -42,20 +42,17 @@ import { UtilsService } from '@services/utils.service';
   ],
 })
 export class MainLayoutComponent implements OnInit {
+  @ViewChild(IonContent, { static: false }) content!: IonContent;
   @Input() pageTitle!: string;
   @Input() backButton!: string;
 
   private utilService = inject(UtilsService);
   private loginService = inject(LoginService);
 
-  @ViewChild(IonContent, { static: false }) content!: IonContent;
-
   user: UserModel | undefined;
 
   ngOnInit(): void {
-    console.log('oninit');
     this.user = this.utilService.getFromLocalStorage('user');
-    console.log(this.user);
   }
 
   signOut() {
