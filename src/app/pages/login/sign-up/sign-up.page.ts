@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { IonButton, IonIcon } from '@ionic/angular/standalone';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
-import { UserModelWithPassword } from '@models/users.model';
+import { UserModel, UserModelWithPassword } from '@models/users.model';
 import { LoginService } from '@services/login.service';
 import { UtilsService } from '@services/utils.service';
 import { Colors } from '@sharedEnums/colors';
@@ -68,7 +68,6 @@ export class SignUpPage {
           }
         })
         .catch((e) => {
-          console.error('PETAAA');
           console.error(e);
 
           const message = e.message.includes('email-already-in-use')
@@ -92,14 +91,27 @@ export class SignUpPage {
       const loading = await this.utilsService.loading();
       await loading.present();
 
-      let path = `users/${iduser}`;
-      const user = this.formAuth.value;
-      delete user.password;
+      const { uid, name, email } = this.formAuth.value;
+
+      const usermodel: UserModel = {
+        uid: uid ?? '',
+        name: name ?? '',
+        email: email ?? '',
+        avatarid: '',
+        userName: '',
+        lastName: '',
+        totalPoints: 0,
+        friendsList: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isAdmin: false,
+        active: true,
+      };
 
       this.firestoreService
-        .setDocument(path, user)
+        .setDocument(`users/${iduser}`, usermodel)
         .then((res) => {
-          this.utilsService.saveInLocalStorage('user', user);
+          this.utilsService.saveInLocalStorage('user', usermodel);
           this.utilsService.routerLink('/home');
           this.formAuth.reset();
           this.utilsService.presentToast(

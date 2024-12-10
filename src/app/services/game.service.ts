@@ -11,13 +11,14 @@ import {
 import { Observable, from, map, switchMap } from 'rxjs';
 import { LoginService } from './login.service';
 import { FirestoreService } from './firestore.service';
-import { StateGame, TypeGame } from '@sharedEnums/games';
+import { TypeGame } from '@sharedEnums/games';
 import { Categories } from '@sharedEnums/categories';
 import { User } from 'firebase/auth';
 import { UtilsService } from './utils.service';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
 import { doc } from '@angular/fire/firestore';
+import { StateGame } from '@sharedEnums/states';
 
 @Injectable({
   providedIn: 'root',

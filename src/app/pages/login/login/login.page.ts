@@ -83,7 +83,6 @@ export class LoginPage {
           console.log(user);
 
           this.utilsService.saveInLocalStorage('user', user);
-          console.log('routerLink');
           this.utilsService.routerLink('/home');
           this.formAuth.reset();
           this.utilsService.presentToast(

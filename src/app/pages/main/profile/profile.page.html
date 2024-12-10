@@ -1,6 +1,36 @@
 <app-header title="Perfil" [menuButton]="true"></app-header>
 
-<ion-content
+<ion-content>
+  @if (currentUser) {
+  <h2>Perfil</h2>
+  <p>{{currentUser.userName}}</p>
+  <ion-button>Editar Configuració</ion-button>
+  <ion-button (click)="presentAddFriendPrompt()">
+    <ion-icon name="person-add"></ion-icon>
+    Afegir Amic/a
+  </ion-button>
+  <!-- (click)="mostrarConfiguracion()" -->
+  <h2>Llistat d'amics ({{friendsList.length}})</h2>
+  <ion-list>
+    @for (friend of friendsList; track friend?.uid) {
+    <ion-item> {{ friend?.userName }} </ion-item>
+    }
+  </ion-list>
+
+  <h2>Solicituds Pendents ({{solicitudesPendientes.length}})</h2>
+  <ion-list>
+    @for (solicitud of solicitudesPendientes; track solicitud.id) {
+    <ion-item>
+      {{ solicitud.sendingUserName }} {{ solicitud.status }}
+      <!-- <ion-button (click)="aceptarSolicitud(solicitud)">Aceptar</ion-button>
+      <ion-button (click)="rechazarSolicitud(solicitud)">Rechazar</ion-button> -->
+    </ion-item>
+    }
+  </ion-list>
+  }
+</ion-content>
+
+<!-- <ion-content
   class="ion-padding"
   fixed-slot-placement="before"
   [scrollEvents]="true"
@@ -67,4 +97,8 @@
   <ion-button expand="block" (click)="updateProfile()" class="ion-margin-top">
     Save Changes
   </ion-button>
-</ion-content>
+
+  <ion-button expand="block" (click)="addNewFriend()" class="ion-margin-top">
+    Agregar amic/a
+  </ion-button>
+</ion-content> -->

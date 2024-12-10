@@ -49,6 +49,7 @@ export class GamesPage implements OnInit {
   games: GameModel[] = [];
 
   constructor(private alertController: AlertController) {}
+
   ngOnInit() {
     this.getPlayerGames();
   }
