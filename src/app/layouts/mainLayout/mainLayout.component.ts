@@ -12,10 +12,19 @@ import {
   IonTabs,
   IonTabBar,
   IonTabButton,
+  IonLabel,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonTitle,
+  IonItem,
+  IonList,
+  IonMenuButton,
 } from '@ionic/angular/standalone';
-import { LoginService } from '@services/login.service';
-import { UserModel } from '@models/users.model';
-import { UtilsService } from '@services/utils.service';
+// import { LoginService } from '@services/login.service';
+// import { UserModel } from '@models/users.model';
+// import { UtilsService } from '@services/utils.service';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -23,7 +32,13 @@ import { UtilsService } from '@services/utils.service';
   styleUrls: ['./mainLayout.component.scss'],
   standalone: true,
   imports: [
-    IonButton,
+    IonList,
+    IonItem,
+    IonTitle,
+    IonButtons,
+    IonToolbar,
+    IonHeader,
+    IonLabel,
     IonRouterOutlet,
     IonIcon,
     IonSplitPane,
@@ -33,35 +48,46 @@ import { UtilsService } from '@services/utils.service';
     IonSplitPane,
     IonMenu,
     IonContent,
-    IonAvatar,
     IonIcon,
-    IonButton,
     IonTabs,
     IonTabBar,
     IonTabButton,
+    IonMenuButton,
   ],
 })
-export class MainLayoutComponent implements OnInit {
-  @ViewChild(IonContent, { static: false }) content!: IonContent;
-  @Input() pageTitle!: string;
-  @Input() backButton!: string;
+export class MainLayoutComponent {
+  // @ViewChild(IonContent, { static: false }) content!: IonContent;
+  // @Input() pageTitle!: string;
+  // @Input() backButton!: string;
 
-  private utilService = inject(UtilsService);
-  private loginService = inject(LoginService);
+  // private utilService = inject(UtilsService);
+  // private loginService = inject(LoginService);
 
-  user: UserModel | undefined;
+  // user: UserModel | undefined;
 
-  ngOnInit(): void {
-    this.user = this.utilService.getFromLocalStorage('user');
+  // ngOnInit(): void {
+  //   this.user = this.utilService.getFromLocalStorage('user');
+  // }
+
+  // signOut() {
+  //   this.loginService.signOut();
+  //   this.user = this.utilService.getFromLocalStorage('user');
+  //   console.log(this.user);
+  // }
+
+  // scrollToTop() {
+  //   this.content.scrollToTop(500);
+  // }
+
+  private authService = inject(AuthService);
+
+  logout() {
+    this.authService.logout();
+    // Redirigir al login después de cerrar sesión
   }
 
-  signOut() {
-    this.loginService.signOut();
-    this.user = this.utilService.getFromLocalStorage('user');
-    console.log(this.user);
-  }
-
-  scrollToTop() {
-    this.content.scrollToTop(500);
+  getTitle() {
+    // Lógica para obtener el título basado en la ruta actual
+    return 'Preguntados App';
   }
 }

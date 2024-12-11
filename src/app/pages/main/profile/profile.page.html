@@ -1,4 +1,4 @@
-<app-header title="Perfil" [menuButton]="true"></app-header>
+<!-- <app-header title="Perfil" [menuButton]="true"></app-header>
 
 <ion-content>
   @if (currentUser) {
@@ -9,7 +9,7 @@
     <ion-icon name="person-add"></ion-icon>
     Afegir Amic/a
   </ion-button>
-  <!-- (click)="mostrarConfiguracion()" -->
+  (click)="mostrarConfiguracion()"
   <h2>Llistat d'amics ({{friendsList.length}})</h2>
   <ion-list>
     @for (friend of friendsList; track friend?.uid) {
@@ -22,12 +22,32 @@
     @for (solicitud of solicitudesPendientes; track solicitud.id) {
     <ion-item>
       {{ solicitud.sendingUserName }} {{ solicitud.status }}
-      <!-- <ion-button (click)="aceptarSolicitud(solicitud)">Aceptar</ion-button>
-      <ion-button (click)="rechazarSolicitud(solicitud)">Rechazar</ion-button> -->
+      <ion-button (click)="aceptarSolicitud(solicitud)">Aceptar</ion-button>
+      <ion-button (click)="rechazarSolicitud(solicitud)">Rechazar</ion-button>
     </ion-item>
     }
   </ion-list>
   }
+</ion-content> -->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="updateProfile(displayName.value)">
+    <ion-item>
+      <ion-label position="floating">Display Name</ion-label>
+      <ion-input
+        type="text"
+        #displayName
+        [value]="user?.displayName"
+      ></ion-input>
+    </ion-item>
+    <ion-button expand="block" type="submit">Update Profile</ion-button>
+  </form>
 </ion-content>
 
 <!-- <ion-content

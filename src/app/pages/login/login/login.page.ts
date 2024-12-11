@@ -10,8 +10,8 @@ import { CustomInputComponent } from '@sharedComponents/custom-input/custom-inpu
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
 import { RouterLink } from '@angular/router';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
-import { LoginService } from '@services/login.service';
-import { UserModel, UserModelWithPassword } from '@models/users.model';
+// import { LoginService } from '@services/login.service';
+// import { UserModel, UserModelWithPassword } from '@models/users.model';
 import { UtilsService } from '@services/utils.service';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
@@ -34,7 +34,7 @@ import { FirestoreService } from '@services/firestore.service';
 })
 export class LoginPage {
   // Injects
-  loginService = inject(LoginService);
+  // loginService = inject(LoginService);
   utilsService = inject(UtilsService);
   firestoreService = inject(FirestoreService);
 
@@ -45,28 +45,26 @@ export class LoginPage {
   });
 
   async submit() {
-    if (this.formAuth.valid) {
-      const loading = await this.utilsService.loading();
-      await loading.present();
-
-      this.loginService
-        .signIn(this.formAuth.value as UserModelWithPassword)
-        .then((res) => {
-          this.getUserInfo(res.user.uid);
-        })
-        .catch((e) => {
-          console.error(e);
-
-          this.utilsService.presentToast(
-            'Error al iniciar sessió: Credencials incorrectes',
-            Colors.danger,
-            IconsToast.danger_close_circle
-          );
-        })
-        .finally(() => {
-          loading.dismiss();
-        });
-    }
+    // if (this.formAuth.valid) {
+    //   const loading = await this.utilsService.loading();
+    //   await loading.present();
+    //   this.loginService
+    //     .signIn(this.formAuth.value as UserModelWithPassword)
+    //     .then((res) => {
+    //       this.getUserInfo(res.user.uid);
+    //     })
+    //     .catch((e) => {
+    //       console.error(e);
+    //       this.utilsService.presentToast(
+    //         'Error al iniciar sessió: Credencials incorrectes',
+    //         Colors.danger,
+    //         IconsToast.danger_close_circle
+    //       );
+    //     })
+    //     .finally(() => {
+    //       loading.dismiss();
+    //     });
+    // }
   }
 
   async getUserInfo(iduser: string) {
@@ -76,37 +74,37 @@ export class LoginPage {
 
       let path = `users/${iduser}`;
 
-      this.firestoreService
-        .getDocument(path)
-        .then((res) => {
-          const user = res as UserModel;
-          console.log(user);
+      // this.firestoreService
+      //   .getDocument(path)
+      //   .then((res) => {
+      //     const user = res as UserModel;
+      //     console.log(user);
 
-          this.utilsService.saveInLocalStorage('user', user);
-          this.utilsService.routerLink('/home');
-          this.formAuth.reset();
-          this.utilsService.presentToast(
-            `Hola ${user.name}, benvingut/a!`,
-            Colors.success,
-            IconsToast.success_thumbs_up
-          );
-        })
-        .catch((e) => {
-          console.error(e);
+      //     this.utilsService.saveInLocalStorage('user', user);
+      //     this.utilsService.routerLink('/home');
+      //     this.formAuth.reset();
+      //     this.utilsService.presentToast(
+      //       `Hola ${user.name}, benvingut/a!`,
+      //       Colors.success,
+      //       IconsToast.success_thumbs_up
+      //     );
+      //   })
+      //   .catch((e) => {
+      //     console.error(e);
 
-          const message = e.message.includes('email-already-in-use')
-            ? 'Error: el correu electrònic ja és registrat'
-            : "Error: error al registrar l'usuari";
+      //     const message = e.message.includes('email-already-in-use')
+      //       ? 'Error: el correu electrònic ja és registrat'
+      //       : "Error: error al registrar l'usuari";
 
-          this.utilsService.presentToast(
-            message,
-            Colors.danger,
-            IconsToast.danger_close_circle
-          );
-        })
-        .finally(() => {
-          loading.dismiss();
-        });
+      //     this.utilsService.presentToast(
+      //       message,
+      //       Colors.danger,
+      //       IconsToast.danger_close_circle
+      //     );
+      //   })
+      //   .finally(() => {
+      //     loading.dismiss();
+      //   });
     }
   }
 }

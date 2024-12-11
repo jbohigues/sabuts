@@ -24,6 +24,27 @@ export const routes: Routes = [
           import('@pages/main/profile/profile.page').then((m) => m.ProfilePage),
       },
       {
+        path: 'friends',
+        loadComponent: () =>
+          import('@pages/main/friends-list/friends-list.page').then(
+            (m) => m.FriendsListPage
+          ),
+      },
+      // {
+      //   path: 'friend-requests',
+      //   loadComponent: () =>
+      //     import('@pages/main/friends-list/friends-list.page').then(
+      //       (m) => m.FriendsListPage
+      //     ),
+      // },
+      {
+        path: 'friend-requests',
+        loadComponent: () =>
+          import('@pages/main/friends-search/friends-search.page').then(
+            (m) => m.FriendsSearchPage
+          ),
+      },
+      {
         path: '',
         redirectTo: '/home',
         pathMatch: 'full',

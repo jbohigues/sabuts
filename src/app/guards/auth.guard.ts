@@ -1,21 +1,21 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
-import { LoginService } from '@services/login.service';
-import { UtilsService } from '@services/utils.service';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { map, take } from 'rxjs/operators';
 
-export const AuthGuard: CanActivateFn = (route, state) => {
-  const loginService = inject(LoginService);
-  const utilsService = inject(UtilsService);
+export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  let user = localStorage.getItem('user');
-
-  return new Promise((resolve) => {
-    loginService.getAuth().onAuthStateChanged((auth) => {
-      if (auth && user) resolve(true);
-      else {
-        utilsService.routerLink('/login');
-        resolve(false);
+  return authService.isAuthenticated().pipe(
+    take(1),
+    map((isAuthenticated) => {
+      if (isAuthenticated) {
+        return true;
+      } else {
+        router.navigate(['/login']);
+        return false;
       }
-    });
-  });
+    })
+  );
 };

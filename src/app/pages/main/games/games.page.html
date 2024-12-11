@@ -1,4 +1,4 @@
-<app-header title="Partides" [menuButton]="true"></app-header>
+<!-- <app-header title="Partides" [menuButton]="true"></app-header>
 
 <ion-content
   class="ion-padding"
@@ -45,4 +45,27 @@
   } @else {
   <p>No hi han partides</p>
   }
+</ion-content> -->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Games</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-button expand="block" routerLink="/app/create-game"
+    >Crear Nueva Partida</ion-button
+  >
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Partidas Activas</ion-label>
+    </ion-list-header>
+    @for (game of activeGames; track $index) {
+    <ion-item (click)="continueGame(game.id)">
+      <ion-label>Partida con {{ game.players.join(', ') }}</ion-label>
+    </ion-item>
+    }
+  </ion-list>
 </ion-content>

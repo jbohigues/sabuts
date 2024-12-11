@@ -1,9 +1,9 @@
-export interface UserCredentials {
-  email: string;
-  password: string;
-}
+// export interface UserCredentials {
+//   email: string;
+//   password: string;
+// }
 
-export interface UserModel {
+export interface User {
   uid: string;
   name: string;
   lastName: string;
@@ -18,6 +18,20 @@ export interface UserModel {
   active: boolean;
 }
 
-export interface UserModelWithPassword extends UserModel {
-  password: string;
+// export interface UserModelWithPassword extends UserModel {
+//   password: string;
+// }
+
+// export interface User {
+//   uid: string;
+//   email: string;
+//   displayName: string;
+//   photoURL?: string;
+//   stats?: UserStats;
+// }
+
+export interface UserStats {
+  gamesPlayed: number;
+  gamesWon: number;
+  totalPoints: number;
 }
