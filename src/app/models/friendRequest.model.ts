@@ -1,15 +1,9 @@
-import { StatusModel } from './status.model';
+import { FriendRequestStatus } from '@sharedEnums/states';
 
-export interface FriendRequestModel extends FriendRequestModelDto {
-  sendingUserName: string;
-  receivingUserName: string;
-}
-
-export interface FriendRequestModelDto {
-  id: string;
+export interface FriendRequestModel {
+  id?: string;
   sendingUserId: string;
-  receivingUserId: string;
   createdAt: Date;
   updatedAt: Date;
-  status: StatusModel['value'];
+  status: FriendRequestStatus;
 }

@@ -1,54 +1,83 @@
-<app-login-layout pageTitle="Registre" backButton="/auth">
+<app-login-layout pageTitle="Registre">
+  <app-logo class="ion-margin-bottom"></app-logo>
+
   <form [formGroup]="formAuth" (ngSubmit)="submit()">
-    <app-logo></app-logo>
-    <app-custom-input
-      icon="person-outline"
-      type="text"
-      label="Nom"
-      [placeholder]="'Juan'"
-      autocomplete="username"
-      [control]="formAuth.controls.name"
-    ></app-custom-input>
+    <div>
+      <ion-input
+        type="text"
+        formControlName="userName"
+        label="Nom d'usuari"
+        label-placement="floating"
+        fill="outline"
+        required
+      ></ion-input>
+      @if (formAuth.get('userName')?.touched &&
+      formAuth.get('userName')?.invalid) {
+      <ion-text>
+        @if (formAuth.get('userName')?.errors?.['required']) {
+        <p class="error ion-margin-bottom">El nom és obligatori</p>
+        }
+      </ion-text>
+      }
+    </div>
 
-    @if (formAuth.controls.name.errors && formAuth.controls.name.touched) { @if
-    (formAuth.controls.name.errors['required']) {
-    <p>El nom és obligatori</p>
-    } @else if (formAuth.controls.name.errors['minLength']) {
-    <p>El nom ha de tindre mínim 4 caràcters</p>
-    } }
+    <div>
+      <ion-input
+        type="email"
+        formControlName="email"
+        label="Correu electrònic"
+        label-placement="floating"
+        fill="outline"
+        required
+      ></ion-input>
+      @if (formAuth.get('email')?.touched && formAuth.get('email')?.invalid) {
+      <ion-text>
+        @if (formAuth.get('email')?.errors?.['required']) {
+        <p class="error ion-margin-bottom">El correu és obligatori</p>
+        } @if (formAuth.get('email')?.errors?.['email']) {
+        <p class="error ion-margin-bottom">
+          El correu no té un format correcte
+        </p>
+        }
+      </ion-text>
+      }
+    </div>
 
-    <app-custom-input
-      icon="mail-outline"
-      type="email"
-      label="Correu electrònic"
-      [placeholder]="'exemple@gmail.com'"
-      autocomplete="username"
-      [control]="formAuth.controls.email"
-    ></app-custom-input>
+    <div>
+      <ion-input
+        [type]="showPassword ? 'text':'password'"
+        formControlName="password"
+        label="Contrasenya"
+        label-placement="floating"
+        fill="outline"
+        required
+      >
+        <ion-icon
+          [name]="showPassword ? 'eye-off' : 'eye'"
+          slot="end"
+          (click)="this.showPassword = !this.showPassword"
+        >
+        </ion-icon
+      ></ion-input>
+      @if (formAuth.get('password')?.touched &&
+      formAuth.get('password')?.invalid) {
+      <ion-text>
+        @if (formAuth.get('password')?.errors?.['required']) {
+        <p class="error ion-margin-bottom">La contrasenya és obligatoria</p>
+        } @if (formAuth.get('password')?.errors?.['pattern']) {
+        <p class="error ion-margin-bottom">
+          La contrasenya ha de tindre minúscules, majúscules, nombres i un mínim
+          de 6 caràcters
+        </p>
+        }
+      </ion-text>
+      }
+    </div>
 
-    @if (formAuth.controls.email.errors && formAuth.controls.email.touched) {
-    @if (formAuth.controls.email.errors['required']) {
-    <p>El correu és obligatori</p>
-    } @else if (formAuth.controls.email.errors['email']) {
-    <p>El correu no té un format correcte</p>
-    } }
-
-    <app-custom-input
-      icon="lock-closed-outline"
-      type="password"
-      label="Contrasenya"
-      [placeholder]="'*******'"
-      autocomplete="current-password"
-      [control]="formAuth.controls.password"
-    ></app-custom-input>
-    @if (formAuth.controls.email.errors && formAuth.controls.email.touched) {
-    @if (formAuth.controls.email.errors['required']) {
-    <p>La contrasenya és obligatoria</p>
-    } }
-
-    <ion-button expand="block" type="submit" [disabled]="formAuth.invalid">
-      Registrar-me
-      <ion-icon slot="end" name="log-in-outline"></ion-icon>
-    </ion-button>
+    <div>
+      <ion-button expand="block" type="submit" [disabled]="formAuth.invalid">
+        Registrar-me
+      </ion-button>
+    </div>
   </form>
 </app-login-layout>

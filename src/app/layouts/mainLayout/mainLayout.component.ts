@@ -13,9 +13,12 @@ import {
   IonTabBar,
   IonTabButton,
 } from '@ionic/angular/standalone';
-import { LoginService } from '@services/login.service';
+// import { LoginService } from '@services/old/login.service';
 import { UserModel } from '@models/users.model';
-import { UtilsService } from '@services/utils.service';
+import { UtilsService } from '@services/old/utils.service';
+import { LoginService } from '@services/old/login.service';
+import { AuthService } from '@services/auth.service';
+// import { UtilsService } from '@services/old/utils.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -46,19 +49,22 @@ export class MainLayoutComponent implements OnInit {
   @Input() pageTitle!: string;
   @Input() backButton!: string;
 
+  private authService = inject(AuthService);
   private utilService = inject(UtilsService);
-  private loginService = inject(LoginService);
+  // private loginService = inject(LoginService);
 
   user: UserModel | undefined;
 
   ngOnInit(): void {
-    this.user = this.utilService.getFromLocalStorage('user');
+    // this.user = this.utilService.getFromLocalStorage('user');
   }
 
   signOut() {
-    this.loginService.signOut();
-    this.user = this.utilService.getFromLocalStorage('user');
-    console.log(this.user);
+    this.authService.logout().subscribe({
+      next: () => {
+        this.utilService.clearLocalStorage();
+      },
+    });
   }
 
   scrollToTop() {

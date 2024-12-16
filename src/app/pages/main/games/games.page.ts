@@ -12,8 +12,6 @@ import {
   IonRefresherContent,
 } from '@ionic/angular/standalone';
 import { GameModel } from '@models/games.model';
-import { GameService } from '@services/game.service';
-import { UtilsService } from '@services/utils.service';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
 import { TypeGame } from '@sharedEnums/games';
 import { AlertController } from '@ionic/angular';
@@ -42,8 +40,8 @@ import { IconsToast } from '@sharedEnums/iconsToast';
 export class GamesPage implements OnInit {
   @ViewChild(IonContent, { static: false }) content!: IonContent;
 
-  private gameService = inject(GameService);
-  private utilsService = inject(UtilsService);
+  // private gameService = inject(GameService);
+  // private utilsService = inject(UtilsService);
 
   showScrollButton = false;
   games: GameModel[] = [];
@@ -64,15 +62,15 @@ export class GamesPage implements OnInit {
   }
 
   startNewGame() {
-    this.gameService
-      .createGame(TypeGame.aleatoria)
-      .then((res) => {
-        console.log('then');
-        // this.getPlayerGames();
-      })
-      .finally(() => {
-        console.log('finally');
-      });
+    // this.gameService
+    //   .createGame(TypeGame.aleatoria)
+    //   .then((res) => {
+    //     console.log('then');
+    //     // this.getPlayerGames();
+    //   })
+    //   .finally(() => {
+    //     console.log('finally');
+    //   });
   }
 
   refreshGames(event: any) {
@@ -80,60 +78,58 @@ export class GamesPage implements OnInit {
   }
 
   async getPlayerGames(event?: any) {
-    const loading = await this.utilsService.loading();
-    await loading.present();
-    this.gameService.getPlayerGames().subscribe({
-      next: (res) => {
-        console.log(res);
-        if (res && Array.isArray(res)) this.games = res;
-        if (event) event.target.complete();
-      },
-      error: (e) => {
-        console.error(e);
-      },
-      complete: () => {
-        loading.dismiss();
-      },
-    });
+    // const loading = await this.utilsService.loading();
+    // await loading.present();
+    // this.gameService.getPlayerGames().subscribe({
+    //   next: (res) => {
+    //     console.log(res);
+    //     if (res && Array.isArray(res)) this.games = res;
+    //     if (event) event.target.complete();
+    //   },
+    //   error: (e) => {
+    //     console.error(e);
+    //   },
+    //   complete: () => {
+    //     loading.dismiss();
+    //   },
+    // });
   }
 
   async confirmDelete(game: GameModel) {
-    const alert = await this.alertController.create({
-      header: 'Confirmar eliminació',
-      message: 'Estàs segur de voler eliminar aquesta partida?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-        },
-        {
-          text: 'Eliminar',
-          handler: () => {
-            this.gameService.deleteGame(game.id).subscribe({
-              next: () => {
-                this.getPlayerGames();
-
-                this.utilsService.presentToast(
-                  'Partida eliminada amb èxit',
-                  Colors.success,
-                  IconsToast.success_checkmark_circle
-                );
-              },
-              error: (e) => {
-                console.error(e);
-                this.utilsService.presentToast(
-                  'Error al eliminar la partida',
-                  Colors.success,
-                  IconsToast.success_checkmark_circle
-                );
-              },
-            });
-          },
-        },
-      ],
-    });
-
-    await alert.present();
+    // const alert = await this.alertController.create({
+    //   header: 'Confirmar eliminació',
+    //   message: 'Estàs segur de voler eliminar aquesta partida?',
+    //   buttons: [
+    //     {
+    //       text: 'Cancelar',
+    //       role: 'cancel',
+    //       cssClass: 'secondary',
+    //     },
+    //     {
+    //       text: 'Eliminar',
+    //       handler: () => {
+    //         this.gameService.deleteGame(game.id).subscribe({
+    //           next: () => {
+    //             this.getPlayerGames();
+    //             this.utilsService.presentToast(
+    //               'Partida eliminada amb èxit',
+    //               Colors.success,
+    //               IconsToast.success_checkmark_circle
+    //             );
+    //           },
+    //           error: (e) => {
+    //             console.error(e);
+    //             this.utilsService.presentToast(
+    //               'Error al eliminar la partida',
+    //               Colors.success,
+    //               IconsToast.success_checkmark_circle
+    //             );
+    //           },
+    //         });
+    //       },
+    //     },
+    //   ],
+    // });
+    // await alert.present();
   }
 }

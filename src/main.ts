@@ -18,7 +18,6 @@ import {
   ScreenTrackingService,
   UserTrackingService,
 } from '@angular/fire/analytics';
-// import { initializeAppCheck, ReCaptchaEnterpriseProvider, provideAppCheck } from '@angular/fire/app-check';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 
@@ -31,16 +30,15 @@ defineCustomElements(window);
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
-    provideRouter(routes),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
-    provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
+    provideIonicAngular(),
+    provideRouter(routes),
     ScreenTrackingService, // forma parte de Analytics
     UserTrackingService, // forma parte de Analytics
-
     //! TODO get a reCAPTCHA Enterprise here https://console.cloud.google.com/security/recaptcha?project=_
     // provideAppCheck(() => {
     //   const provider = new ReCaptchaEnterpriseProvider(/* reCAPTCHA Enterprise site key */);

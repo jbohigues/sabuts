@@ -1,29 +1,40 @@
+import { GameStatus, RoundStatus } from '@sharedEnums/states';
+
 export interface GameModel {
-  id: string;
+  id?: string;
   player1: UserOfGameModel;
   player2: UserOfGameModel;
   currentPlayerId: string;
+  currentTurn: Turn;
+  winner?: 'player1' | 'player2';
+  rounds: RoundModel[];
   startTime: Date;
   endTime?: Date;
-  rounds: RoundModel[];
-  winner?: string;
-  categories: number[];
-  status: number;
+  status: GameStatus;
+}
+
+export interface Turn {
+  id?: string;
+  playerId: string;
+  roundNumber: number;
 }
 
 export interface RoundModel {
+  id?: string;
   roundNumber: number;
-  category: string;
-  question: string;
-  options: string[];
-  correctAnswer: string;
-  player1Answer?: string;
-  player2Answer?: string;
-  timeLimit: number;
+  questionId: string;
+  player1Answer?: PlayerAnswer;
+  player2Answer?: PlayerAnswer;
+  status: RoundStatus;
+}
+
+export interface PlayerAnswer {
+  answerId: string;
+  isCorrect: boolean;
 }
 
 export interface UserOfGameModel {
-  id: string;
-  name: string;
+  userId: string;
+  userName: string;
   score: number;
 }

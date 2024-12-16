@@ -10,16 +10,8 @@ import {
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
 import { UserModel } from '@models/users.model';
-import {
-  FriendRequestModel,
-  FriendRequestModelDto,
-} from '@models/friendRequest.model';
-import { UserService } from '@services/user.service';
-import { UtilsService } from '@services/utils.service';
-import { StateFriendRequest } from '@sharedEnums/states';
+import { FriendRequestModel } from '@models/friendRequest.model';
 import { AlertController } from '@ionic/angular';
-import { Colors } from '@sharedEnums/colors';
-import { IconsToast } from '@sharedEnums/iconsToast';
 
 @Component({
   selector: 'app-profile',
@@ -47,8 +39,8 @@ export class ProfilePage {
   solicitudesPendientes: FriendRequestModel[] = [];
 
   constructor(
-    private userService: UserService,
-    private utilService: UtilsService,
+    // private userService: UserService,
+    // private utilService: UtilsService,
     private alertController: AlertController
   ) {}
 
@@ -61,22 +53,22 @@ export class ProfilePage {
     this.content.scrollToTop(800);
   }
 
-  ionViewWillEnter() {
-    this.currentUser = this.utilService.getFromLocalStorage('user');
-    if (this.currentUser) this.cargarDatosUsuario(this.currentUser.uid);
-  }
+  // ionViewWillEnter() {
+  //   this.currentUser = this.utilService.getFromLocalStorage('user');
+  //   if (this.currentUser) this.cargarDatosUsuario(this.currentUser.uid);
+  // }
 
-  cargarDatosUsuario(userId: string) {
-    this.userService.getFriends(userId).subscribe((res) => {
-      console.log(res);
-      this.friendsList = res;
-    });
+  // cargarDatosUsuario(userId: string) {
+  //   this.userService.getFriends(userId).subscribe((res) => {
+  //     console.log(res);
+  //     this.friendsList = res;
+  //   });
 
-    this.userService.getPendingFriendRequests(userId).subscribe((res) => {
-      console.log(res);
-      this.solicitudesPendientes = res;
-    });
-  }
+  //   this.userService.getPendingFriendRequests(userId).subscribe((res) => {
+  //     console.log(res);
+  //     this.solicitudesPendientes = res;
+  //   });
+  // }
 
   // aceptarSolicitud(solicitud: FriendRequestModel) {
   //   this.userService
@@ -108,82 +100,82 @@ export class ProfilePage {
   //   );
   // }
 
-  async presentAddFriendPrompt() {
-    const alert = await this.alertController.create({
-      header: 'Afegir nou amic/a',
-      inputs: [
-        {
-          name: 'username',
-          type: 'text',
-          placeholder: 'Nom usuari',
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Afegir',
-          handler: (data) => {
-            this.enviarSolicitud(data.username);
-          },
-        },
-      ],
-    });
+  // async presentAddFriendPrompt() {
+  //   const alert = await this.alertController.create({
+  //     header: 'Afegir nou amic/a',
+  //     inputs: [
+  //       {
+  //         name: 'username',
+  //         type: 'text',
+  //         placeholder: 'Nom usuari',
+  //       },
+  //     ],
+  //     buttons: [
+  //       {
+  //         text: 'Cancelar',
+  //         role: 'cancel',
+  //       },
+  //       {
+  //         text: 'Afegir',
+  //         handler: (data) => {
+  //           this.enviarSolicitud(data.username);
+  //         },
+  //       },
+  //     ],
+  //   });
 
-    await alert.present();
-  }
+  //   await alert.present();
+  // }
 
-  private async enviarSolicitud(username: string) {
-    const user = await this.userService.getUserByUsername(username);
+  // private async enviarSolicitud(username: string) {
+  //   const user = await this.userService.getUserByUsername(username);
 
-    if (user) {
-      const currentUser = this.utilService.getFromLocalStorage('user') as
-        | UserModel
-        | undefined;
-      if (currentUser) {
-        const friendRequest: FriendRequestModelDto = {
-          id: '',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          receivingUserId: user.uid,
-          sendingUserId: currentUser.uid,
-          status: StateFriendRequest.pendiente,
-        };
-        this.userService.createFriendRequest(friendRequest).then((res) => {
-          console.log(res);
-        });
-        // this.userService
-        //   .enviarSolicitud(currentUser.uid, user.uid)
-        //   .then((res) => {
-        //     res.success
-        //       ? this.presentSuccessAlert(res.message)
-        //       : this.presentErrorAlert(res.message);
-        //   });
-      }
-    } else {
-      this.presentErrorAlert('Error al enviar la solicitud');
-    }
-  }
+  //   if (user) {
+  //     const currentUser = this.utilService.getFromLocalStorage('user') as
+  //       | UserModel
+  //       | undefined;
+  //     if (currentUser) {
+  //       const friendRequest: FriendRequestModelDto = {
+  //         id: '',
+  //         createdAt: new Date(),
+  //         updatedAt: new Date(),
+  //         receivingUserId: user.uid,
+  //         sendingUserId: currentUser.uid,
+  //         status: StateFriendRequest.pendiente,
+  //       };
+  //       this.userService.createFriendRequest(friendRequest).then((res) => {
+  //         console.log(res);
+  //       });
+  //       // this.userService
+  //       //   .enviarSolicitud(currentUser.uid, user.uid)
+  //       //   .then((res) => {
+  //       //     res.success
+  //       //       ? this.presentSuccessAlert(res.message)
+  //       //       : this.presentErrorAlert(res.message);
+  //       //   });
+  //     }
+  //   } else {
+  //     this.presentErrorAlert('Error al enviar la solicitud');
+  //   }
+  // }
 
-  private async presentSuccessAlert(message: string) {
-    const alert = await this.alertController.create({
-      header: 'Éxit',
-      message,
-      buttons: ['OK'],
-    });
+  // private async presentSuccessAlert(message: string) {
+  //   const alert = await this.alertController.create({
+  //     header: 'Éxit',
+  //     message,
+  //     buttons: ['OK'],
+  //   });
 
-    await alert.present();
-  }
+  //   await alert.present();
+  // }
 
-  private async presentErrorAlert(message: string) {
-    const alert = await this.alertController.create({
-      header: 'Error',
-      message: message,
-      buttons: ['OK'],
-    });
+  // private async presentErrorAlert(message: string) {
+  //   const alert = await this.alertController.create({
+  //     header: 'Error',
+  //     message: message,
+  //     buttons: ['OK'],
+  //   });
 
-    await alert.present();
-  }
+  //   await alert.present();
+  // }
 }

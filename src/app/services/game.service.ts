@@ -1,248 +1,202 @@
-import { inject, Injectable } from '@angular/core';
-import { GameModel } from '@models/games.model';
+import { Injectable, inject } from '@angular/core';
 import {
+  Firestore,
   collection,
+  doc,
+  getDoc,
   getDocs,
   addDoc,
   updateDoc,
-  onSnapshot,
   deleteDoc,
-} from 'firebase/firestore';
-import { Observable, from, map, switchMap } from 'rxjs';
-import { LoginService } from './login.service';
-import { FirestoreService } from './firestore.service';
-import { TypeGame } from '@sharedEnums/games';
-import { Categories } from '@sharedEnums/categories';
-import { User } from 'firebase/auth';
-import { UtilsService } from './utils.service';
-import { Colors } from '@sharedEnums/colors';
-import { IconsToast } from '@sharedEnums/iconsToast';
-import { doc } from '@angular/fire/firestore';
-import { StateGame } from '@sharedEnums/states';
+  query,
+  where,
+} from '@angular/fire/firestore';
+import { GameModel, RoundModel, UserOfGameModel } from '@models/games.model';
+import { QuestionModel } from '@models/question.model';
+import { GameStatus, RoundStatus } from '@sharedEnums/states';
+import { Observable, from } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class GameService {
-  private loginService = inject(LoginService);
-  private utilsService = inject(UtilsService);
-  private firestoreService = inject(FirestoreService);
+  private firestore = inject(Firestore);
 
-  // 1. Get partidas de un jugador
-  getPlayerGames(): Observable<GameModel[]> {
-    const user = this.loginService.getCurrentUser();
-    if (!user) return from([]);
+  // Obtener todas las partidas
+  getGames(): Observable<GameModel[]> {
+    const gamesRef = collection(this.firestore, 'games');
+    return from(getDocs(gamesRef)).pipe(
+      map((snapshot) =>
+        snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as GameModel))
+      )
+    );
+  }
 
-    const q = this.firestoreService.createQuery('games', [
-      'player1.id',
-      '==',
-      user.uid,
-    ]);
+  // Obtener partida por ID
+  getGameById(gameId: string): Observable<GameModel> {
+    const gameDoc = doc(this.firestore, `games/${gameId}`);
+    return from(getDoc(gameDoc)).pipe(
+      map((snapshot) => {
+        const game = snapshot.data() as GameModel;
+        if (!game) throw new Error('Game not found');
 
-    return from(getDocs(q)).pipe(
-      map((querySnapshot) => {
-        return querySnapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            currentPlayerId: data['currentPlayerId'],
-            player1: data['player1'],
-            player2: data['player2'],
-            startTime: data['startTime'].toDate(),
-            endTime: data['endTime']?.toDate(),
-            status: data['status'],
-          } as GameModel;
-        });
+        return {
+          ...game,
+          id: snapshot.id,
+          player1: this.populateUser(game.player1),
+          player2: this.populateUser(game.player2),
+        };
       })
     );
   }
 
-  // // 2. Get Game por id
-  // getGamePorId(GameId: string): Observable<Game | null> {
-  //   const GameRef = doc(this.firestore, `Games/${GameId}`);
-  //   return from(getDoc(GameRef)).pipe(
-  //     map((docSnap) =>
-  //       docSnap.exists()
-  //         ? ({ id: docSnap.id, ...docSnap.data() } as Game)
-  //         : null
-  //     )
-  //   );
-  // }
-
-  // 3. Crear Game
-  async createGame(opponentType: TypeGame) {
-    const loading = await this.utilsService.loading();
-    await loading.present();
-    const user = this.loginService.getCurrentUser();
-    if (!user) {
-      loading.dismiss();
-      throw new Error('Usuario no logueat');
-    }
-
-    console.log({ opponentType });
-
-    if (opponentType === TypeGame.aleatoria) {
-      this.joinRandomQueue(loading).subscribe({
-        next: (res) => {
-          console.log(res);
-        },
-        error: (e) => {
-          console.error(e);
-        },
-        complete: () => {
-          console.log('dismiss');
-          loading.dismiss();
-        },
-      });
-    } else {
-      // Para jugar con un amigo, simplemente creamos la partida en espera
-      console.log('createGameWithRandomOpponent');
-      this.createGameWithRandomOpponent(user, loading);
-      console.log('despues createGameWithRandomOpponent');
-    }
+  // Crear una nueva partida
+  createGame(game: Partial<GameModel>): Observable<string> {
+    const gamesRef = collection(this.firestore, 'games');
+    return from(addDoc(gamesRef, game)).pipe(map((docRef) => docRef.id));
   }
 
-  // Entrar en una partida random
-  private joinRandomQueue(loading: HTMLIonLoadingElement): Observable<string> {
-    const user = this.loginService.getCurrentUser();
-    if (!user) throw new Error('No user logged in');
-
-    const queueRef = collection(
-      this.firestoreService.getFirestore(),
-      'random_queue'
-    );
-    const playerEntry = {
-      userId: user.uid,
-      name: user.displayName || 'Jugador 1',
-      timestamp: new Date(),
-    };
-
-    return from(addDoc(queueRef, playerEntry)).pipe(
-      switchMap((docRef) => {
-        return new Observable<string>((observer) => {
-          const unsubscribe = onSnapshot(docRef, (doc) => {
-            if (doc.exists() && doc.data()['matchedGameId']) {
-              observer.next(doc.data()['matchedGameId']);
-              observer.complete();
-              deleteDoc(docRef); // Remove from queue after match
-            }
-          });
-
-          // Check for existing match immediately
-          this.checkForExistingMatch(user.uid).subscribe((matchedGameId) => {
-            if (matchedGameId) {
-              observer.next(matchedGameId);
-              observer.complete();
-              deleteDoc(docRef); // Remove from queue if matched
-            } else {
-              this.createGameWithRandomOpponent(user, loading);
-            }
-          });
-
-          return () => unsubscribe();
-        });
-      })
-    );
+  // Actualizar una partida existente
+  updateGame(gameId: string, changes: Partial<GameModel>): Observable<void> {
+    const gameDoc = doc(this.firestore, `games/${gameId}`);
+    return from(updateDoc(gameDoc, changes)).pipe(map(() => void 0));
   }
 
-  // Buscar partidas random donde entrar
-  private checkForExistingMatch(userId: string): Observable<string | null> {
-    const q = this.firestoreService.createQuery(
-      'games',
-      ['status', '==', StateGame.pendiente],
-      // ['player1.id', '!=', userId],
-      ['player2', '==', '']
-    );
-
-    return from(getDocs(q)).pipe(
-      map((querySnapshot) => {
-        for (const doc of querySnapshot.docs) {
-          const game = doc.data() as GameModel;
-          if (game.player1.id !== userId) {
-            // Match found, update the game
-            updateDoc(doc.ref, {
-              'player2.id': userId,
-              'player2.name':
-                this.loginService.getCurrentUser()?.displayName || 'Jugador 2',
-              status: StateGame.en_curso,
-            });
-            return doc.id;
-          }
-        }
-        return null;
-      })
-    );
-  }
-
-  // Crear partida para que alguien pueda entrar
-  private async createGameWithRandomOpponent(
-    user: User,
-    loading: HTMLIonLoadingElement
-  ) {
-    // const loading = await this.utilsService.loading();
-    // await loading.present();
-    const newGame: Omit<GameModel, 'id'> = {
-      player1: {
-        id: user.uid,
-        name: user.displayName || 'Jugador 1',
-        score: 0,
-      },
-      player2: {
-        id: '',
-        name: '',
-        score: 0,
-      },
-      currentPlayerId: user.uid,
-      startTime: new Date(),
-      status: StateGame.pendiente,
-      rounds: [],
-      categories: [Categories.historia, Categories.indumentaria],
-    };
-
-    addDoc(collection(this.firestoreService.getFirestore(), 'games'), newGame)
-      .then((res) => {
-        console.log(res);
-        this.utilsService.presentToast(
-          'Partida creada amb èxit',
-          Colors.success,
-          IconsToast.success_checkmark_circle
-        );
-      })
-      .catch((e) => {
-        console.error(e);
-
-        this.utilsService.presentToast(
-          'Error al crear la partida',
-          Colors.danger,
-          IconsToast.danger_close_circle
-        );
-      })
-      .finally(() => {
-        console.log('finally');
-        loading.dismiss();
-      });
-  }
-
-  // // 4. Actualizar Game
-  // actualizarGame(GameId: string, cambios: Partial<Game>): Observable<void> {
-  //   const GameRef = doc(
-  //     this.firestore,
-  //     `Games/${GameId}`
-  //   ) as DocumentReference<Game>;
-  //   return from(updateDoc(GameRef, cambios));
-  // }
-
-  // // 5. Aceptar Game
-  // aceptarGame(GameId: string, player2Id: string): Observable<void> {
-  //   return this.actualizarGame(GameId, {
-  //     player2: player2Id,
-  //     estado: 'aceptada',
-  //   });
-  // }
-
-  // 6. Delete Game
+  // Eliminar una partida
   deleteGame(gameId: string): Observable<void> {
-    const gameRef = doc(this.firestoreService.getFirestore(), 'games', gameId);
-    return from(deleteDoc(gameRef));
+    const gameDoc = doc(this.firestore, `games/${gameId}`);
+    return from(deleteDoc(gameDoc)).pipe(map(() => void 0));
+  }
+
+  // Cambiar el turno actual
+  setCurrentTurn(
+    gameId: string,
+    playerId: string,
+    roundNumber: number
+  ): Observable<void> {
+    const gameDoc = doc(this.firestore, `games/${gameId}`);
+    return from(
+      updateDoc(gameDoc, {
+        currentPlayerId: playerId,
+        currentRound: roundNumber,
+      })
+    ).pipe(map(() => void 0));
+  }
+
+  // Registrar respuesta de un jugador
+  submitAnswer(
+    gameId: string,
+    roundId: string,
+    playerId: string,
+    answer: string
+  ): Observable<void> {
+    const roundDoc = doc(this.firestore, `games/${gameId}/rounds/${roundId}`);
+    const field = playerId === 'player1' ? 'player1Answer' : 'player2Answer';
+    return from(updateDoc(roundDoc, { [field]: answer })).pipe(
+      map(() => void 0)
+    );
+  }
+
+  // Finalizar una ronda
+  endRound(gameId: string, roundId: string): Observable<void> {
+    const roundDoc = doc(this.firestore, `games/${gameId}/rounds/${roundId}`);
+    return from(updateDoc(roundDoc, { status: RoundStatus.completed })).pipe(
+      map(() => void 0)
+    );
+  }
+
+  // Finalizar el juego
+  endGame(gameId: string, winnerId: string): Observable<void> {
+    const gameDoc = doc(this.firestore, `games/${gameId}`);
+    return from(
+      updateDoc(gameDoc, {
+        status: RoundStatus.completed,
+        winner: winnerId,
+        endTime: new Date(),
+      })
+    ).pipe(map(() => void 0));
+  }
+
+  // Obtener partidas activas de un usuario
+  getActiveGamesByUser(userId: string): Observable<GameModel[]> {
+    const gamesRef = collection(this.firestore, 'games');
+    const q = query(
+      gamesRef,
+      where('status', '==', GameStatus.in_progress),
+      where('players', 'array-contains', userId)
+    );
+    return from(getDocs(q)).pipe(
+      map((snapshot) =>
+        snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as GameModel))
+      )
+    );
+  }
+
+  // Agregar una ronda a una partida
+  addRound(gameId: string, round: Partial<RoundModel>): Observable<void> {
+    const roundsRef = collection(this.firestore, `games/${gameId}/rounds`);
+    return from(addDoc(roundsRef, round)).pipe(map(() => void 0));
+  }
+
+  // Obtener rondas de una partida
+  getRounds(gameId: string): Observable<RoundModel[]> {
+    const roundsRef = collection(this.firestore, `games/${gameId}/rounds`);
+    return from(getDocs(roundsRef)).pipe(
+      map((snapshot) =>
+        snapshot.docs.map(
+          (doc) => ({ id: doc.id, ...doc.data() } as RoundModel)
+        )
+      )
+    );
+  }
+
+  // Obtener una pregunta por ID
+  getQuestionById(questionId: string): Observable<QuestionModel> {
+    const questionDoc = doc(this.firestore, `questions/${questionId}`);
+    return from(getDoc(questionDoc)).pipe(
+      map(
+        (snapshot) => ({ id: snapshot.id, ...snapshot.data() } as QuestionModel)
+      )
+    );
+  }
+
+  // Obtener preguntas por categoría
+  getQuestionsByCategory(categoryId: string): Observable<QuestionModel[]> {
+    const questionsRef = collection(this.firestore, 'questions');
+    const q = query(questionsRef, where('categoryId', '==', categoryId));
+    return from(getDocs(q)).pipe(
+      map((snapshot) =>
+        snapshot.docs.map(
+          (doc) => ({ id: doc.id, ...doc.data() } as QuestionModel)
+        )
+      )
+    );
+  }
+
+  // Obtener pregunta aleatoria (de todas o por categoría)
+  getRandomQuestion(categoryId?: string): Observable<QuestionModel> {
+    const questionsRef = collection(this.firestore, 'questions');
+    const q = categoryId
+      ? query(questionsRef, where('categoryId', '==', categoryId))
+      : questionsRef;
+    return from(getDocs(q)).pipe(
+      map((snapshot) => {
+        const docs = snapshot.docs;
+        const randomIndex = Math.floor(Math.random() * docs.length);
+        return {
+          id: docs[randomIndex].id,
+          ...docs[randomIndex].data(),
+        } as QuestionModel;
+      })
+    );
+  }
+
+  // Método para popular usuarios (simulación de población limitada)
+  private populateUser(user: UserOfGameModel): UserOfGameModel {
+    // Aquí puedes limitar los datos que se incluyen del usuario
+    return {
+      userId: user.userId,
+      userName: user.userName,
+      score: user.score,
+    };
   }
 }

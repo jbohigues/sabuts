@@ -18,4 +18,9 @@ export const routes: Routes = [
     loadChildren: () => import('@routes/login.routes').then((m) => m.routes),
     canActivate: [NoAuthGuard],
   },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: 'home',
+  },
 ];

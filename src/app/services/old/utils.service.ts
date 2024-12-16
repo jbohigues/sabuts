@@ -46,4 +46,13 @@ export class UtilsService {
     if (value) return JSON.parse(value);
     return null;
   }
+
+  removeItemOfLocalStorage(key: string) {
+    localStorage.removeItem(key);
+  }
+
+  clearLocalStorage() {
+    localStorage.clear();
+    this.routerLink('login');
+  }
 }

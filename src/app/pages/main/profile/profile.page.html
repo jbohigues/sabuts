@@ -5,23 +5,24 @@
   <h2>Perfil</h2>
   <p>{{currentUser.userName}}</p>
   <ion-button>Editar Configuració</ion-button>
-  <ion-button (click)="presentAddFriendPrompt()">
+  <ion-button>
+    <!-- (click)="presentAddFriendPrompt()" -->
     <ion-icon name="person-add"></ion-icon>
     Afegir Amic/a
   </ion-button>
   <!-- (click)="mostrarConfiguracion()" -->
   <h2>Llistat d'amics ({{friendsList.length}})</h2>
   <ion-list>
-    @for (friend of friendsList; track friend?.uid) {
+    <!-- @for (friend of friendsList; track friend?.uid) {
     <ion-item> {{ friend?.userName }} </ion-item>
-    }
+    } -->
   </ion-list>
 
   <h2>Solicituds Pendents ({{solicitudesPendientes.length}})</h2>
   <ion-list>
     @for (solicitud of solicitudesPendientes; track solicitud.id) {
     <ion-item>
-      {{ solicitud.sendingUserName }} {{ solicitud.status }}
+      <!-- {{ solicitud.sendingUserName }} {{ solicitud.status }} -->
       <!-- <ion-button (click)="aceptarSolicitud(solicitud)">Aceptar</ion-button>
       <ion-button (click)="rechazarSolicitud(solicitud)">Rechazar</ion-button> -->
     </ion-item>

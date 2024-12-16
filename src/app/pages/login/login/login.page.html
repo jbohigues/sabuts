@@ -1,47 +1,62 @@
 <app-login-layout pageTitle="Iniciar sessió">
-  <form [formGroup]="formAuth" (ngSubmit)="submit()">
-    <app-logo></app-logo>
-    <app-custom-input
-      icon="mail-outline"
-      type="email"
-      label="Correu electrònic"
-      [placeholder]="'exemple@gmail.com'"
-      autocomplete="username"
-      [control]="formAuth.controls.email"
-    ></app-custom-input>
+  <app-logo class="ion-margin-bottom"></app-logo>
 
-    @if (formAuth.controls.email.errors && formAuth.controls.email.touched) {
-    @if (formAuth.controls.email.errors['required']) {
-    <p class="error">El correu és obligatori</p>
-    } @else if (formAuth.controls.email.errors['email']) {
-    <p class="error">El correu no té un format correcte</p>
-    } }
+  <form [formGroup]="formAuth" (ngSubmit)="login()">
+    <div>
+      <ion-input
+        type="email"
+        formControlName="email"
+        label="Correu electrònic"
+        label-placement="floating"
+        fill="outline"
+        required
+      ></ion-input>
+      @if (formAuth.get('email')?.touched && formAuth.get('email')?.invalid) {
+      <ion-text>
+        @if (formAuth.get('email')?.errors?.['required']) {
+        <p class="error ion-margin-bottom">El correu és obligatori</p>
+        } @if (formAuth.get('email')?.errors?.['email']) {
+        <p class="error ion-margin-bottom">
+          El correu no té un format correcte
+        </p>
+        }
+      </ion-text>
+      }
+    </div>
 
-    <app-custom-input
-      icon="lock-closed-outline"
-      type="password"
-      label="Contrasenya"
-      [placeholder]="'*******'"
-      autocomplete="current-password"
-      [control]="formAuth.controls.password"
-    ></app-custom-input>
-    @if (formAuth.controls.password.errors &&
-    formAuth.controls.password.touched) { @if
-    (formAuth.controls.password.errors['required']) {
-    <p class="error">La contrasenya és obligatoria</p>
-    } }
+    <div>
+      <ion-input
+        type="password"
+        formControlName="password"
+        label="Contrasenya"
+        label-placement="floating"
+        fill="outline"
+        required
+      ></ion-input>
+      @if (formAuth.get('password')?.touched &&
+      formAuth.get('password')?.invalid) {
+      <ion-text>
+        @if (formAuth.get('password')?.errors?.['required']) {
+        <p class="error ion-margin-bottom">La contrasenya és obligatoria</p>
+        }
+      </ion-text>
+      }
+    </div>
 
-    <a class="ion-text-end" routerLink="forgot_password">
-      Has oblidat la teua contrasenya?
-    </a>
-
-    <ion-button expand="block" type="submit" [disabled]="formAuth.invalid">
-      Accedir
-      <ion-icon slot="end" name="log-in-outline"></ion-icon>
-    </ion-button>
-    <ion-button class="ion-margin-top" expand="block" routerLink="sign_up">
-      Registrar-te
-      <ion-icon slot="end" name="person-add-outline"></ion-icon>
-    </ion-button>
+    <div>
+      <ion-button expand="block" type="submit" [disabled]="formAuth.invalid">
+        Iniciar sessió
+      </ion-button>
+      <ion-button color="secondary" expand="block" routerLink="sign_up">
+        Registrar-te
+        <ion-icon slot="end" name="person-add-outline"></ion-icon>
+      </ion-button>
+      <ion-text class="ion-text-center ion-padding-top">
+        <p>
+          Has oblidat la teua contrasenya?
+          <a routerLink="forgot_password">Recupéra-la</a>
+        </p>
+      </ion-text>
+    </div>
   </form>
 </app-login-layout>

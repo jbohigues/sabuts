@@ -5,17 +5,23 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { IonButton, IonIcon } from '@ionic/angular/standalone';
-import { CustomInputComponent } from '@sharedComponents/custom-input/custom-input.component';
+import {
+  IonIcon,
+  IonInput,
+  IonText,
+  IonButton,
+  IonItem,
+  IonCard,
+} from '@ionic/angular/standalone';
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
-import { RouterLink } from '@angular/router';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
-import { LoginService } from '@services/login.service';
-import { UserModel, UserModelWithPassword } from '@models/users.model';
-import { UtilsService } from '@services/utils.service';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
-import { FirestoreService } from '@services/firestore.service';
+import { AuthService } from '@services/auth.service';
+import { UtilsService } from '@services/old/utils.service';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { UserService } from '@services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -23,20 +29,22 @@ import { FirestoreService } from '@services/firestore.service';
   styleUrls: ['./login.page.scss'],
   standalone: true,
   imports: [
-    IonIcon,
-    IonButton,
-    CustomInputComponent,
+    CommonModule,
     ReactiveFormsModule,
+    LoginLayoutComponent,
     LogoComponent,
     RouterLink,
-    LoginLayoutComponent,
+    IonText,
+    IonInput,
+    IonIcon,
+    IonButton,
   ],
 })
 export class LoginPage {
   // Injects
-  loginService = inject(LoginService);
-  utilsService = inject(UtilsService);
-  firestoreService = inject(FirestoreService);
+  private userService = inject(UserService);
+  private authService = inject(AuthService);
+  private utilsService = inject(UtilsService);
 
   // Objects
   formAuth = new FormGroup({
@@ -44,69 +52,50 @@ export class LoginPage {
     password: new FormControl('', [Validators.required]),
   });
 
-  async submit() {
-    if (this.formAuth.valid) {
-      const loading = await this.utilsService.loading();
-      await loading.present();
-
-      this.loginService
-        .signIn(this.formAuth.value as UserModelWithPassword)
-        .then((res) => {
-          this.getUserInfo(res.user.uid);
-        })
-        .catch((e) => {
-          console.error(e);
-
+  async login() {
+    const loading = await this.utilsService.loading();
+    await loading.present();
+    const { email, password } = this.formAuth.controls;
+    const emailValue = email.value;
+    const passwordValue = password.value;
+    if (emailValue && passwordValue) {
+      this.authService.login(emailValue, passwordValue).subscribe({
+        next: (user) => {
+          this.userService.getUserById(user.uid).subscribe({
+            next: (res) => {
+              console.log(res);
+              if (res) {
+                this.utilsService.saveInLocalStorage('user', res);
+                this.utilsService.routerLink('/home');
+                this.formAuth.reset();
+                this.utilsService.presentToast(
+                  `Hola ${user.displayName}, benvingut/a!`,
+                  Colors.success,
+                  IconsToast.success_thumbs_up
+                );
+              } else {
+                this.utilsService.presentToast(
+                  'Error al iniciar sessió: Credencials incorrectes',
+                  Colors.danger,
+                  IconsToast.danger_close_circle
+                );
+              }
+            },
+          });
+        },
+        error: (err) => {
+          console.error('Error en el login:', err);
           this.utilsService.presentToast(
             'Error al iniciar sessió: Credencials incorrectes',
             Colors.danger,
             IconsToast.danger_close_circle
           );
-        })
-        .finally(() => {
           loading.dismiss();
-        });
-    }
-  }
-
-  async getUserInfo(iduser: string) {
-    if (this.formAuth.valid) {
-      const loading = await this.utilsService.loading();
-      await loading.present();
-
-      let path = `users/${iduser}`;
-
-      this.firestoreService
-        .getDocument(path)
-        .then((res) => {
-          const user = res as UserModel;
-          console.log(user);
-
-          this.utilsService.saveInLocalStorage('user', user);
-          this.utilsService.routerLink('/home');
-          this.formAuth.reset();
-          this.utilsService.presentToast(
-            `Hola ${user.name}, benvingut/a!`,
-            Colors.success,
-            IconsToast.success_thumbs_up
-          );
-        })
-        .catch((e) => {
-          console.error(e);
-
-          const message = e.message.includes('email-already-in-use')
-            ? 'Error: el correu electrònic ja és registrat'
-            : "Error: error al registrar l'usuari";
-
-          this.utilsService.presentToast(
-            message,
-            Colors.danger,
-            IconsToast.danger_close_circle
-          );
-        })
-        .finally(() => {
+        },
+        complete: () => {
           loading.dismiss();
-        });
+        },
+      });
     }
   }
 }

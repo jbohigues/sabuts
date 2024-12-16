@@ -1,19 +1,22 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
-import { LoginService } from '@services/login.service';
-import { UtilsService } from '@services/utils.service';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '@services/auth.service';
+import { map, take } from 'rxjs/operators';
 
 export const NoAuthGuard: CanActivateFn = (route, state) => {
-  const loginService = inject(LoginService);
-  const utilsService = inject(UtilsService);
+  const router = inject(Router);
+  const authService = inject(AuthService);
 
-  return new Promise((resolve) => {
-    loginService.getAuth().onAuthStateChanged((auth) => {
-      if (!auth) resolve(true);
-      else {
-        utilsService.routerLink('/home');
-        resolve(false);
+  return authService.isLoggedIn().pipe(
+    take(1),
+    map((isAuthenticated) => {
+      console.log('not', isAuthenticated);
+      if (isAuthenticated) {
+        router.navigate(['/home']);
+        return false;
+      } else {
+        return true;
       }
-    });
-  });
+    })
+  );
 };
