@@ -1,8 +1,3 @@
-// export interface UserCredentials {
-//   email: string;
-//   password: string;
-// }
-
 export interface PartialUserModel {
   id?: string;
   name: string;
@@ -14,7 +9,6 @@ export interface PartialUserModel {
 export interface UserModel extends PartialUserModel {
   lastName: string;
   email: string;
-  friendsList: string[];
   createdAt: Date;
   updatedAt: Date;
   isAdmin: boolean;

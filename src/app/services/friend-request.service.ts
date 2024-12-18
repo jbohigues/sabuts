@@ -1,17 +1,29 @@
 import { inject, Injectable } from '@angular/core';
-import { FriendRequestModel } from '@models/friendRequest.model';
-import { PartialUserModel, UserModel } from '@models/users.model';
 import {
-  Firestore,
-  collection,
-  getDocs,
   addDoc,
-  doc,
-  updateDoc,
+  collection,
   deleteDoc,
+  doc,
+  Firestore,
   getDoc,
-} from 'firebase/firestore';
-import { Observable, forkJoin, from, map, switchMap } from 'rxjs';
+  getDocs,
+  updateDoc,
+} from '@angular/fire/firestore';
+import {
+  FriendRequestModel,
+  PartialFriendRequestModel,
+} from '@models/friendRequest.model';
+import { PartialUserModel, UserModel } from '@models/users.model';
+
+import {
+  Observable,
+  catchError,
+  forkJoin,
+  from,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -19,15 +31,19 @@ import { Observable, forkJoin, from, map, switchMap } from 'rxjs';
 export class FriendRequestService {
   private firestore = inject(Firestore);
 
-  getFriendRequests(
-    userId: string
-  ): Observable<(FriendRequestModel & { sendingUser: PartialUserModel })[]> {
+  getFriendRequests(userId: string): Observable<PartialFriendRequestModel[]> {
     const requestsRef = collection(
       this.firestore,
       `users/${userId}/friendRequests`
     );
+
     return from(getDocs(requestsRef)).pipe(
       switchMap((snapshot) => {
+        if (snapshot.empty) {
+          // Si no hay documentos, devuelve un array vacío
+          return of([]);
+        }
+
         const requests = snapshot.docs.map(
           (doc) => ({ id: doc.id, ...doc.data() } as FriendRequestModel)
         );
@@ -38,6 +54,11 @@ export class FriendRequestService {
             getDoc(doc(this.firestore, `users/${request.sendingUserId}`))
           ).pipe(
             map((userDoc) => {
+              if (!userDoc.exists()) {
+                throw new Error(
+                  `User document not found for ID: ${request.sendingUserId}`
+                );
+              }
               const userData = userDoc.data() as UserModel;
               // Reducir los datos del usuario al modelo "parcial"
               const sendingUser: PartialUserModel = {
@@ -48,12 +69,26 @@ export class FriendRequestService {
                 totalPoints: userData.totalPoints,
               };
               return { ...request, sendingUser };
+            }),
+            catchError((error) => {
+              console.error('Error fetching user data:', error);
+              return of(null);
             })
           )
         );
 
         // Retornar las solicitudes de amistad con los usuarios populados
-        return forkJoin(userObservables);
+        return forkJoin(userObservables).pipe(
+          map((results) =>
+            results.filter(
+              (result): result is PartialFriendRequestModel => result !== null
+            )
+          )
+        );
+      }),
+      catchError((error) => {
+        console.error('Error fetching friend requests:', error);
+        return of([]);
       })
     );
   }

@@ -75,7 +75,6 @@ export class SignUpPage {
             lastName: '',
             avatarid: '',
             totalPoints: 0,
-            friendsList: [],
             createdAt: new Date(),
             updatedAt: new Date(),
             isAdmin: false,
@@ -95,6 +94,7 @@ export class SignUpPage {
             },
             error: (e) => {
               console.error(e);
+              this.presentError(e, loading);
             },
             complete: () => {
               loading.dismiss();
@@ -103,17 +103,21 @@ export class SignUpPage {
         },
         error: (e) => {
           console.error("Error al registrar l'usuari:", e);
-          const message = e.message.includes('email-already-in-use')
-            ? 'Error: el correu electrònic ja és registrat'
-            : "Error: error al registrar l'usuari";
-          this.utilsService.presentToast(
-            message,
-            Colors.danger,
-            IconsToast.danger_close_circle
-          );
-          loading.dismiss();
+          this.presentError(e, loading);
         },
       });
     }
+  }
+
+  private presentError(e: any, loading: HTMLIonLoadingElement) {
+    const message = e.message.includes('email-already-in-use')
+      ? 'Error: el correu electrònic ja és registrat'
+      : "Error: error al registrar l'usuari";
+    this.utilsService.presentToast(
+      message,
+      Colors.danger,
+      IconsToast.danger_close_circle
+    );
+    loading.dismiss();
   }
 }

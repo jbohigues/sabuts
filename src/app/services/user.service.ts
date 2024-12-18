@@ -1,15 +1,17 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
-import { UserModel } from '@models/users.model';
 import {
-  collection,
-  getDocs,
-  doc,
-  getDoc,
   addDoc,
-  updateDoc,
+  collection,
   deleteDoc,
-} from 'firebase/firestore';
+  doc,
+  Firestore,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from '@angular/fire/firestore';
+import { UserModel } from '@models/users.model';
+import { setDoc } from 'firebase/firestore';
+
 import { Observable, forkJoin, from, map, switchMap } from 'rxjs';
 
 @Injectable({
@@ -35,8 +37,15 @@ export class UserService {
   }
 
   createUser(user: UserModel): Observable<void> {
-    const usersRef = collection(this.firestore, 'users');
-    return from(addDoc(usersRef, user)).pipe(map(() => void 0));
+    const userDocRef = doc(this.firestore, `users/${user.id}`);
+    // Crear el usuario con campos adicionales para las subcolecciones
+    const userData = {
+      ...user,
+      uid: user.id,
+      friends: {}, // Campo vacío para representar la subcolección
+      friendRequests: {}, // Campo vacío para representar la subcolección
+    };
+    return from(setDoc(userDocRef, userData));
   }
 
   updateUser(id: string, user: Partial<UserModel>): Observable<void> {

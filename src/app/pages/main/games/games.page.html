@@ -18,11 +18,13 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <h2>Total de partides: {{games.length}}</h2>
-  <ion-button expand="block" (click)="startNewGame()">
-    <ion-icon name="add" slot="start"></ion-icon>
-    Crear nova partida
-  </ion-button>
+  <div class="flex">
+    <h2>Total de partides: {{games.length}}</h2>
+    <ion-button expand="block" (click)="startNewGame()">
+      <ion-icon name="add" slot="start"></ion-icon>
+      Crear nova partida
+    </ion-button>
+  </div>
 
   @if (games.length > 0) {
   <ion-list>

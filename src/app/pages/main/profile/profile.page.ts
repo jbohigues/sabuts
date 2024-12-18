@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -10,8 +10,15 @@ import {
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
 import { UserModel } from '@models/users.model';
-import { FriendRequestModel } from '@models/friendRequest.model';
+import {
+  FriendRequestModel,
+  PartialFriendRequestModel,
+} from '@models/friendRequest.model';
 import { AlertController } from '@ionic/angular';
+import { UtilsService } from '@services/old/utils.service';
+import { FriendService } from '@services/friend.service';
+import { PartialFriendModel } from '@models/friends.model';
+import { FriendRequestService } from '@services/friend-request.service';
 
 @Component({
   selector: 'app-profile',
@@ -32,11 +39,18 @@ import { AlertController } from '@ionic/angular';
 export class ProfilePage {
   @ViewChild(IonContent, { static: false }) content!: IonContent;
 
+  // Injects
+  private utilsService = inject(UtilsService);
+  private friendService = inject(FriendService);
+  private friendRequestService = inject(FriendRequestService);
+
+  // Variables
   showScrollButton = false;
 
+  // Objects
   currentUser: UserModel | undefined;
-  friendsList: UserModel[] = [];
-  solicitudesPendientes: FriendRequestModel[] = [];
+  friendsList: PartialFriendModel[] = [];
+  friendRequestList: PartialFriendRequestModel[] = [];
 
   constructor(
     // private userService: UserService,
@@ -53,10 +67,33 @@ export class ProfilePage {
     this.content.scrollToTop(800);
   }
 
-  // ionViewWillEnter() {
-  //   this.currentUser = this.utilService.getFromLocalStorage('user');
-  //   if (this.currentUser) this.cargarDatosUsuario(this.currentUser.uid);
-  // }
+  ionViewWillEnter() {
+    this.currentUser = this.utilsService.getFromLocalStorage('user');
+    if (this.currentUser && this.currentUser.id)
+      this.getUserInfo(this.currentUser.id);
+  }
+
+  private getUserInfo(id: string) {
+    this.friendService.getFriends(id).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res && Array.isArray(res)) this.friendsList = res;
+      },
+      error: (e) => {
+        console.error(e);
+      },
+    });
+
+    this.friendRequestService.getFriendRequests(id).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res && Array.isArray(res)) this.friendRequestList = res;
+      },
+      error: (e) => {
+        console.error(e);
+      },
+    });
+  }
 
   // cargarDatosUsuario(userId: string) {
   //   this.userService.getFriends(userId).subscribe((res) => {

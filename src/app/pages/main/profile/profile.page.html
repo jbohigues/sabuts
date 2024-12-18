@@ -1,9 +1,13 @@
 <app-header title="Perfil" [menuButton]="true"></app-header>
 
-<ion-content>
+<ion-content
+  class="ion-padding"
+  fixed-slot-placement="before"
+  [scrollEvents]="true"
+  (ionScroll)="onScroll($event)"
+>
   @if (currentUser) {
-  <h2>Perfil</h2>
-  <p>{{currentUser.userName}}</p>
+  <h2>{{currentUser.userName}}</h2>
   <ion-button>Editar Configuració</ion-button>
   <ion-button>
     <!-- (click)="presentAddFriendPrompt()" -->
@@ -11,16 +15,16 @@
     Afegir Amic/a
   </ion-button>
   <!-- (click)="mostrarConfiguracion()" -->
-  <h2>Llistat d'amics ({{friendsList.length}})</h2>
+  <h3>Llistat d'amics ({{friendsList.length}})</h3>
   <ion-list>
-    <!-- @for (friend of friendsList; track friend?.uid) {
-    <ion-item> {{ friend?.userName }} </ion-item>
-    } -->
+    @for (friend of friendsList; track friend.friendUser.id) {
+    <ion-item> {{ friend.friendUser.userName }} </ion-item>
+    }
   </ion-list>
 
-  <h2>Solicituds Pendents ({{solicitudesPendientes.length}})</h2>
+  <h3>Solicituds Pendents ({{friendRequestList.length}})</h3>
   <ion-list>
-    @for (solicitud of solicitudesPendientes; track solicitud.id) {
+    @for (solicitud of friendRequestList; track solicitud.id) {
     <ion-item>
       <!-- {{ solicitud.sendingUserName }} {{ solicitud.status }} -->
       <!-- <ion-button (click)="aceptarSolicitud(solicitud)">Aceptar</ion-button>
