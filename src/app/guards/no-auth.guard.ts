@@ -10,7 +10,6 @@ export const NoAuthGuard: CanActivateFn = (route, state) => {
   return authService.isLoggedIn().pipe(
     take(1),
     map((isAuthenticated) => {
-      console.log('not', isAuthenticated);
       if (isAuthenticated) {
         router.navigate(['/home']);
         return false;

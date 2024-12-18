@@ -11,23 +11,16 @@ import {
   IonButton,
   IonInput,
   IonText,
-  IonIcon,
+  IonInputPasswordToggle,
 } from '@ionic/angular/standalone';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
-// import { UserModel, UserModelWithPassword } from '@models/users.model';
-// import { LoginService } from '@services/old/login.service';
-// import { UtilsService } from '@services/old/utils.service';
-// import { Colors } from '@sharedEnums/colors';
-// import { IconsToast } from '@sharedEnums/iconsToast';
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
-import { CustomInputComponent } from '@sharedComponents/custom-input/custom-input.component';
 import { AuthService } from '@services/auth.service';
 import { UtilsService } from '@services/old/utils.service';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
 import { UserModel } from '@models/users.model';
 import { UserService } from '@services/user.service';
-// import { FirestoreService } from '@services/old/firestore.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -35,10 +28,10 @@ import { UserService } from '@services/user.service';
   styleUrls: ['./sign-up.page.scss'],
   standalone: true,
   imports: [
-    IonIcon,
     IonText,
     IonInput,
     IonButton,
+    IonInputPasswordToggle,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -51,8 +44,6 @@ export class SignUpPage {
   private userService = inject(UserService);
   private authService = inject(AuthService);
   private utilsService = inject(UtilsService);
-  // loginService = inject(LoginService);
-  // firestoreService = inject(FirestoreService);
 
   //Variables
   showPassword: boolean = false;

@@ -1,4 +1,4 @@
-<app-login-layout pageTitle="Registre">
+<app-login-layout pageTitle="Registre" backButton="/auth">
   <app-logo class="ion-margin-bottom"></app-logo>
 
   <form [formGroup]="formAuth" (ngSubmit)="submit()">
@@ -45,33 +45,27 @@
 
     <div>
       <ion-input
-        [type]="showPassword ? 'text':'password'"
+        type="password"
         formControlName="password"
         label="Contrasenya"
         label-placement="floating"
         fill="outline"
-        required
       >
-        <ion-icon
-          [name]="showPassword ? 'eye-off' : 'eye'"
-          slot="end"
-          (click)="this.showPassword = !this.showPassword"
-        >
-        </ion-icon
-      ></ion-input>
-      @if (formAuth.get('password')?.touched &&
-      formAuth.get('password')?.invalid) {
-      <ion-text>
-        @if (formAuth.get('password')?.errors?.['required']) {
-        <p class="error ion-margin-bottom">La contrasenya és obligatoria</p>
-        } @if (formAuth.get('password')?.errors?.['pattern']) {
-        <p class="error ion-margin-bottom">
-          La contrasenya ha de tindre minúscules, majúscules, nombres i un mínim
-          de 6 caràcters
-        </p>
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+        @if (formAuth.get('password')?.touched &&
+        formAuth.get('password')?.invalid) {
+        <ion-text>
+          @if (formAuth.get('password')?.errors?.['required']) {
+          <p class="error ion-margin-bottom">La contrasenya és obligatoria</p>
+          } @if (formAuth.get('password')?.errors?.['pattern']) {
+          <p class="error ion-margin-bottom">
+            La contrasenya ha de tindre minúscules, majúscules, nombres i un
+            mínim de 6 caràcters
+          </p>
+          }
+        </ion-text>
         }
-      </ion-text>
-      }
+      </ion-input>
     </div>
 
     <div>

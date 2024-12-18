@@ -10,8 +10,6 @@ import {
   IonInput,
   IonText,
   IonButton,
-  IonItem,
-  IonCard,
 } from '@ionic/angular/standalone';
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
@@ -63,7 +61,6 @@ export class LoginPage {
         next: (user) => {
           this.userService.getUserById(user.uid).subscribe({
             next: (res) => {
-              console.log(res);
               if (res) {
                 this.utilsService.saveInLocalStorage('user', res);
                 this.utilsService.routerLink('/home');

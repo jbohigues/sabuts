@@ -6,9 +6,10 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  sendPasswordResetEmail,
 } from '@angular/fire/auth';
 
-import { Observable, from, map, of } from 'rxjs';
+import { Observable, from, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,6 @@ export class AuthService {
   isLoggedIn(): Observable<boolean> {
     return new Observable((observer) => {
       onAuthStateChanged(this.auth, (res) => {
-        console.log(res);
         if (res) observer.next(true);
         else observer.next(false);
       });
@@ -36,6 +36,10 @@ export class AuthService {
     return from(
       createUserWithEmailAndPassword(this.auth, email, password)
     ).pipe(map((res) => res.user));
+  }
+
+  sendRecoveryEmail(email: string) {
+    return sendPasswordResetEmail(this.auth, email);
   }
 
   logout(): Observable<void> {
