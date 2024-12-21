@@ -6,33 +6,131 @@
   [scrollEvents]="true"
   (ionScroll)="onScroll($event)"
 >
-  @if (currentUser) {
-  <h2>{{currentUser.userName}}</h2>
-  <ion-button>Editar Configuració</ion-button>
-  <ion-button>
-    <!-- (click)="presentAddFriendPrompt()" -->
-    <ion-icon name="person-add"></ion-icon>
-    Afegir Amic/a
-  </ion-button>
-  <!-- (click)="mostrarConfiguracion()" -->
-  <h3>Llistat d'amics ({{friendsList.length}})</h3>
-  <ion-list>
-    @for (friend of friendsList; track friend.friendUser.id) {
-    <ion-item> {{ friend.friendUser.userName }} </ion-item>
-    }
-  </ion-list>
+  <div class="flexdiv">
+    @if (currentUser) {
+    <ion-avatar>
+      <img
+        [src]="currentUser.avatarid ? currentUser.avatarid : 'assets/images/default-avatar.svg'"
+      />
+    </ion-avatar>
 
-  <h3>Solicituds Pendents ({{friendRequestList.length}})</h3>
-  <ion-list>
-    @for (solicitud of friendRequestList; track solicitud.id) {
-    <ion-item>
-      <!-- {{ solicitud.sendingUserName }} {{ solicitud.status }} -->
-      <!-- <ion-button (click)="aceptarSolicitud(solicitud)">Aceptar</ion-button>
-      <ion-button (click)="rechazarSolicitud(solicitud)">Rechazar</ion-button> -->
-    </ion-item>
+    <div>
+      <h4>{{'@'+currentUser.userName}}</h4>
+      <ion-badge color="primary">{{currentUser.totalPoints}} pts</ion-badge>
+    </div>
     }
-  </ion-list>
-  }
+  </div>
+
+  <ion-segment
+    [(ngModel)]="selectedSegment"
+    (ionChange)="segmentChanged($event)"
+  >
+    <ion-segment-button value="friends">
+      <ion-label>
+        Amics {{friendsList.length > 0 ? '('+friendsList.length+')' : ''}}
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="requests">
+      <ion-label>
+        Sol·licituds {{friendRequestList.length > 0 ?
+        '('+friendRequestList.length+')' : ''}}
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div [ngSwitch]="selectedSegment">
+    @switch (selectedSegment) { @case ('friends') {
+    <ion-list>
+      @if (loadingFriends) {
+      <ion-spinner name="dots"></ion-spinner>
+      } @else { @if (friendsList.length) { @for (friend of friendsList; track
+      friend.id) {
+      <ion-item-sliding>
+        <ion-item>
+          <ion-avatar slot="start">
+            <img
+              [src]="friend.friendUser.avatarid ? friend.friendUser.avatarid : 'assets/images/default-avatar.svg'"
+            />
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ friend.friendUser.name }}</h2>
+            <p>{{ '@'+friend.friendUser.userName }}</p>
+          </ion-label>
+          <ion-badge slot="end" color="secondary">
+            {{ friend.friendUser.totalPoints }}
+          </ion-badge>
+        </ion-item>
+        <!-- TODO: ver que hacemos con estas opciones -->
+        <ion-item-options side="end">
+          <ion-item-option color="primary">
+            <ion-icon slot="icon-only" name="game-controller"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+      } }@else {
+      <ion-item> No has agregat cap amic/a </ion-item>
+      } }
+    </ion-list>
+    } @case ('requests') {
+    <ion-list>
+      @if (loadingFriendRequest) {
+      <ion-spinner name="dots"></ion-spinner>
+      } @else { @if (friendRequestList.length) { @for (request of
+      friendRequestList; track request.id) {
+      <ion-item>
+        <ion-avatar slot="start">
+          <img
+            [src]="request.sendingUser.avatarid ? request.sendingUser.avatarid : 'assets/images/default-avatar.svg'"
+          />
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ request.sendingUser.name }}</h2>
+          <p>{{ '@'+request.sendingUser.userName }}</p>
+        </ion-label>
+        <ion-button
+          fill="clear"
+          (click)="presentActionSheet(true, request.id!)"
+        >
+          <ion-icon
+            size="large"
+            name="checkmark-circle"
+            color="success"
+          ></ion-icon>
+        </ion-button>
+        <ion-button
+          fill="clear"
+          (click)="presentActionSheet(false, request.id!)"
+        >
+          <ion-icon size="large" name="close-circle" color="danger"></ion-icon>
+        </ion-button>
+      </ion-item>
+      } }@else {
+      <ion-item> No tens sol·licituts pendents </ion-item>
+      } }
+    </ion-list>
+    } }
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button size="small">
+      <ion-icon name="settings-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="openModal()">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="presentAddFriendPrompt()">
+        <ion-icon name="person-add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 </ion-content>
 
 <!-- <ion-content
@@ -41,69 +139,75 @@
   [scrollEvents]="true"
   (ionScroll)="onScroll($event)"
 >
-  @if (showScrollButton) {
-  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
-    <ion-fab-button size="small" (click)="scrollToTop()">
-      <ion-icon name="arrow-up"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-  }
-  <div class="ion-text-center">
-    <ion-avatar style="margin: 0 auto; width: 128px; height: 128px">
-      <img src="/assets/images/escut.webp" alt="Profile picture" />
-    </ion-avatar>
-  </div>
-
-  <ion-list>
-    <ion-item>
-      <app-custom-input
-        icon="person-outline"
-        type="text"
-        label="Nom usuari"
-        [placeholder]="'Paco'"
-        autocomplete="username"
-        [control]="formAuth.controls.email"
-      ></app-custom-input>
-    </ion-item>
-
-    <ion-item>
-      <app-custom-input
-        icon="mail-outline"
-        type="email"
-        label="Correu electrònic"
-        [placeholder]="'exemple@gmail.com'"
-        autocomplete="username"
-        [control]="formAuth.controls.email"
-      ></app-custom-input>
-    </ion-item>
-
+  @if (currentUser) {
+  <h2>{{currentUser.userName}}</h2>
+  <ion-button>
+    <ion-icon name="settings-outline"></ion-icon>
+    Editar Configuració
+  </ion-button>
+  <ion-button (click)="presentAddFriendPrompt()">
+    <ion-icon name="person-add-outline"></ion-icon>
+    Afegir Amic/a
+  </ion-button>
+  <h3>Llistat d'amics ({{friendsList.length}})</h3>
+  <ion-list class="ion-padding">
+    @if (loadingFriends) {
+    <ion-spinner name="dots"></ion-spinner>
+    } @else { @if (friendsList.length) { @for (friend of friendsList; track
+    friend.id) {
     <ion-item>
       <ion-label>
-        <h2>Games Played</h2>
-        <p>{{profile.gamesPlayed}}</p>
+        <h2>{{ friend.friendUser.name }}</h2>
+        <p>{{ '@'+friend.friendUser.userName }}</p>
       </ion-label>
+      <ion-badge slot="end" color="primary">
+        {{ friend.friendUser.totalPoints }}
+      </ion-badge>
+      <ion-button fill="clear" slot="end">
+        <ion-icon name="game-controller-outline"></ion-icon>
+      </ion-button>
     </ion-item>
-
-    <ion-item>
-      <ion-label>
-        <h2>Games Won</h2>
-        <p>{{profile.gamesWon}}</p>
-      </ion-label>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>
-        <h2>Total Points</h2>
-        <p>{{profile.totalPoints}}</p>
-      </ion-label>
-    </ion-item>
+    } } @else {
+    <ion-item> No has agregat cap amic/a </ion-item>
+    } }
   </ion-list>
 
-  <ion-button expand="block" (click)="updateProfile()" class="ion-margin-top">
-    Save Changes
-  </ion-button>
+  <h3>Sol·licituts Pendents ({{friendRequestList.length}})</h3>
+  <ion-list class="ion-padding">
+    @if (loadingFriends) {
+    <ion-spinner name="dots"></ion-spinner>
+    } @else { @if (friendRequestList.length) { @for (request of
+    friendRequestList; track request.id) {
+    <ion-item>
+      <ion-label>
+        <h2>{{ request.sendingUser.name }}</h2>
+        <p>{{ '@' +request.sendingUser.userName }}</p>
+      </ion-label>
+      <ion-button
+        fill="outline"
+        color="success"
+        slot="end"
+        (click)="presentActionSheet(true, request.id!)"
+      >
+        <ion-icon name="checkmark-outline"></ion-icon>
+      </ion-button>
+      <ion-button
+        fill="outline"
+        color="danger"
+        slot="end"
+        (click)="presentActionSheet(false, request.id!)"
+      >
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+    } } @else {
+    <ion-item> No tens sol·licituts pendents </ion-item>
+    } }
+  </ion-list>
+  }
 
-  <ion-button expand="block" (click)="addNewFriend()" class="ion-margin-top">
-    Agregar amic/a
-  </ion-button>
+  Refresher
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 </ion-content> -->

@@ -1,5 +1,5 @@
 export interface PartialUserModel {
-  id?: string;
+  id: string;
   name: string;
   userName: string;
   avatarid: string;

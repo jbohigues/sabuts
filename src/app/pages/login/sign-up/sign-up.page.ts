@@ -112,6 +112,8 @@ export class SignUpPage {
   private presentError(e: any, loading: HTMLIonLoadingElement) {
     const message = e.message.includes('email-already-in-use')
       ? 'Error: el correu electrònic ja és registrat'
+      : e.message.includes('invalid-email')
+      ? 'Error: el correu electrònic no és vàlid'
       : "Error: error al registrar l'usuari";
     this.utilsService.presentToast(
       message,

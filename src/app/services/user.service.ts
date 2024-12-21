@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+import { user } from '@angular/fire/auth';
 import {
   addDoc,
   collection,
@@ -9,8 +10,8 @@ import {
   getDocs,
   updateDoc,
 } from '@angular/fire/firestore';
-import { UserModel } from '@models/users.model';
-import { setDoc } from 'firebase/firestore';
+import { PartialUserModel, UserModel } from '@models/users.model';
+import { query, setDoc, where } from 'firebase/firestore';
 
 import { Observable, forkJoin, from, map, switchMap } from 'rxjs';
 
@@ -33,6 +34,29 @@ export class UserService {
     const userDoc = doc(this.firestore, `users/${id}`);
     return from(getDoc(userDoc)).pipe(
       map((snapshot) => ({ id: snapshot.id, ...snapshot.data() } as UserModel))
+    );
+  }
+
+  findUserByEmailOrUserName(
+    email: string
+  ): Observable<PartialUserModel | null> {
+    const usersRef = collection(this.firestore, 'users');
+    const emailQuery = query(usersRef, where('email', '==', email));
+
+    return from(getDocs(emailQuery)).pipe(
+      map((emailSnapshot) => {
+        if (emailSnapshot.empty) return null;
+
+        const userData = emailSnapshot.docs[0].data() as UserModel;
+
+        return {
+          id: emailSnapshot.docs[0].id,
+          name: userData.name,
+          userName: userData.userName,
+          avatarid: userData.avatarid,
+          totalPoints: userData.totalPoints,
+        };
+      })
     );
   }
 

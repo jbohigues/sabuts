@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <form [formGroup]="editProfileForm" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <!-- Avatar -->
+      <ion-item>
+        <ion-label position="stacked">Avatar</ion-label>
+        <ion-avatar>
+          <img
+            [src]="
+              editProfileForm.get('avatarid')?.value ||
+              'assets/images/default-avatar.svg'
+            "
+          />
+        </ion-avatar>
+        <!-- TODO: hay que habilitar este boton -->
+        <!-- <ion-button expand="block" (click)="changeAvatar()">
+          Cambiar Avatar
+        </ion-button> -->
+      </ion-item>
+
+      <!-- Nombre -->
+      <ion-item>
+        <ion-input
+          type="text"
+          label="Nom"
+          label-placement="floating"
+          formControlName="name"
+          placeholder="Introdueix el teu nom"
+        ></ion-input>
+      </ion-item>
+      @if (editProfileForm.get('name')?.touched &&
+      editProfileForm.get('name')?.invalid &&
+      editProfileForm.get('name')?.errors?.['required']) {
+      <ion-note color="danger" class="ion-margin-start">
+        El nom és obligatori
+      </ion-note>
+      }
+
+      <!-- Apellido -->
+      <ion-item>
+        <ion-input
+          type="text"
+          label="Cognom"
+          label-placement="floating"
+          formControlName="lastName"
+          placeholder="Introdueix el teu cognom"
+        ></ion-input>
+      </ion-item>
+
+      <!-- Nombre de usuario -->
+      <ion-item>
+        <ion-input
+          type="text"
+          label="Nom d'usuari"
+          label-placement="floating"
+          formControlName="userName"
+          placeholder="Introdueix el teu nom d'usuari"
+        ></ion-input>
+      </ion-item>
+      @if (editProfileForm.get('userName')?.touched &&
+      editProfileForm.get('userName')?.invalid &&
+      editProfileForm.get('userName')?.errors?.['required']) {
+      <ion-note color="danger" class="ion-margin-start">
+        El nom d'usuari és obligatori
+      </ion-note>
+      }
+
+      <!-- Email -->
+      <ion-item>
+        <ion-input
+          type="email"
+          label="Correu Electrònic"
+          label-placement="floating"
+          formControlName="email"
+          placeholder="Introdueix el teu correu electrònic"
+        ></ion-input>
+      </ion-item>
+
+      <!-- Puntos Totales (solo lectura) -->
+      <ion-item>
+        <ion-label>Punts Totals</ion-label>
+        <ion-badge color="primary">
+          {{ editProfileForm.get("totalPoints")?.value }} pts
+        </ion-badge>
+      </ion-item>
+
+      <!-- Botón de Guardar -->
+      <div class="button-container">
+        <ion-button
+          expand="block"
+          type="submit"
+          [disabled]="editProfileForm.invalid"
+        >
+          <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+          &nbsp;Guardar
+        </ion-button>
+      </div>
+    </ion-list>
+  </form>
+
+  <!-- Botón Flotante para Cancelar -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger" size="small" (click)="cancelEdit()">
+      <ion-icon name="close"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

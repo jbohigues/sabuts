@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import {
   IonSplitPane,
   IonIcon,
-  IonRouterOutlet,
   IonMenu,
   IonContent,
   IonAvatar,
@@ -13,12 +12,9 @@ import {
   IonTabBar,
   IonTabButton,
 } from '@ionic/angular/standalone';
-// import { LoginService } from '@services/old/login.service';
 import { UserModel } from '@models/users.model';
 import { UtilsService } from '@services/old/utils.service';
-import { LoginService } from '@services/old/login.service';
 import { AuthService } from '@services/auth.service';
-// import { UtilsService } from '@services/old/utils.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -27,7 +23,6 @@ import { AuthService } from '@services/auth.service';
   standalone: true,
   imports: [
     IonButton,
-    IonRouterOutlet,
     IonIcon,
     IonSplitPane,
     IonMenu,

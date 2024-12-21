@@ -42,11 +42,11 @@ export class FriendService {
 
         // Obtener los datos de los usuarios asociados (sendingUserId)
         const userObservables = requests.map((request) =>
-          from(getDoc(doc(this.firestore, `users/${request.userid}`))).pipe(
+          from(getDoc(doc(this.firestore, `users/${request.friendId}`))).pipe(
             map((userDoc) => {
               if (!userDoc.exists()) {
                 throw new Error(
-                  `User document not found for ID: ${request.userid}`
+                  `User document not found for ID: ${request.friendId}`
                 );
               }
 
