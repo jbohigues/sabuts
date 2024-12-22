@@ -66,10 +66,10 @@ export class ConfprofileModalComponent {
 
   constructor(private fb: FormBuilder, private modalCtrl: ModalController) {
     this.editProfileForm = this.fb.group({
-      avatarid: ['assets/images/default-avatar.svg'], // Ruta del avatar por defecto o actual
       name: ['', [Validators.required, Validators.minLength(4)]],
       lastName: ['', [Validators.minLength(4)]],
       userName: ['', [Validators.required, Validators.minLength(4)]],
+      backgroundColor: ['', [Validators.required]],
       email: [],
       totalPoints: [],
     });
@@ -84,36 +84,55 @@ export class ConfprofileModalComponent {
   private loadUserData() {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
     if (this.currentUser) {
+      const { name, lastName, userName, email, totalPoints } = this.currentUser;
+      const backgroundColor = !this.currentUser.backgroundColor.includes('#')
+        ? this.rgbToHex(this.currentUser.backgroundColor)
+        : this.currentUser.backgroundColor;
+
       this.editProfileForm.patchValue({
-        avatarid: this.currentUser.avatarid,
-        name: this.currentUser.name,
-        lastName: this.currentUser.lastName,
-        userName: this.currentUser.userName,
-        email: this.currentUser.email,
-        totalPoints: this.currentUser.totalPoints,
+        name,
+        lastName,
+        userName,
+        backgroundColor,
+        email,
+        totalPoints,
       });
     } else location.reload();
+  }
+
+  private rgbToHex(rgb: string): string {
+    const result = rgb.match(/\d+/g); // Extrae los valores numéricos del formato rgb
+    if (!result) return '#000000'; // Devuelve un color por defecto si el formato no es válido
+
+    const [r, g, b] = result.map(Number); // Convierte los valores en números
+    return (
+      '#' +
+      [r, g, b]
+        .map((x) => x.toString(16).padStart(2, '0')) // Convierte a hexadecimal y añade ceros si es necesario
+        .join('')
+    );
   }
 
   onSubmit() {
     if (this.currentUser) {
       const updatedAt = new Date();
-      const { avatarid, name, userName, lastName } = this.editProfileForm.value;
+      const { name, userName, lastName, backgroundColor } =
+        this.editProfileForm.value;
 
       this.currentUser = {
         ...this.currentUser,
         name,
-        avatarid,
         userName,
         lastName,
+        backgroundColor,
         updatedAt,
       };
 
       const partialUser: Partial<UserModel> = {
-        avatarid,
         name,
         userName,
         lastName,
+        backgroundColor,
         updatedAt,
       };
 
@@ -128,12 +147,6 @@ export class ConfprofileModalComponent {
       });
     }
   }
-
-  //TODO: hay que ver si creamos avatares personalizados
-  // changeAvatar() {
-  //   console.log('Abrir selector de avatar');
-  //   // Implementar lógica para cambiar el avatar.
-  // }
 
   cancelEdit() {
     return this.modalCtrl.dismiss(null, 'cancel');

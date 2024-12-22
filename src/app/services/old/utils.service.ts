@@ -36,6 +36,22 @@ export class UtilsService {
     toast.present();
   }
 
+  getRandomDarkColor(): string {
+    const getRandomValue = (min: number, max: number) =>
+      Math.floor(Math.random() * (max - min + 1)) + min;
+
+    const toHex = (value: number) => value.toString(16).padStart(2, '0');
+
+    const min = 100; // Mínimo valor RGB (un poco oscuro)
+    const max = 180; // Máximo valor RGB (no demasiado claro)
+
+    const r = getRandomValue(min, max);
+    const g = getRandomValue(min, max);
+    const b = getRandomValue(min, max);
+
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  }
+
   //! LOCALSTORAGE
   saveInLocalStorage(key: string, value: any) {
     return localStorage.setItem(key, JSON.stringify(value));

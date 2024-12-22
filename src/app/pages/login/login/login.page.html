@@ -31,16 +31,23 @@
         label="Contrasenya"
         label-placement="floating"
         fill="outline"
-        required
-      ></ion-input>
-      @if (formAuth.get('password')?.touched &&
-      formAuth.get('password')?.invalid) {
-      <ion-text>
-        @if (formAuth.get('password')?.errors?.['required']) {
-        <p class="error ion-margin-bottom">La contrasenya és obligatoria</p>
+        clearOnEdit="false"
+      >
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+        @if (formAuth.get('password')?.touched &&
+        formAuth.get('password')?.invalid) {
+        <ion-text>
+          @if (formAuth.get('password')?.errors?.['required']) {
+          <p class="error ion-margin-bottom">La contrasenya és obligatoria</p>
+          } @if (formAuth.get('password')?.errors?.['pattern']) {
+          <p class="error ion-margin-bottom">
+            La contrasenya ha de tindre minúscules, majúscules, nombres i un
+            mínim de 6 caràcters
+          </p>
+          }
+        </ion-text>
         }
-      </ion-text>
-      }
+      </ion-input>
     </div>
 
     <div>

@@ -9,6 +9,7 @@
   --raval-black: #000000;
 
   --text-white: #ffffff;
+  --text-black: #000000;
 
   --bg-input: #d4d4d434;
 
@@ -39,4 +40,26 @@ a {
   color: var(--ion-color-primary);
   font-size: smaller;
   margin: 0;
+}
+
+.custom-avatar {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    color: var(--text-black);
+    font-size: 18px;
+  }
+
+  &.profile {
+    width: 64px;
+    height: 64px;
+
+    span {
+      font-size: 24px;
+    }
+  }
 }

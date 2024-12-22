@@ -8,12 +8,13 @@
 >
   <div class="flexdiv">
     @if (currentUser) {
-    <ion-avatar>
-      <img
-        [src]="currentUser.avatarid ? currentUser.avatarid : 'assets/images/default-avatar.svg'"
-      />
+    <ion-avatar
+      class="custom-avatar profile"
+      slot="start"
+      [ngStyle]="{'background-color': currentUser.backgroundColor}"
+    >
+      <span> {{currentUser.userName.substring(0,2).toUpperCase() }} </span>
     </ion-avatar>
-
     <div>
       <h4>{{'@'+currentUser.userName}}</h4>
       <ion-badge color="primary">{{currentUser.totalPoints}} pts</ion-badge>
@@ -47,10 +48,14 @@
       friend.id) {
       <ion-item-sliding>
         <ion-item>
-          <ion-avatar slot="start">
-            <img
-              [src]="friend.friendUser.avatarid ? friend.friendUser.avatarid : 'assets/images/default-avatar.svg'"
-            />
+          <ion-avatar
+            class="custom-avatar"
+            slot="start"
+            [ngStyle]="{'background-color': friend.friendUser.backgroundColor}"
+          >
+            <span>
+              {{friend.friendUser.userName.substring(0,2).toUpperCase() }}
+            </span>
           </ion-avatar>
           <ion-label>
             <h2>{{ friend.friendUser.name }}</h2>
@@ -81,10 +86,14 @@
       } @else { @if (friendRequestList.length) { @for (request of
       friendRequestList; track request.id) {
       <ion-item>
-        <ion-avatar slot="start">
-          <img
-            [src]="request.sendingUser.avatarid ? request.sendingUser.avatarid : 'assets/images/default-avatar.svg'"
-          />
+        <ion-avatar
+          class="custom-avatar"
+          slot="start"
+          [ngStyle]="{'background-color': request.sendingUser.backgroundColor}"
+        >
+          <span>
+            {{request.sendingUser.userName.substring(0,2).toUpperCase() }}
+          </span>
         </ion-avatar>
         <ion-label>
           <h2>{{ request.sendingUser.name }}</h2>

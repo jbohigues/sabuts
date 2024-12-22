@@ -10,6 +10,7 @@ import {
   IonInput,
   IonText,
   IonButton,
+  IonInputPasswordToggle,
 } from '@ionic/angular/standalone';
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
@@ -36,6 +37,7 @@ import { UserService } from '@services/user.service';
     IonInput,
     IonIcon,
     IonButton,
+    IonInputPasswordToggle,
   ],
 })
 export class LoginPage {

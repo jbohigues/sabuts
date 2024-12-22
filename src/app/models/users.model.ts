@@ -2,6 +2,7 @@ export interface PartialUserModel {
   id: string;
   name: string;
   userName: string;
+  backgroundColor: string;
   avatarid: string;
   totalPoints: number;
 }

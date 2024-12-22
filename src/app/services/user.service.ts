@@ -53,6 +53,7 @@ export class UserService {
           id: emailSnapshot.docs[0].id,
           name: userData.name,
           userName: userData.userName,
+          backgroundColor: userData.backgroundColor,
           avatarid: userData.avatarid,
           totalPoints: userData.totalPoints,
         };

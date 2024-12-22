@@ -47,6 +47,7 @@ export class SignUpPage {
 
   //Variables
   showPassword: boolean = false;
+
   // Objects
   formAuth = new FormGroup({
     userName: new FormControl('', [
@@ -67,6 +68,8 @@ export class SignUpPage {
     if (email && password) {
       this.authService.register(email, password).subscribe({
         next: (user) => {
+          const backgroundColor = this.utilsService.getRandomDarkColor();
+
           const usermodel: UserModel = {
             id: user.uid,
             name: userName ?? '',
@@ -74,6 +77,7 @@ export class SignUpPage {
             userName: email.split('@')[0] ?? '',
             lastName: '',
             avatarid: '',
+            backgroundColor,
             totalPoints: 0,
             createdAt: new Date(),
             updatedAt: new Date(),

@@ -8,19 +8,29 @@
     <ion-list>
       <!-- Avatar -->
       <ion-item>
-        <ion-label position="stacked">Avatar</ion-label>
-        <ion-avatar>
-          <img
-            [src]="
-              editProfileForm.get('avatarid')?.value ||
-              'assets/images/default-avatar.svg'
-            "
-          />
+        <ion-input
+          type="color"
+          label="Color del Avatar"
+          label-placement="floating"
+          formControlName="backgroundColor"
+        ></ion-input>
+
+        <ion-avatar
+          class="custom-avatar"
+          slot="start"
+          [ngStyle]="{
+            'background-color': editProfileForm.get('backgroundColor')?.value
+          }"
+        >
+          <span>
+            {{
+              editProfileForm
+                .get("userName")
+                ?.value.substring(0, 2)
+                .toUpperCase()
+            }}
+          </span>
         </ion-avatar>
-        <!-- TODO: hay que habilitar este boton -->
-        <!-- <ion-button expand="block" (click)="changeAvatar()">
-          Cambiar Avatar
-        </ion-button> -->
       </ion-item>
 
       <!-- Nombre -->
