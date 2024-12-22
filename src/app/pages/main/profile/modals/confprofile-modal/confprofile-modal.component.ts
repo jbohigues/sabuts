@@ -7,7 +7,7 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { PartialUserModel, UserModel } from '@models/users.model';
-import { UtilsService } from '@services/old/utils.service';
+import { UtilsService } from '@services/utils.service';
 import {
   IonButton,
   IonInput,

@@ -1,4 +1,4 @@
-<app-header title="Partides" [menuButton]="true"></app-header>
+<!-- <app-header title="Partides" [menuButton]="true"></app-header>
 
 <ion-content
   class="ion-padding"
@@ -32,8 +32,6 @@
     <ion-item>
       <ion-label>
         <h2>Torn de: {{game.currentPlayerId}}</h2>
-        <!-- <p>Jugador 1: {{game.player1.name}}</p>
-        <p>Jugador 2: {{game.player2.name}}</p> -->
         <p>Status: {{game.status}}</p>
       </ion-label>
       <ion-icon
@@ -47,4 +45,123 @@
   } @else {
   <p>No hi han partides</p>
   }
+</ion-content> -->
+
+<app-header title="Partides" [menuButton]="true"></app-header>
+<ion-content class="ion-padding">
+  <div class="game-dashboard">
+    <div class="stats-panel">
+      <div class="stat-item">
+        <ion-icon name="trophy"></ion-icon>
+        <span class="stat-value">{{games.length}}</span>
+        <span class="stat-label">Partides</span>
+      </div>
+      <div class="stat-item">
+        <ion-icon name="star"></ion-icon>
+        <span class="stat-value">{{totalScore}}</span>
+        <span class="stat-label">Punts</span>
+      </div>
+    </div>
+
+    <ion-button class="new-game-btn" (click)="startNewGame()" expand="block">
+      Iniciar Nova Aventura
+    </ion-button>
+  </div>
+
+  @if (games.length > 0) {
+  <div class="game-grid">
+    @for (game of games; track game.id) {
+    <div
+      class="game-card"
+      [class.active]="game.status === 1"
+      (click)="viewGameDetails(game)"
+    >
+      <div class="game-icon">
+        <!-- [ngStyle]="{'background-color': getRandomColor()}" -->
+        <ion-icon [name]="getGameIcon(game.status)"></ion-icon>
+      </div>
+      <h3>{{getRivalName(game)}}</h3>
+      <p>{{game.status.toString() | titlecase}}</p>
+      <ion-button
+        fill="clear"
+        (click)="confirmDelete(game); $event.stopPropagation()"
+      >
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="empty-state">
+    <!-- <lottie-player src="assets/empty-animation.json" background="transparent" speed="1" loop autoplay></lottie-player> -->
+    <h2>L'aventura t'espera!</h2>
+    <p>Inicia la teva primera partida i comença a jugar.</p>
+  </div>
+  }
+
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    *ngIf="showScrollButton"
+  >
+    <ion-fab-button (click)="scrollToTop()">
+      <ion-icon name="chevron-up"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
+
+<!-- <ion-content class="ion-padding game-background">
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="stats-bar">
+    <ion-chip color="primary">
+      <ion-icon name="trophy-outline"></ion-icon>
+      <ion-label>Total de partides: {{games.length}}</ion-label>
+    </ion-chip>
+    <ion-button (click)="startNewGame()" shape="round" color="success">
+      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+      Nova partida
+    </ion-button>
+  </div>
+
+  @if (games.length > 0) {
+  <ion-list>
+    @for (game of games; track game.id) {
+    <ion-card class="game-card">
+      [ngClass]="{'active-game': game.status === 'active'}"
+      <ion-card-header>
+        <ion-card-subtitle>Partida #{{game.id}}</ion-card-subtitle>
+        <ion-card-title>Torn de: {{game.currentPlayerId}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        [color]="getStatusColor(game.status)"
+        <ion-badge>{{game.status}}</ion-badge>
+        <ion-button fill="clear" (click)="viewGameDetails(game)">
+          <ion-icon name="eye-outline" slot="start"></ion-icon>
+          Detalls
+        </ion-button>
+        <ion-button fill="clear" color="danger" (click)="confirmDelete(game)">
+          <ion-icon name="trash-outline" slot="start"></ion-icon>
+          Eliminar
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+    }
+  </ion-list>
+  } @else {
+  <div class="empty-state">
+    <ion-icon name="game-controller-outline" size="large"></ion-icon>
+    <h2>No hi han partides</h2>
+    <p>Comença una nova partida per divertir-te!</p>
+  </div>
+  } @if (showScrollButton) {
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button size="small" (click)="scrollToTop()">
+      <ion-icon name="arrow-up"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  }
+</ion-content> -->

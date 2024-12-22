@@ -1,4 +1,4 @@
-import { FriendRequestStatus } from '@sharedEnums/states';
+import { FriendRequestStatusEnum } from '@sharedEnums/states';
 import { PartialUserModel } from './users.model';
 
 export interface FriendRequestModel {
@@ -6,7 +6,7 @@ export interface FriendRequestModel {
   sendingUserId: string;
   createdAt: Date;
   updatedAt: Date;
-  status: FriendRequestStatus;
+  status: FriendRequestStatusEnum;
 }
 
 export interface PartialFriendRequestModel {
@@ -15,5 +15,5 @@ export interface PartialFriendRequestModel {
   sendingUserId: string;
   createdAt: Date;
   updatedAt: Date;
-  status: FriendRequestStatus;
+  status: FriendRequestStatusEnum;
 }

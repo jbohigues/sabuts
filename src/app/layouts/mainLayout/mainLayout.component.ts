@@ -13,7 +13,7 @@ import {
   IonTabButton,
 } from '@ionic/angular/standalone';
 import { UserModel } from '@models/users.model';
-import { UtilsService } from '@services/old/utils.service';
+import { UtilsService } from '@services/utils.service';
 import { AuthService } from '@services/auth.service';
 
 @Component({

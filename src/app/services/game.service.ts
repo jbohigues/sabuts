@@ -10,10 +10,11 @@ import {
   deleteDoc,
   query,
   where,
+  orderBy,
 } from '@angular/fire/firestore';
 import { GameModel, RoundModel, UserOfGameModel } from '@models/games.model';
 import { QuestionModel } from '@models/question.model';
-import { GameStatus, RoundStatus } from '@sharedEnums/states';
+import { GameStatusEnum, RoundStatusEnum } from '@sharedEnums/states';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -99,9 +100,9 @@ export class GameService {
   // Finalizar una ronda
   endRound(gameId: string, roundId: string): Observable<void> {
     const roundDoc = doc(this.firestore, `games/${gameId}/rounds/${roundId}`);
-    return from(updateDoc(roundDoc, { status: RoundStatus.completed })).pipe(
-      map(() => void 0)
-    );
+    return from(
+      updateDoc(roundDoc, { status: RoundStatusEnum.completed })
+    ).pipe(map(() => void 0));
   }
 
   // Finalizar el juego
@@ -109,7 +110,7 @@ export class GameService {
     const gameDoc = doc(this.firestore, `games/${gameId}`);
     return from(
       updateDoc(gameDoc, {
-        status: RoundStatus.completed,
+        status: RoundStatusEnum.completed,
         winner: winnerId,
         endTime: new Date(),
       })
@@ -119,15 +120,36 @@ export class GameService {
   // Obtener partidas activas de un usuario
   getActiveGamesByUser(userId: string): Observable<GameModel[]> {
     const gamesRef = collection(this.firestore, 'games');
-    const q = query(
-      gamesRef,
-      where('status', '==', GameStatus.in_progress),
-      where('players', 'array-contains', userId)
-    );
-    return from(getDocs(q)).pipe(
-      map((snapshot) =>
-        snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as GameModel))
-      )
+
+    // Crea una consulta genérica con un array de condiciones
+    const createQuery = (field: string) =>
+      query(
+        gamesRef,
+        where('status', '==', GameStatusEnum.in_progress),
+        where(field, '==', userId),
+        orderBy('updatedAt', 'desc')
+      );
+
+    // Ejecuta ambas consultas en paralelo
+    return from(
+      Promise.all([
+        getDocs(createQuery('player1.userId')),
+        getDocs(createQuery('player2.userId')),
+      ])
+    ).pipe(
+      map((snapshots) => {
+        // Combina y procesa los resultados de ambas consultas
+        const games = snapshots.flatMap((snapshot) =>
+          snapshot.docs.map(
+            (doc) => ({ id: doc.id, ...doc.data() } as GameModel)
+          )
+        );
+
+        // Elimina duplicados basados en el ID
+        return Array.from(
+          new Map(games.map((game) => [game.id, game])).values()
+        );
+      })
     );
   }
 

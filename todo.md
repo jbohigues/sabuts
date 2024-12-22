@@ -4,10 +4,12 @@
 2. [x] Enviar nueva solicitud
 3. [x] Ver solicitudes pendientes
 4. [x] Aceptar/Rechazar solicitudes
-5. [] Cambiar avatar
+5. [x] Cambiar avatar
 6. [] Los items del friendList es arrastrable => que hacemos con las opciones?
 7. [] Mostrar listado de partidas ACTIVAS => las que se hayan terminado podriamos plantear guardarnos una especie de resumen (ganador, fecha_finalizacion...)
-8. []
+8. [] Empezar partida nueva con amigo
+9. [] Responder partida (mi turno actual)
+10. [] Rendirse ?
 
 ## IMPORTANTE !!!!!!!!
 

@@ -1,7 +1,7 @@
-import { GameStatus, RoundStatus } from '@sharedEnums/states';
+import { GameStatusEnum, RoundStatusEnum } from '@sharedEnums/states';
 
 export interface GameModel {
-  id?: string;
+  id: string;
   player1: UserOfGameModel;
   player2: UserOfGameModel;
   currentPlayerId: string;
@@ -9,8 +9,9 @@ export interface GameModel {
   winner?: 'player1' | 'player2';
   rounds: RoundModel[];
   startTime: Date;
+  updatedAt: Date;
   endTime?: Date;
-  status: GameStatus;
+  status: GameStatusEnum;
 }
 
 export interface Turn {
@@ -25,7 +26,7 @@ export interface RoundModel {
   questionId: string;
   player1Answer?: PlayerAnswer;
   player2Answer?: PlayerAnswer;
-  status: RoundStatus;
+  status: RoundStatusEnum;
 }
 
 export interface PlayerAnswer {

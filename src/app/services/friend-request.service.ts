@@ -22,7 +22,7 @@ import {
 import { FriendModel } from '@models/friends.model';
 import { PartialUserModel, UserModel } from '@models/users.model';
 import { ErrorsEnum } from '@sharedEnums/errors';
-import { FriendRequestStatus } from '@sharedEnums/states';
+import { FriendRequestStatusEnum } from '@sharedEnums/states';
 
 import {
   Observable,
@@ -236,7 +236,7 @@ export class FriendRequestService {
 
         // Actualizar el estado de la solicitud
         transaction.update(requestRef, {
-          status: FriendRequestStatus.accepted,
+          status: FriendRequestStatusEnum.accepted,
         });
 
         // Añadir entradas de amigos
@@ -264,7 +264,7 @@ export class FriendRequestService {
 
         // Actualizar el estado de la solicitud a 'rejected'
         transaction.update(requestRef, {
-          status: FriendRequestStatus.rejected,
+          status: FriendRequestStatusEnum.rejected,
         });
 
         // TODO: Opcionalmente, eliminar la solicitud de amistad

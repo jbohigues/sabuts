@@ -16,7 +16,7 @@ import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
-import { UtilsService } from '@services/old/utils.service';
+import { UtilsService } from '@services/utils.service';
 import { AuthService } from '@services/auth.service';
 import { CommonModule } from '@angular/common';
 

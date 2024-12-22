@@ -33,12 +33,12 @@ import {
   ActionSheetController,
   ModalController,
 } from '@ionic/angular';
-import { UtilsService } from '@services/old/utils.service';
+import { UtilsService } from '@services/utils.service';
 import { FriendService } from '@services/friend.service';
 import { PartialFriendModel } from '@models/friends.model';
 import { FriendRequestService } from '@services/friend-request.service';
 import { UserService } from '@services/user.service';
-import { FriendRequestStatus } from '@sharedEnums/states';
+import { FriendRequestStatusEnum } from '@sharedEnums/states';
 import { ErrorsEnum } from '@sharedEnums/errors';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
@@ -147,7 +147,7 @@ export class ProfilePage {
     });
 
     this.friendRequestService
-      .getFriendRequests(id, FriendRequestStatus.pending)
+      .getFriendRequests(id, FriendRequestStatusEnum.pending)
       .subscribe({
         next: (res) => {
           if (res) this.friendRequestList = res;
@@ -246,7 +246,7 @@ export class ProfilePage {
         createdAt: new Date(),
         updatedAt: new Date(),
         sendingUserId: this.currentUser.id!,
-        status: FriendRequestStatus.pending,
+        status: FriendRequestStatusEnum.pending,
       };
 
       this.friendRequestService
