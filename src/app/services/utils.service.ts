@@ -52,6 +52,16 @@ export class UtilsService {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   }
 
+  convertTimestamps(timestamp: any): Date | null {
+    // Convierte los campos de timestamp a Date
+    if (!('seconds' in timestamp) || !('nanoseconds' in timestamp)) return null;
+    return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+  }
+
+  toDate(timestamp: any): Date {
+    return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+  }
+
   //! LOCALSTORAGE
   saveInLocalStorage(key: string, value: any) {
     return localStorage.setItem(key, JSON.stringify(value));

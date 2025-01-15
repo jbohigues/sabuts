@@ -2,9 +2,8 @@ import { GameStatusEnum, RoundStatusEnum } from '@sharedEnums/states';
 
 export interface GameModel {
   id: string;
-  player1: UserOfGameModel;
+  player1: UserOfGameModel; //! siempre será el usuario logueado
   player2: UserOfGameModel;
-  currentPlayerId: string;
   currentTurn: Turn;
   winner?: 'player1' | 'player2';
   rounds: RoundModel[];
@@ -37,5 +36,6 @@ export interface PlayerAnswer {
 export interface UserOfGameModel {
   userId: string;
   userName: string;
+  backgroundColor: string;
   score: number;
 }

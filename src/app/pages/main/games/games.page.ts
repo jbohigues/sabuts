@@ -1,34 +1,21 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import {
   IonContent,
-  IonButton,
-  IonIcon,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonFab,
-  IonFabButton,
   IonRefresher,
   IonRefresherContent,
-  IonChip,
-  IonCard,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonCardContent,
-  IonBadge,
+  IonSpinner,
+  IonText,
+  IonButton,
 } from '@ionic/angular/standalone';
 import { GameModel } from '@models/games.model';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
-import { TypeGame } from '@sharedEnums/games';
 import { AlertController } from '@ionic/angular';
-import { Colors } from '@sharedEnums/colors';
-import { IconsToast } from '@sharedEnums/iconsToast';
 import { GameService } from '@services/game.service';
 import { UtilsService } from '@services/utils.service';
 import { UserModel } from '@models/users.model';
-import { GameStatusEnum } from '@sharedEnums/states';
 import { CommonModule } from '@angular/common';
+import { GameCardComponent } from './components/game-card/game-card.component';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-games',
@@ -36,43 +23,43 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./games.page.scss'],
   standalone: true,
   imports: [
-    IonBadge,
-    IonCardContent,
-    IonCardTitle,
-    IonCardSubtitle,
-    IonCardHeader,
-    IonCard,
-    IonChip,
+    IonButton,
+    IonText,
+    IonSpinner,
     IonRefresherContent,
     IonRefresher,
     IonContent,
     HeaderComponent,
-    IonButton,
-    IonIcon,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonFab,
-    IonFabButton,
     CommonModule,
+    GameCardComponent,
   ],
 })
 export class GamesPage {
   @ViewChild(IonContent, { static: false }) content!: IonContent;
 
+  private breakpointObserver = inject(BreakpointObserver);
   private gameService = inject(GameService);
   private utilsService = inject(UtilsService);
 
   // Variables
   totalScore: number = 0;
   loading: boolean = false;
-  showScrollButton = false;
+  isSmallScreen: boolean = false;
+  showScrollButton: boolean = false;
 
   // Objects
-  games: GameModel[] = [];
+  gamesOriginal: GameModel[] = [];
+  gamesTurnOfUser: GameModel[] = [];
+  gamesTurnOfRival: GameModel[] = [];
   currentUser: UserModel | undefined;
 
-  constructor(private alertController: AlertController) {}
+  constructor(private alertController: AlertController) {
+    this.breakpointObserver
+      .observe([Breakpoints.XSmall])
+      .subscribe((result) => {
+        this.isSmallScreen = result.matches; // true si es pequeño, false si no
+      });
+  }
 
   ionViewWillEnter() {
     this.loadUserData();
@@ -87,35 +74,40 @@ export class GamesPage {
     this.content.scrollToTop(800);
   }
 
-  getRandomColor() {
-    return '#' + Math.floor(Math.random() * 16777215).toString(16);
-  }
-
-  getGameIcon(status: GameStatusEnum) {
-    switch (status) {
-      case GameStatusEnum.in_progress:
-        return 'play-circle';
-      case GameStatusEnum.finished:
-        return 'checkmark-circle';
-      default:
-        return 'hourglass';
-    }
-  }
-
-  getRivalName(game: GameModel) {
-    if (game.player1.userId == this.currentUser?.id)
-      return game.player2.userName;
-    return game.player1.userName;
-  }
-
-  viewGameDetails(game: any) {
-    // Implementa la navegación a los detalles del juego
-  }
-
   protected refreshPage(event: any) {
     this.ionViewWillEnter();
     event.target.complete();
   }
+
+  // getRandomColor() {
+  //   return '#' + Math.floor(Math.random() * 16777215).toString(16);
+  // }
+
+  // getGameIcon(status: GameStatusEnum) {
+  //   switch (status) {
+  //     case GameStatusEnum.in_progress:
+  //       return 'play-circle';
+  //     case GameStatusEnum.finished:
+  //       return 'checkmark-circle';
+  //     default:
+  //       return 'hourglass';
+  //   }
+  // }
+
+  // getRivalName(game: GameModel) {
+  //   if (game.player1.userId == this.currentUser?.id)
+  //     return game.player2.userName;
+  //   return game.player1.userName;
+  // }
+
+  // viewGameDetails(game: any) {
+  //   // Implementa la navegación a los detalles del juego
+  // }
+
+  // protected refreshPage(event: any) {
+  //   this.ionViewWillEnter();
+  //   event.target.complete();
+  // }
 
   private loadUserData() {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
@@ -131,7 +123,13 @@ export class GamesPage {
       next: (res) => {
         console.log(res);
 
-        if (res) this.games = res;
+        if (res) this.gamesOriginal = res;
+        this.gamesTurnOfUser = this.gamesOriginal.filter(
+          (games) => games.currentTurn.playerId == this.currentUser?.id
+        );
+        this.gamesTurnOfRival = this.gamesOriginal.filter(
+          (games) => games.currentTurn.playerId != this.currentUser?.id
+        );
         this.loading = false;
       },
       error: (e) => {
@@ -141,35 +139,35 @@ export class GamesPage {
     });
   }
 
-  startNewGame() {
-    console.log('startNewGame');
-    const game: GameModel = {
-      currentPlayerId: '',
-      currentTurn: {
-        playerId: '',
-        roundNumber: 0,
-      },
-      id: '',
-      player1: {
-        score: 0,
-        userId: '',
-        userName: '',
-      },
-      player2: {
-        score: 0,
-        userId: '',
-        userName: '',
-      },
-      rounds: [],
-      startTime: new Date(),
-      updatedAt: new Date(),
-      status: GameStatusEnum.in_progress,
-    };
-  }
+  // startNewGame() {
+  //   console.log('startNewGame');
+  //   const game: GameModel = {
+  //     currentPlayerId: '',
+  //     currentTurn: {
+  //       playerId: '',
+  //       roundNumber: 0,
+  //     },
+  //     id: '',
+  //     player1: {
+  //       score: 0,
+  //       userId: '',
+  //       userName: '',
+  //     },
+  //     player2: {
+  //       score: 0,
+  //       userId: '',
+  //       userName: '',
+  //     },
+  //     rounds: [],
+  //     startTime: new Date(),
+  //     updatedAt: new Date(),
+  //     status: GameStatusEnum.in_progress,
+  //   };
+  // }
 
-  confirmDelete(game: GameModel) {
-    console.log('confirmDelete');
-  }
+  // confirmDelete(game: GameModel) {
+  //   console.log('confirmDelete');
+  // }
 
   // refreshGames(event: any) {
   //   this.getPlayerGames(event);

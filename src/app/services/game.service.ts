@@ -218,6 +218,7 @@ export class GameService {
     return {
       userId: user.userId,
       userName: user.userName,
+      backgroundColor: user.backgroundColor,
       score: user.score,
     };
   }

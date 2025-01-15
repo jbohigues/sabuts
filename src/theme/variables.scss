@@ -44,13 +44,16 @@ a {
   margin: 0;
 }
 
-.custom-avatar {
+.custom-avatar,
+.custom-avatar span {
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
+.custom-avatar {
   span {
     color: var(--text-black);
     font-size: 18px;
