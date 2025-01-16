@@ -16,6 +16,20 @@ export interface UserModel extends PartialUserModel {
   active: boolean;
 }
 
-export interface UserModelWithPassword extends UserModel {
-  password: string;
+// export interface UserModelWithPassword extends UserModel {
+//   password: string;
+// }
+
+// export interface User {
+//   uid: string;
+//   email: string;
+//   displayName: string;
+//   photoURL?: string;
+//   stats?: UserStats;
+// }
+
+export interface UserStats {
+  gamesPlayed: number;
+  gamesWon: number;
+  totalPoints: number;
 }
