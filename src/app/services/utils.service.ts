@@ -32,6 +32,13 @@ export class UtilsService {
       duration: 5000,
       position: 'bottom',
       animated: true,
+      swipeGesture: 'vertical',
+      buttons: [
+        {
+          icon: 'close',
+          role: 'cancel',
+        },
+      ],
     });
     toast.present();
   }

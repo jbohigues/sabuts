@@ -11,12 +11,13 @@ import {
   query,
   where,
   orderBy,
+  setDoc,
 } from '@angular/fire/firestore';
 import { GameModel, RoundModel, UserOfGameModel } from '@models/games.model';
 import { QuestionModel } from '@models/question.model';
 import { GameStatusEnum, RoundStatusEnum } from '@sharedEnums/states';
 import { Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
@@ -53,7 +54,15 @@ export class GameService {
   // Crear una nueva partida
   createGame(game: Partial<GameModel>): Observable<string> {
     const gamesRef = collection(this.firestore, 'games');
-    return from(addDoc(gamesRef, game)).pipe(map((docRef) => docRef.id));
+    return from(addDoc(gamesRef, game)).pipe(
+      switchMap((docRef) => {
+        // Actualizar el objeto game con el ID del documento
+        const gameWithId = { ...game, id: docRef.id };
+
+        // Actualizar el documento con el nuevo ID
+        return from(setDoc(docRef, gameWithId)).pipe(map(() => docRef.id));
+      })
+    );
   }
 
   // Actualizar una partida existente
