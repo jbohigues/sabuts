@@ -6,6 +6,17 @@ import {
   IonSpinner,
   IonText,
   IonButton,
+  IonModal,
+  IonToolbar,
+  IonHeader,
+  IonButtons,
+  IonTitle,
+  IonItem,
+  IonLabel,
+  IonIcon,
+  IonFab,
+  IonFabButton,
+  IonSearchbar,
 } from '@ionic/angular/standalone';
 import { GameModel } from '@models/games.model';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
@@ -16,6 +27,15 @@ import { UserModel } from '@models/users.model';
 import { CommonModule } from '@angular/common';
 import { GameCardComponent } from './components/game-card/game-card.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { FriendService } from '@services/friend.service';
+import { PartialFriendModel } from '@models/friends.model';
+import { GameStatusEnum } from '@sharedEnums/states';
+import { Colors } from '@sharedEnums/colors';
+import { IconsToast } from '@sharedEnums/iconsToast';
+import {
+  OverlayEventDetail,
+  SearchbarInputEventDetail,
+} from '@ionic/core/components';
 
 @Component({
   selector: 'app-games',
@@ -23,6 +43,17 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
   styleUrls: ['./games.page.scss'],
   standalone: true,
   imports: [
+    IonSearchbar,
+    IonFabButton,
+    IonFab,
+    IonIcon,
+    IonLabel,
+    IonItem,
+    IonTitle,
+    IonButtons,
+    IonHeader,
+    IonToolbar,
+    IonModal,
     IonButton,
     IonText,
     IonSpinner,
@@ -35,22 +66,27 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
   ],
 })
 export class GamesPage {
-  @ViewChild(IonContent, { static: false }) content!: IonContent;
+  @ViewChild(IonModal) modal!: IonModal;
 
-  private breakpointObserver = inject(BreakpointObserver);
   private gameService = inject(GameService);
   private utilsService = inject(UtilsService);
+  private friendService = inject(FriendService);
+  private breakpointObserver = inject(BreakpointObserver);
 
   // Variables
   totalScore: number = 0;
   loading: boolean = false;
+  modalOpen: boolean = false;
   isSmallScreen: boolean = false;
   showScrollButton: boolean = false;
 
   // Objects
+  idusers: string[] = [];
   gamesOriginal: GameModel[] = [];
   gamesTurnOfUser: GameModel[] = [];
   gamesTurnOfRival: GameModel[] = [];
+  friendsList: PartialFriendModel[] = [];
+  friendsListOriginal: PartialFriendModel[] = [];
   currentUser: UserModel | undefined;
 
   constructor(private alertController: AlertController) {
@@ -61,53 +97,23 @@ export class GamesPage {
       });
   }
 
-  ionViewWillEnter() {
+  private ionViewWillEnter() {
     this.loadUserData();
   }
 
-  onScroll(event: CustomEvent) {
+  protected onScroll(event: CustomEvent) {
     const scrollTop = event.detail.scrollTop;
     this.showScrollButton = scrollTop > 100;
   }
 
-  scrollToTop() {
-    this.content.scrollToTop(800);
+  protected scrollToTop(content: IonContent) {
+    content.scrollToTop(800);
   }
 
   protected refreshPage(event: any) {
     this.ionViewWillEnter();
     event.target.complete();
   }
-
-  // getRandomColor() {
-  //   return '#' + Math.floor(Math.random() * 16777215).toString(16);
-  // }
-
-  // getGameIcon(status: GameStatusEnum) {
-  //   switch (status) {
-  //     case GameStatusEnum.in_progress:
-  //       return 'play-circle';
-  //     case GameStatusEnum.finished:
-  //       return 'checkmark-circle';
-  //     default:
-  //       return 'hourglass';
-  //   }
-  // }
-
-  // getRivalName(game: GameModel) {
-  //   if (game.player1.userId == this.currentUser?.id)
-  //     return game.player2.userName;
-  //   return game.player1.userName;
-  // }
-
-  // viewGameDetails(game: any) {
-  //   // Implementa la navegación a los detalles del juego
-  // }
-
-  // protected refreshPage(event: any) {
-  //   this.ionViewWillEnter();
-  //   event.target.complete();
-  // }
 
   private loadUserData() {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
@@ -118,12 +124,15 @@ export class GamesPage {
 
   private getUserInfo(id: string) {
     this.loading = true;
+    this.getActiveGamesByUser(id);
+    this.getFriends(id);
+  }
 
+  private getActiveGamesByUser(id: string) {
     this.gameService.getActiveGamesByUser(id).subscribe({
       next: (res) => {
-        console.log(res);
-
         if (res) this.gamesOriginal = res;
+
         this.gamesTurnOfUser = this.gamesOriginal.filter(
           (games) => games.currentTurn.playerId == this.currentUser?.id
         );
@@ -139,93 +148,139 @@ export class GamesPage {
     });
   }
 
-  // startNewGame() {
-  //   console.log('startNewGame');
-  //   const game: GameModel = {
-  //     currentPlayerId: '',
-  //     currentTurn: {
-  //       playerId: '',
-  //       roundNumber: 0,
-  //     },
-  //     id: '',
-  //     player1: {
-  //       score: 0,
-  //       userId: '',
-  //       userName: '',
-  //     },
-  //     player2: {
-  //       score: 0,
-  //       userId: '',
-  //       userName: '',
-  //     },
-  //     rounds: [],
-  //     startTime: new Date(),
-  //     updatedAt: new Date(),
-  //     status: GameStatusEnum.in_progress,
-  //   };
-  // }
+  private getFriends(id: string) {
+    this.friendService.getFriends(id).subscribe({
+      next: (res) => {
+        if (res) {
+          this.friendsListOriginal = res;
+          this.filterFriendsYetInGame();
+        }
+      },
+      error: (e) => {
+        console.error(e);
+      },
+    });
+  }
 
-  // confirmDelete(game: GameModel) {
-  //   console.log('confirmDelete');
-  // }
+  private filterFriendsYetInGame() {
+    this.idusers = [];
+    // Crear un Set para almacenar todos los IDs de usuarios de manera única
+    const idUsersSet = new Set(this.idusers);
 
-  // refreshGames(event: any) {
-  //   this.getPlayerGames(event);
-  // }
+    // Agregar los IDs de los jugadores de cada juego al Set
+    this.gamesOriginal.forEach((game) => {
+      idUsersSet.add(game.player1.userId);
+      idUsersSet.add(game.player2.userId);
+    });
 
-  // async getPlayerGames(event?: any) {
-  //   const loading = await this.utilsService.loading();
-  //   await loading.present();
-  //   this.gameService.getActiveGamesByUser().subscribe({
-  //     next: (res) => {
-  //       console.log(res);
-  //       if (res && Array.isArray(res)) this.games = res;
-  //       if (event) event.target.complete();
-  //     },
-  //     error: (e) => {
-  //       console.error(e);
-  //     },
-  //     complete: () => {
-  //       loading.dismiss();
-  //     },
-  //   });
-  // }
+    // Convertir el Set a un array solo una vez
+    this.idusers = Array.from(idUsersSet);
 
-  // async confirmDelete(game: GameModel) {
-  // const alert = await this.alertController.create({
-  //   header: 'Confirmar eliminació',
-  //   message: 'Estàs segur de voler eliminar aquesta partida?',
-  //   buttons: [
-  //     {
-  //       text: 'Cancelar',
-  //       role: 'cancel',
-  //       cssClass: 'secondary',
-  //     },
-  //     {
-  //       text: 'Eliminar',
-  //       handler: () => {
-  //         this.gameService.deleteGame(game.id).subscribe({
-  //           next: () => {
-  //             this.getPlayerGames();
-  //             this.utilsService.presentToast(
-  //               'Partida eliminada amb èxit',
-  //               Colors.success,
-  //               IconsToast.success_checkmark_circle
-  //             );
-  //           },
-  //           error: (e) => {
-  //             console.error(e);
-  //             this.utilsService.presentToast(
-  //               'Error al eliminar la partida',
-  //               Colors.success,
-  //               IconsToast.success_checkmark_circle
-  //             );
-  //           },
-  //         });
-  //       },
-  //     },
-  //   ],
-  // });
-  // await alert.present();
-  // }
+    // Filtrar la lista de amigos que no están en idusers
+    this.friendsList = this.friendsListOriginal.filter(
+      (friend) => !idUsersSet.has(friend.friendId)
+    );
+  }
+
+  protected handleInput(event: CustomEvent<SearchbarInputEventDetail>) {
+    const value = event.detail.value;
+    if (value) {
+      this.friendsList = this.friendsListOriginal.filter((friend) =>
+        friend.friendUser.userName.includes(value)
+      );
+    } else {
+      this.friendsList = this.friendsListOriginal;
+    }
+  }
+
+  protected cancel() {
+    this.modalOpen = false;
+  }
+
+  protected onDidDismiss(event: CustomEvent<OverlayEventDetail<any>>) {
+    this.modalOpen = false;
+    if (event.detail.role == 'created')
+      this.exitOperation('Partida creada amb èxit');
+  }
+
+  private exitOperation(message: string) {
+    if (this.currentUser) {
+      this.getActiveGamesByUser(this.currentUser.id);
+      this.getFriends(this.currentUser.id);
+      this.utilsService.presentToast(
+        message,
+        Colors.success,
+        IconsToast.success_checkmark_circle
+      );
+    }
+  }
+
+  // Mensaje confirmacion
+  protected async confirmCreateGame(friend: PartialFriendModel) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar partida',
+      message: `Estàs segur de voler començar una partida amb @${friend.friendUser.userName}?`,
+      buttons: [
+        {
+          text: 'Cancel·lar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Acceptar',
+          handler: () => {
+            this.createGame(friend);
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private createGame(friend: PartialFriendModel) {
+    if (!this.currentUser) throw new Error('User no logged');
+    const game: GameModel = {
+      id: '',
+      currentTurn: {
+        playerId: this.currentUser.id,
+        roundNumber: 0,
+      },
+      player1: {
+        score: 0,
+        userId: this.currentUser.id,
+        userName: this.currentUser.userName,
+        backgroundColor: this.currentUser.backgroundColor,
+      },
+      player2: {
+        score: 0,
+        userId: friend.friendUser.id,
+        userName: friend.friendUser.userName,
+        backgroundColor: friend.friendUser.backgroundColor,
+      },
+      rounds: [],
+      startTime: new Date(),
+      updatedAt: new Date(),
+      status: GameStatusEnum.in_progress,
+    };
+
+    this.gameService.createGame(game).subscribe({
+      next: (res) => {
+        if (res) this.modal.dismiss(null, 'created');
+      },
+      error: (e) => {
+        console.error(e);
+        this.utilsService.presentToast(
+          'Error al crear la partida',
+          Colors.danger,
+          IconsToast.danger_close_circle
+        );
+      },
+    });
+  }
+
+  protected deletedGame(event: boolean) {
+    if (event) {
+      this.exitOperation('Partida eliminada amb èxit');
+    }
+  }
 }

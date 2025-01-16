@@ -10,6 +10,7 @@
 8. [] Empezar partida nueva con amigo
 9. [] Responder partida (mi turno actual)
 10. [] Rendirse ?
+11. [] Aclarar el tema de los player en los game: hay que ver qué player es el jugador logueado para mostrar el otro player en el listado de games
 
 ## IMPORTANTE !!!!!!!!
 

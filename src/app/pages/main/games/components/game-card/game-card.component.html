@@ -1,36 +1,67 @@
-<ion-card class="game-card">
-  <ion-card-content>
-    <div class="game-card-content">
-      <div class="player-info">
-        <ion-avatar
-          class="custom-avatar"
-          slot="start"
-          [ngStyle]="{ 'background-color': game.player2.backgroundColor }"
-        >
-          <span>
-            {{ game.player1.userName.substring(0, 2).toUpperCase() }}
-          </span>
-        </ion-avatar>
+<ion-item-sliding>
+  <ion-item>
+    <!-- <ion-card class="game-card">
+      <ion-card-content>
+        <div class="game-card-content">
+          <div class="player-info">
+            <ion-avatar
+              class="custom-avatar"
+              slot="start"
+              [ngStyle]="{ 'background-color': game.player2.backgroundColor }"
+            >
+              <span>
+                {{ game.player2.userName.substring(0, 2).toUpperCase() }}
+              </span>
+            </ion-avatar>
 
-        <div class="player-details">
-          <h2>{{ game.player1.userName }}</h2>
-          <ion-text color="medium" class="player-score">
-            {{ game.player1.score }} - {{ game.player2.score }}
-          </ion-text>
+            <div class="player-details">
+              <h2>{{ "@" + game.player2.userName }}</h2>
+              <ion-text color="medium" class="player-score">
+                {{ game.player1.score }} - {{ game.player2.score }}
+              </ion-text>
+            </div>
+          </div>
+
+          <div class="game-actions">
+            @if (myTurn) {
+            <ion-button shape="round" (click)="playGame(game)">
+              <ion-icon
+                name="play"
+                [slot]="isSmallScreen ? 'icon-only' : 'start'"
+              ></ion-icon>
+              {{ isSmallScreen ? "" : "Jugar" }}
+            </ion-button>
+            }
+          </div>
         </div>
-      </div>
-
-      <div class="game-actions">
-        @if (myTurn) {
-        <ion-button shape="round" (click)="playGame(game)">
-          <ion-icon
-            name="play"
-            [slot]="isSmallScreen ? 'icon-only' : 'start'"
-          ></ion-icon>
-          {{ isSmallScreen ? "" : "Jugar" }}
-        </ion-button>
-        }
-      </div>
-    </div>
-  </ion-card-content>
-</ion-card>
+      </ion-card-content>
+    </ion-card> -->
+    <ion-avatar
+      class="custom-avatar"
+      slot="start"
+      [ngStyle]="{ 'background-color': game.player2.backgroundColor }"
+    >
+      <span>
+        {{ game.player2.userName.substring(0, 2).toUpperCase() }}
+      </span>
+    </ion-avatar>
+    <ion-label>
+      <h2>{{ "@" + game.player2.userName }}</h2>
+      <ion-text color="medium" class="player-score">
+        {{ game.player1.score }} - {{ game.player2.score }}
+      </ion-text>
+    </ion-label>
+  </ion-item>
+  <ion-item-options side="end">
+    <ion-item-option color="primary">
+      <ion-icon slot="icon-only" name="play"></ion-icon>
+    </ion-item-option>
+    <ion-item-option color="danger">
+      <ion-icon
+        slot="icon-only"
+        name="trash"
+        (click)="confirmDeleteGame()"
+      ></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+</ion-item-sliding>
