@@ -68,7 +68,7 @@ export class LoginPage {
                 this.utilsService.routerLink('/home');
                 this.formAuth.reset();
                 this.utilsService.presentToast(
-                  `Hola ${user.displayName}, benvingut/a!`,
+                  `Hola ${res.userName}, benvingut/a!`,
                   Colors.success,
                   IconsToast.success_thumbs_up
                 );

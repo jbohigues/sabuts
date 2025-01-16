@@ -175,7 +175,7 @@ export class ProfilePage {
       ],
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cancel·lar',
           role: 'cancel',
         },
         {
@@ -207,7 +207,7 @@ export class ProfilePage {
           },
         },
         {
-          text: 'Cancelar',
+          text: 'Cancel·lar',
           icon: 'close-outline',
           role: 'cancel',
         },
