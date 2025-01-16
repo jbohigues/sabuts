@@ -56,12 +56,8 @@
     <ion-item-option color="primary">
       <ion-icon slot="icon-only" name="play"></ion-icon>
     </ion-item-option>
-    <ion-item-option color="danger">
-      <ion-icon
-        slot="icon-only"
-        name="trash"
-        (click)="confirmDeleteGame()"
-      ></ion-icon>
+    <ion-item-option color="danger" (click)="confirmDeleteGame()">
+      <ion-icon slot="icon-only" name="trash"></ion-icon>
     </ion-item-option>
   </ion-item-options>
 </ion-item-sliding>
