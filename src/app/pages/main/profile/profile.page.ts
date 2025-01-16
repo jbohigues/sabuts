@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonContent,
-  // IonList,
+  IonList,
   IonItem,
   IonButton,
   IonIcon,
@@ -67,11 +67,11 @@ import { ConfprofileModalComponent } from './modals/confprofile-modal/confprofil
     IonContent,
     CommonModule,
     FormsModule,
-    // HeaderComponent,
-    // IonList,
+    HeaderComponent,
+    IonList,
     IonItem,
     IonButton,
-    // IonIcon,
+    IonIcon,
   ],
   providers: [ModalController],
 })
