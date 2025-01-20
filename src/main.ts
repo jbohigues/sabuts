@@ -1,6 +1,11 @@
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { RouteReuseStrategy, provideRouter } from '@angular/router';
+import {
+  ROUTER_CONFIGURATION,
+  RouteReuseStrategy,
+  provideRouter,
+  withComponentInputBinding,
+} from '@angular/router';
 import {
   IonicRouteStrategy,
   provideIonicAngular,
@@ -30,13 +35,13 @@ defineCustomElements(window);
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    provideRouter(routes, withComponentInputBinding()),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
     provideStorage(() => getStorage()),
     provideIonicAngular(),
-    provideRouter(routes),
     ScreenTrackingService, // forma parte de Analytics
     UserTrackingService, // forma parte de Analytics
     //! TODO get a reCAPTCHA Enterprise here https://console.cloud.google.com/security/recaptcha?project=_

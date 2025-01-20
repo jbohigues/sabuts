@@ -25,6 +25,7 @@ import { GameModel } from '@models/games.model';
 import { UserModel } from '@models/users.model';
 import { GameService } from '@services/game.service';
 import { AlertController } from '@ionic/angular';
+import { UtilsService } from '@services/utils.service';
 
 @Component({
   selector: 'app-game-card',
@@ -39,6 +40,9 @@ import { AlertController } from '@ionic/angular';
     IonIcon,
     IonAvatar,
     IonText,
+    IonCard,
+    IonCardContent,
+    IonButton,
   ],
   templateUrl: './game-card.component.html',
   styleUrls: ['./game-card.component.scss'],
@@ -51,6 +55,7 @@ export class GameCardComponent implements OnInit {
   @Output() deletedEmitter = new EventEmitter<boolean>();
 
   private gameService = inject(GameService);
+  private utilsService = inject(UtilsService);
 
   constructor(private alertController: AlertController) {}
 
@@ -58,7 +63,7 @@ export class GameCardComponent implements OnInit {
 
   protected playGame(game: GameModel) {
     // Lógica para iniciar el juego
-    // this.router.navigate(['/game', game.id]);
+    this.utilsService.routerLink(`/games/${game.id}`);
   }
 
   protected async confirmDeleteGame() {

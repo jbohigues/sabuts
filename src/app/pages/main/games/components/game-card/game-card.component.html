@@ -15,7 +15,7 @@
             </ion-avatar>
 
             <div class="player-details">
-              <h2>{{ "@" + game.player2.userName }}</h2>
+              <h2>{{ game.player2.userName }}</h2>
               <ion-text color="medium" class="player-score">
                 {{ game.player1.score }} - {{ game.player2.score }}
               </ion-text>
@@ -46,16 +46,25 @@
       </span>
     </ion-avatar>
     <ion-label>
-      <h2>{{ "@" + game.player2.userName }}</h2>
+      <h2>{{ game.player2.userName }}</h2>
       <ion-text color="medium" class="player-score">
         {{ game.player1.score }} - {{ game.player2.score }}
       </ion-text>
     </ion-label>
+    @if (myTurn) {
+    <ion-button shape="round" (click)="playGame(game)">
+      <ion-icon
+        name="play"
+        [slot]="isSmallScreen ? 'icon-only' : 'start'"
+      ></ion-icon>
+      {{ isSmallScreen ? "" : "Jugar" }}
+    </ion-button>
+    }
   </ion-item>
   <ion-item-options side="end">
-    <ion-item-option color="primary">
+    <!-- <ion-item-option color="primary">
       <ion-icon slot="icon-only" name="play"></ion-icon>
-    </ion-item-option>
+    </ion-item-option> -->
     <ion-item-option color="danger" (click)="confirmDeleteGame()">
       <ion-icon slot="icon-only" name="trash"></ion-icon>
     </ion-item-option>
