@@ -22,8 +22,8 @@ import { GameService } from '@services/game.service';
 import { GameModel, UserOfGameModel } from '@models/games.model';
 import { UtilsService } from '@services/utils.service';
 import { UserModel } from '@models/users.model';
-import { QuestionService } from '@services/question.service';
 import { AnswerModel, QuestionModel } from '@models/question.model';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-playing-game',
@@ -56,12 +56,11 @@ export class PlayingGamePage implements OnInit {
 
   private gameService = inject(GameService);
   private utilsService = inject(UtilsService);
-  // private questionService = inject(QuestionService);
 
-  public buffer = 0.06;
-  public progress = 0;
-
+  progress: number = 0;
+  buffer: number = 0.06;
   timeLeft: number = 20;
+  correctAnswers: number = 0;
   loading: boolean = true;
   showQuestion: boolean = false;
   answerSelected: boolean = false;
@@ -73,6 +72,8 @@ export class PlayingGamePage implements OnInit {
   currentQuestion: QuestionModel | undefined;
   rivalPlayer: UserOfGameModel | undefined;
   currentUserPlayer: UserOfGameModel | undefined;
+
+  constructor(private alertController: AlertController) {}
 
   async ngOnInit() {
     const loading = await this.utilsService.loading();
@@ -112,6 +113,7 @@ export class PlayingGamePage implements OnInit {
   }
 
   protected makeQuestion() {
+    this.answerSelected = false;
     this.gameService.getRandomQuestion().subscribe({
       next: (res) => {
         console.log(res);
@@ -128,6 +130,11 @@ export class PlayingGamePage implements OnInit {
   }
 
   private startTimer() {
+    console.log('this.startTimer');
+    this.progress = 0;
+    this.buffer = 0.06;
+    this.timeLeft = 20;
+
     this.timer = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
@@ -166,27 +173,62 @@ export class PlayingGamePage implements OnInit {
     }
   }
 
-  getAnswerColor(answer: any): string {
-    // Si aún no se ha seleccionado respuesta, color por defecto
-    if (!this.answerSelected) return '';
-
-    // Si ya se seleccionó, mostrar color según si es correcta
-    return answer.isCorrect ? 'success' : 'danger';
-  }
-
-  playCorrectSound() {
-    // Reproducir sonido de respuesta correcta
-    const audio = new Audio('assets/sounds/correct.mp3');
+  private playCorrectSound() {
+    const audio = new Audio('assets/sounds/correct_answer.mp3');
     audio.play();
   }
 
-  playIncorrectSound() {
-    // Reproducir sonido de respuesta incorrecta
-    const audio = new Audio('assets/sounds/incorrect.mp3');
+  private playIncorrectSound() {
+    const audio = new Audio('assets/sounds/incorrect_answer.mp3');
     audio.play();
   }
 
-  incrementScore() {
-    // Incrementar puntuación del jugador
+  private incrementScore() {
+    if (this.playingGame) {
+      this.correctAnswers++;
+      this.playingGame.player1.score = this.correctAnswers;
+      this.setCurrentUserInPlayer1();
+
+      if (this.correctAnswers == 3) {
+        this.showMaxCorrectAnswersMessage();
+      }
+    }
+  }
+
+  private async showMaxCorrectAnswersMessage() {
+    console.log(this.playingGame);
+    const alert = await this.alertController.create({
+      header: 'Màxim de respostes correctes',
+      message: `Has aplegat al màxim de respostes correctes, has d'esperar fins que responga el teu contrincant`,
+      keyboardClose: false,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Acceptar',
+          handler: () => {
+            if (this.playingGame) {
+              this.playingGame = {
+                ...this.playingGame,
+                updatedAt: new Date(),
+                currentTurn: {
+                  playerId: this.playingGame.player2.userId,
+                  roundNumber: this.playingGame.currentTurn.roundNumber + 1,
+                },
+              };
+              console.log(this.playingGame);
+              this.gameService
+                .updateGame(this.playingGame.id, this.playingGame)
+                .subscribe({
+                  next: () => {
+                    this.utilsService.routerLink('games');
+                  },
+                  error: (e) => console.error(e),
+                });
+            }
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 }

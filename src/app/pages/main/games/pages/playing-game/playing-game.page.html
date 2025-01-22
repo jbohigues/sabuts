@@ -74,7 +74,12 @@
         {{timeLeft}}
       </p>
 
-      } @else {
+      @if(answerSelected) {
+      <ion-button expand="block" type="submit" (click)="makeQuestion()">
+        Continuar
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-button>
+      } } @else {
       <ion-button expand="block" type="submit" (click)="makeQuestion()">
         Respondre pregunta
         <ion-icon slot="end" name="arrow-forward"></ion-icon>
