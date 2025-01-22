@@ -13,8 +13,11 @@ import {
   IonLabel,
   IonFab,
   IonFabButton,
+  IonText,
+  IonAvatar,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
+import { CustomItemComponent } from './components/custom-item/custom-item.component';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +25,8 @@ import { HeaderComponent } from '@sharedComponents/header/header.component';
   styleUrls: ['./home.page.scss'],
   standalone: true,
   imports: [
+    IonAvatar,
+    IonText,
     IonFabButton,
     IonFab,
     IonContent,
@@ -36,6 +41,7 @@ import { HeaderComponent } from '@sharedComponents/header/header.component';
     IonItem,
     IonIcon,
     IonLabel,
+    CustomItemComponent,
   ],
 })
 export class HomePage {

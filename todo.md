@@ -16,3 +16,8 @@
 
 1. Pensar en eliminar las solicitudes de amistad (no pending) después de x tiempo: no las queremos para nada. Tampoco se para que las queremos en aceptada o rechazada (por si quieren ver si me has rechazado alguna vez? pero igual es complicarse para nada)
 2. Pensar en todo el tema de estadísticas (guardaremos stats de usuarios? preguntas totales respondidas, acertadas, falladas, partidas jugadas, ganadas, perdidas, racha de preguntas seguidas acertadas)
+
+## DESPLIEGUE !!!!!!
+
+https://ionicframework.com/docs/deployment/play-**store**
+https://play.google.com/console/u/0/signup
