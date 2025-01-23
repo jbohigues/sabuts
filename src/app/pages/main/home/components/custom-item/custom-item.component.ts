@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IonText, IonLabel } from '@ionic/angular/standalone';
+import { IonText, IonLabel, IonImg } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-custom-item',

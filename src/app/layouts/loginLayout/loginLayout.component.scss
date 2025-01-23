@@ -1,19 +1,8 @@
-section {
-  display: flex;
-  padding-top: 5dvh;
-  max-width: 70dvw;
-  margin: 0 auto;
-
-  article {
-    margin: 0 auto;
-    min-width: 50dvw;
-    width: 100%;
-  }
-}
-
 @media (orientation: landscape) {
   section {
     padding-bottom: 10dvh;
+    max-width: 70dvw;
+    margin: 0 auto;
   }
 
   ion-content {

@@ -2,3 +2,44 @@ p {
   color: var(--ion-text-color-step-300);
   margin-bottom: 1rem;
 }
+
+.escutimage,
+.logosabuts {
+  display: block;
+  margin: 0 auto;
+}
+
+.escutimage {
+  width: 10rem;
+}
+
+.logosabuts {
+  margin-top: 1rem;
+}
+
+.presentationcard {
+  position: relative;
+}
+
+.logoratpenat {
+  position: absolute;
+  bottom: -20px;
+  right: -10px;
+  width: 6rem;
+  animation: jumping 0.7s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  transform-origin: bottom center;
+}
+
+@keyframes jumping {
+  0% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  50% {
+    transform: translateY(-15px);
+    animation-timing-function: ease-in;
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

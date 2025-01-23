@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { IonText, IonImg } from '@ionic/angular/standalone';
+import { IonImg } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-logo',
   templateUrl: './logo.component.html',
   styleUrls: ['./logo.component.scss'],
-  imports: [IonImg, IonText],
+  imports: [IonImg],
   standalone: true,
 })
 export class LogoComponent {

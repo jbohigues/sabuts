@@ -1,21 +1,21 @@
 <ion-split-pane contentId="main-content">
   <ion-menu contentId="main-content" type="overlay">
-    <ion-content>
-      <div class="ion-padding">
-        <div class="user-profile ion-text-center">
-          <ion-avatar style="margin: 0 auto">
-            <img src="/assets/images/escut.webp" alt="user avatar" />
-          </ion-avatar>
-          <h2>{{ user?.name }}</h2>
-          <p>Games Won: {{ user?.totalPoints }}</p>
-          <p>Total Points: {{ user?.totalPoints }}</p>
+    <ion-content class="ion-padding">
+      <div class="user-profile ion-text-center">
+        <div>
+          <app-logo></app-logo>
+          @if (user) {
+          <ion-text>
+            <h2>{{ user.name }}</h2>
+            <p>Punts totals: {{ user.totalPoints }}</p>
+          </ion-text>
+          }
         </div>
+        <ion-button expand="block" (click)="signOut()">
+          <ion-icon slot="start" name="log-out"></ion-icon>
+          Tancar sessió
+        </ion-button>
       </div>
-
-      <ion-button expand="block" (click)="signOut()" class="ion-margin">
-        <ion-icon slot="start" name="log-out"></ion-icon>
-        Logout
-      </ion-button>
     </ion-content>
   </ion-menu>
 

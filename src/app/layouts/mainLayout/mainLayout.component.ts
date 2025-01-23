@@ -6,15 +6,16 @@ import {
   IonIcon,
   IonMenu,
   IonContent,
-  IonAvatar,
   IonButton,
   IonTabs,
   IonTabBar,
   IonTabButton,
+  IonText,
 } from '@ionic/angular/standalone';
 import { UserModel } from '@models/users.model';
 import { UtilsService } from '@services/utils.service';
 import { AuthService } from '@services/auth.service';
+import { LogoComponent } from '@sharedComponents/logo/logo.component';
 
 @Component({
   selector: 'app-main-layout',
@@ -22,6 +23,7 @@ import { AuthService } from '@services/auth.service';
   styleUrls: ['./mainLayout.component.scss'],
   standalone: true,
   imports: [
+    IonText,
     IonButton,
     IonIcon,
     IonSplitPane,
@@ -31,12 +33,12 @@ import { AuthService } from '@services/auth.service';
     IonSplitPane,
     IonMenu,
     IonContent,
-    IonAvatar,
     IonIcon,
     IonButton,
     IonTabs,
     IonTabBar,
     IonTabButton,
+    LogoComponent,
   ],
 })
 export class MainLayoutComponent implements OnInit {
@@ -46,15 +48,14 @@ export class MainLayoutComponent implements OnInit {
 
   private authService = inject(AuthService);
   private utilService = inject(UtilsService);
-  // private loginService = inject(LoginService);
 
   user: UserModel | undefined;
 
   ngOnInit(): void {
-    // this.user = this.utilService.getFromLocalStorage('user');
+    this.user = this.utilService.getFromLocalStorage('user');
   }
 
-  signOut() {
+  protected signOut() {
     this.authService.logout().subscribe({
       next: () => {
         this.utilService.clearLocalStorage();
@@ -62,7 +63,7 @@ export class MainLayoutComponent implements OnInit {
     });
   }
 
-  scrollToTop() {
+  protected scrollToTop() {
     this.content.scrollToTop(500);
   }
 }

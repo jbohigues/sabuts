@@ -1,6 +1,8 @@
 img {
   width: 3rem;
   aspect-ratio: 1/1;
+  animation: rotacion 0.2s cubic-bezier(0.4, 0, 0.6, 1) infinite alternate;
+  transform-origin: center;
 }
 
 article {
@@ -14,5 +16,14 @@ article {
 
   h2 {
     color: var(--text-white);
+  }
+}
+
+@keyframes rotacion {
+  0% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(5deg);
   }
 }
