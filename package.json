@@ -1,9 +1,9 @@
 {
-  "name": "preguntados-raval",
+  "name": "sabuts",
   "version": "0.0.1",
   "author": "jdev",
   "homepage": "https://ionicframework.com/",
-  "description": "Preguntados de la Falla Raval de Cullera",
+  "description": "Sabuts de la Falla Raval de Cullera",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
