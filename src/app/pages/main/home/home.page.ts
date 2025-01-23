@@ -8,13 +8,10 @@ import {
   IonCardTitle,
   IonCardContent,
   IonList,
-  IonItem,
   IonIcon,
-  IonLabel,
   IonFab,
   IonFabButton,
-  IonText,
-  IonAvatar,
+  IonImg,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
 import { CustomItemComponent } from './components/custom-item/custom-item.component';
@@ -25,8 +22,7 @@ import { CustomItemComponent } from './components/custom-item/custom-item.compon
   styleUrls: ['./home.page.scss'],
   standalone: true,
   imports: [
-    IonAvatar,
-    IonText,
+    IonImg,
     IonFabButton,
     IonFab,
     IonContent,
@@ -38,9 +34,7 @@ import { CustomItemComponent } from './components/custom-item/custom-item.compon
     IonCardTitle,
     IonCardContent,
     IonList,
-    IonItem,
     IonIcon,
-    IonLabel,
     CustomItemComponent,
   ],
 })

@@ -10,18 +10,15 @@ import {
 import {
   IonButton,
   IonIcon,
-  IonCard,
-  IonCardContent,
   IonAvatar,
   IonText,
   IonItemSliding,
   IonItem,
   IonItemOptions,
   IonLabel,
-  IonBadge,
   IonItemOption,
 } from '@ionic/angular/standalone';
-import { GameModel } from '@models/games.model';
+import { GameModel, UserOfGameModel } from '@models/games.model';
 import { UserModel } from '@models/users.model';
 import { GameService } from '@services/game.service';
 import { AlertController } from '@ionic/angular';
@@ -40,8 +37,6 @@ import { UtilsService } from '@services/utils.service';
     IonIcon,
     IonAvatar,
     IonText,
-    IonCard,
-    IonCardContent,
     IonButton,
   ],
   templateUrl: './game-card.component.html',
@@ -57,13 +52,30 @@ export class GameCardComponent implements OnInit {
   private gameService = inject(GameService);
   private utilsService = inject(UtilsService);
 
+  rivalPlayer: UserOfGameModel | undefined;
+  currentUserPlayer: UserOfGameModel | undefined;
+
   constructor(private alertController: AlertController) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.setCurrentUserInPlayer1();
+  }
 
   protected playGame(game: GameModel) {
-    // Lógica para iniciar el juego
     this.utilsService.routerLink(`/games/${game.id}`);
+  }
+
+  private setCurrentUserInPlayer1() {
+    const currentUserIsPlayer1 =
+      this.game.player1.userId == this.currentUser.id;
+
+    if (currentUserIsPlayer1) {
+      this.currentUserPlayer = this.game!.player1;
+      this.rivalPlayer = this.game!.player2;
+    } else {
+      this.currentUserPlayer = this.game!.player2;
+      this.rivalPlayer = this.game!.player1;
+    }
   }
 
   protected async confirmDeleteGame() {
@@ -89,8 +101,7 @@ export class GameCardComponent implements OnInit {
 
   private deleteGame() {
     this.gameService.deleteGame(this.game.id).subscribe({
-      next: (res) => {
-        console.log(res);
+      next: () => {
         this.deletedEmitter.emit(true);
       },
       error: (e) => {

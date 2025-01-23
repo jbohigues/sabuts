@@ -1,5 +1,11 @@
 <app-header title="Partida" backButton="/games"></app-header>
 <ion-content class="ion-padding">
+  <ion-img
+    src="assets/images/logos/logo_with_name.webp"
+    alt="Rat Penat de Sabuts"
+    class="logofondo"
+  ></ion-img>
+
   @if (!loading && currentUserPlayer && rivalPlayer) {
   <section>
     <article>
@@ -44,10 +50,15 @@
         </div>
       </div>
     </article>
-    <article class="ion-padding" [ngClass]="{' question-card': showQuestion}">
+    <article [ngClass]="{'ion-padding question-card': showQuestion}">
       @if (showQuestion && currentQuestion) {
       <header>
-        <small>{{currentQuestion.category}}</small>
+        <img
+          [src]="'assets/images/icons/icon_'+categorieMap.get(currentQuestion.category)?.color+'.webp'"
+          alt="Logo categoria"
+          class="logocategoria"
+        />
+        <small>{{categorieMap.get(currentQuestion.category)?.label}}</small>
         <h3>{{currentQuestion.question}}</h3>
       </header>
 

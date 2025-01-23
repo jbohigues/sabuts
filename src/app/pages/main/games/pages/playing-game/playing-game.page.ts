@@ -10,6 +10,7 @@ import {
   IonIcon,
   IonProgressBar,
   IonItem,
+  IonImg,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '../../../../../shared/components/header/header.component';
 import { GameService } from '@services/game.service';
@@ -18,6 +19,17 @@ import { UtilsService } from '@services/utils.service';
 import { UserModel } from '@models/users.model';
 import { AnswerModel, QuestionModel } from '@models/question.model';
 import { AlertController } from '@ionic/angular';
+import { Categories } from '@sharedEnums/categories';
+import { environment } from 'src/environments/environment.prod';
+import confetti from 'canvas-confetti';
+import { GameStatusEnum } from '@sharedEnums/states';
+import { UserService } from '@services/user.service';
+import { forkJoin, tap } from 'rxjs';
+
+interface Category {
+  label: string;
+  color: string;
+}
 
 @Component({
   selector: 'app-playing-game',
@@ -33,16 +45,18 @@ import { AlertController } from '@ionic/angular';
     IonLabel,
     IonAvatar,
     IonContent,
+    IonImg,
     CommonModule,
     FormsModule,
     HeaderComponent,
   ],
 })
-export class PlayingGamePage implements OnInit {
+export class PlayingGamePage {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('_idgame') idgame!: string;
 
   private gameService = inject(GameService);
+  private userService = inject(UserService);
   private utilsService = inject(UtilsService);
 
   progress: number = 0;
@@ -54,6 +68,7 @@ export class PlayingGamePage implements OnInit {
   answerSelected: boolean = false;
 
   timer: any;
+  categories = Categories;
   playingGame: GameModel | undefined;
   currentUser: UserModel | undefined;
   currentAnswer: AnswerModel | undefined;
@@ -61,9 +76,36 @@ export class PlayingGamePage implements OnInit {
   rivalPlayer: UserOfGameModel | undefined;
   currentUserPlayer: UserOfGameModel | undefined;
 
-  constructor(private alertController: AlertController) {}
+  categorieMap: Map<string, Category> = new Map();
 
-  async ngOnInit() {
+  constructor(private alertController: AlertController) {
+    this.categorieMap.set(Categories.historia_de_valencia, {
+      label: 'Història de València',
+      color: 'blue',
+    });
+
+    this.categorieMap.set(Categories.falles, {
+      label: 'Falles',
+      color: 'red',
+    });
+
+    this.categorieMap.set(Categories.musica, {
+      label: 'Música',
+      color: 'yellow',
+    });
+
+    this.categorieMap.set(Categories.literatura, {
+      label: 'Literatura',
+      color: 'pink',
+    });
+
+    this.categorieMap.set(Categories.poble_de_cullera, {
+      label: 'Poble de Cullera',
+      color: 'orange',
+    });
+  }
+
+  async ionViewWillEnter() {
     const loading = await this.utilsService.loading();
     await loading.present();
 
@@ -71,20 +113,16 @@ export class PlayingGamePage implements OnInit {
       next: (res) => {
         if (res) {
           this.playingGame = res;
-          this.setCurrentUserInPlayer1();
+          this.setCurrentUserInPlayer1(loading);
         }
       },
       error: (e) => {
         console.error(e);
       },
-      complete: () => {
-        this.loading = false;
-        loading.dismiss();
-      },
     });
   }
 
-  private setCurrentUserInPlayer1() {
+  private setCurrentUserInPlayer1(loading?: HTMLIonLoadingElement) {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
     if (this.currentUser) {
       const currentUserIsPlayer1 =
@@ -98,13 +136,15 @@ export class PlayingGamePage implements OnInit {
         this.rivalPlayer = this.playingGame!.player1;
       }
     }
+
+    this.loading = false;
+    loading?.dismiss();
   }
 
   protected makeQuestion() {
     this.answerSelected = false;
     this.gameService.getRandomQuestion().subscribe({
       next: (res) => {
-        console.log(res);
         if (res) {
           this.currentQuestion = res;
           this.showQuestion = true;
@@ -118,7 +158,6 @@ export class PlayingGamePage implements OnInit {
   }
 
   private startTimer() {
-    console.log('this.startTimer');
     this.progress = 0;
     this.buffer = 0.06;
     this.timeLeft = 20;
@@ -158,6 +197,7 @@ export class PlayingGamePage implements OnInit {
       this.incrementScore();
     } else {
       this.playIncorrectSound();
+      this.showErrorAnswerMessage();
     }
   }
 
@@ -172,19 +212,45 @@ export class PlayingGamePage implements OnInit {
   }
 
   private incrementScore() {
-    if (this.playingGame) {
+    if (this.playingGame && this.currentUserPlayer) {
       this.correctAnswers++;
-      this.playingGame.player1.score = this.correctAnswers;
-      this.setCurrentUserInPlayer1();
+      this.currentUserPlayer.score = this.currentUserPlayer.score + 1;
 
-      if (this.correctAnswers == 3) {
+      if (this.currentUserPlayer.score == environment.pointsToWinGame) {
+        this.fireConfetti();
+        this.showWinGameMessage();
+      } else if (this.correctAnswers == environment.maxCorrectAnswers)
         this.showMaxCorrectAnswersMessage();
+    }
+  }
+
+  private updateGameScore(wingame: boolean) {
+    if (this.playingGame && this.rivalPlayer && this.currentUserPlayer) {
+      const currentUserIsPlayer1 =
+        this.playingGame?.player1.userId == this.currentUserPlayer.userId;
+
+      currentUserIsPlayer1
+        ? (this.playingGame.player1.score = this.currentUserPlayer.score)
+        : (this.playingGame.player2.score = this.currentUserPlayer.score);
+
+      this.playingGame = {
+        ...this.playingGame,
+        updatedAt: new Date(),
+        currentTurn: {
+          playerId: this.rivalPlayer.userId,
+          roundNumber: this.playingGame.currentTurn.roundNumber + 1,
+        },
+      };
+
+      if (wingame) {
+        this.playingGame.winner = this.currentUserPlayer.userId;
+        this.playingGame.endTime = new Date();
+        this.playingGame.status = GameStatusEnum.finished;
       }
     }
   }
 
   private async showMaxCorrectAnswersMessage() {
-    console.log(this.playingGame);
     const alert = await this.alertController.create({
       header: 'Màxim de respostes correctes',
       message: `Has aplegat al màxim de respostes correctes, has d'esperar fins que responga el teu contrincant`,
@@ -195,15 +261,7 @@ export class PlayingGamePage implements OnInit {
           text: 'Acceptar',
           handler: () => {
             if (this.playingGame) {
-              this.playingGame = {
-                ...this.playingGame,
-                updatedAt: new Date(),
-                currentTurn: {
-                  playerId: this.playingGame.player2.userId,
-                  roundNumber: this.playingGame.currentTurn.roundNumber + 1,
-                },
-              };
-              console.log(this.playingGame);
+              this.updateGameScore(false);
               this.gameService
                 .updateGame(this.playingGame.id, this.playingGame)
                 .subscribe({
@@ -218,5 +276,84 @@ export class PlayingGamePage implements OnInit {
       ],
     });
     await alert.present();
+  }
+
+  private async showWinGameMessage() {
+    const alert = await this.alertController.create({
+      header: 'ENHORABONA!',
+      message: `Has aplegat a 15 acerts abans que el rival, així que eres el guanyador de la partida!`,
+      keyboardClose: false,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Acceptar',
+          handler: () => {
+            if (this.playingGame && this.currentUser) {
+              this.updateGameScore(true);
+
+              this.currentUser.totalPoints += 5;
+
+              forkJoin([
+                this.gameService.updateGame(
+                  this.playingGame.id,
+                  this.playingGame
+                ),
+                this.userService.updateUser(this.currentUser.id, {
+                  totalPoints: this.currentUser.totalPoints,
+                }),
+              ]).subscribe({
+                error: (e) => console.error(e),
+                complete: () => {
+                  this.utilsService.saveInLocalStorage(
+                    'user',
+                    this.currentUser
+                  );
+                  this.utilsService.routerLink('games');
+                },
+              });
+            }
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private async showErrorAnswerMessage() {
+    const alert = await this.alertController.create({
+      header: 'INCORRECTE...',
+      message: `Has fallat la resposta aixi que el torn acaba ací, hauràs d'esperar fins que el rival responga.`,
+      keyboardClose: false,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Acceptar',
+          handler: () => {
+            if (this.playingGame) {
+              this.updateGameScore(false);
+              this.gameService
+                .updateGame(this.playingGame.id, this.playingGame)
+                .subscribe({
+                  next: () => {
+                    this.utilsService.routerLink('games');
+                  },
+                  error: (e) => console.error(e),
+                });
+            }
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private fireConfetti() {
+    const defaults = {
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.8 },
+    };
+
+    confetti(Object.assign({}, defaults));
   }
 }

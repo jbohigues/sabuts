@@ -61,19 +61,19 @@
             <h2>{{ friend.friendUser.name }}</h2>
             <p>{{ '@'+friend.friendUser.userName }}</p>
           </ion-label>
-          <ion-badge slot="end" color="secondary">
-            {{ friend.friendUser.totalPoints }}
+          <ion-badge slot="end">
+            {{ friend.friendUser.totalPoints }} pts
           </ion-badge>
         </ion-item>
         <!-- TODO: ver que hacemos con estas opciones -->
-        <ion-item-options side="end">
+        <!-- <ion-item-options side="end">
           <ion-item-option color="primary">
             <ion-icon slot="icon-only" name="game-controller"></ion-icon>
           </ion-item-option>
           <ion-item-option color="danger">
             <ion-icon slot="icon-only" name="trash"></ion-icon>
           </ion-item-option>
-        </ion-item-options>
+        </ion-item-options> -->
       </ion-item-sliding>
       } }@else {
       <ion-item> No has agregat cap amic/a </ion-item>

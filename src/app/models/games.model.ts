@@ -5,7 +5,7 @@ export interface GameModel {
   player1: UserOfGameModel; //! siempre será el usuario logueado
   player2: UserOfGameModel;
   currentTurn: Turn;
-  winner?: 'player1' | 'player2';
+  winner?: string;
   rounds: RoundModel[];
   startTime: Date;
   updatedAt: Date;

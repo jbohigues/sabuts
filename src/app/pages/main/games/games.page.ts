@@ -279,8 +279,6 @@ export class GamesPage {
   }
 
   protected deletedGame(event: boolean) {
-    if (event) {
-      this.exitOperation('Partida eliminada amb èxit');
-    }
+    if (event) this.exitOperation('Partida eliminada amb èxit');
   }
 }

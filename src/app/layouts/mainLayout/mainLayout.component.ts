@@ -10,7 +10,7 @@ import {
   IonTabs,
   IonTabBar,
   IonTabButton,
-  IonText,
+  // IonText,
 } from '@ionic/angular/standalone';
 import { UserModel } from '@models/users.model';
 import { UtilsService } from '@services/utils.service';
@@ -23,7 +23,7 @@ import { LogoComponent } from '@sharedComponents/logo/logo.component';
   styleUrls: ['./mainLayout.component.scss'],
   standalone: true,
   imports: [
-    IonText,
+    // IonText,
     IonButton,
     IonIcon,
     IonSplitPane,
