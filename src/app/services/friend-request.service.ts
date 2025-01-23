@@ -1,14 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
-  DocumentData,
   Firestore,
   getDoc,
   getDocs,
-  Query,
   query,
   runTransaction,
   setDoc,

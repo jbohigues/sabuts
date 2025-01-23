@@ -16,8 +16,8 @@ import {
 import { GameModel, RoundModel, UserOfGameModel } from '@models/games.model';
 import { QuestionModel } from '@models/question.model';
 import { GameStatusEnum, RoundStatusEnum } from '@sharedEnums/states';
-import { Observable, from } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, from, throwError } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
@@ -73,46 +73,54 @@ export class GameService {
 
   // Eliminar una partida
   deleteGame(gameId: string): Observable<void> {
+    if (!gameId) return throwError(() => new Error('Game ID is required'));
     const gameDoc = doc(this.firestore, `games/${gameId}`);
-    return from(deleteDoc(gameDoc)).pipe(map(() => void 0));
-  }
 
-  // Cambiar el turno actual
-  setCurrentTurn(
-    gameId: string,
-    playerId: string,
-    roundNumber: number
-  ): Observable<void> {
-    const gameDoc = doc(this.firestore, `games/${gameId}`);
-    return from(
-      updateDoc(gameDoc, {
-        currentPlayerId: playerId,
-        currentRound: roundNumber,
+    return from(deleteDoc(gameDoc)).pipe(
+      map(() => void 0),
+      catchError((error) => {
+        console.error('Error deleting game:', error);
+        return throwError(() => new Error('Failed to delete game'));
       })
-    ).pipe(map(() => void 0));
-  }
-
-  // Registrar respuesta de un jugador
-  submitAnswer(
-    gameId: string,
-    roundId: string,
-    playerId: string,
-    answer: string
-  ): Observable<void> {
-    const roundDoc = doc(this.firestore, `games/${gameId}/rounds/${roundId}`);
-    const field = playerId === 'player1' ? 'player1Answer' : 'player2Answer';
-    return from(updateDoc(roundDoc, { [field]: answer })).pipe(
-      map(() => void 0)
     );
   }
 
+  // Cambiar el turno actual
+  // setCurrentTurn(
+  //   gameId: string,
+  //   playerId: string,
+  //   roundNumber: number
+  // ): Observable<void> {
+  //   const gameDoc = doc(this.firestore, `games/${gameId}`);
+  //   return from(
+  //     updateDoc(gameDoc, {
+  //       currentPlayerId: playerId,
+  //       currentRound: roundNumber,
+  //     })
+  //   ).pipe(map(() => void 0));
+  // }
+
+  // Registrar respuesta de un jugador
+  // submitAnswer(
+  //   gameId: string,
+  //   roundId: string,
+  //   playerId: string,
+  //   answer: string
+  // ): Observable<void> {
+  //   const roundDoc = doc(this.firestore, `games/${gameId}/rounds/${roundId}`);
+  //   const field = playerId === 'player1' ? 'player1Answer' : 'player2Answer';
+  //   return from(updateDoc(roundDoc, { [field]: answer })).pipe(
+  //     map(() => void 0)
+  //   );
+  // }
+
   // Finalizar una ronda
-  endRound(gameId: string, roundId: string): Observable<void> {
-    const roundDoc = doc(this.firestore, `games/${gameId}/rounds/${roundId}`);
-    return from(
-      updateDoc(roundDoc, { status: RoundStatusEnum.completed })
-    ).pipe(map(() => void 0));
-  }
+  // endRound(gameId: string, roundId: string): Observable<void> {
+  //   const roundDoc = doc(this.firestore, `games/${gameId}/rounds/${roundId}`);
+  //   return from(
+  //     updateDoc(roundDoc, { status: RoundStatusEnum.completed })
+  //   ).pipe(map(() => void 0));
+  // }
 
   // Finalizar el juego
   endGame(gameId: string, winnerId: string): Observable<void> {

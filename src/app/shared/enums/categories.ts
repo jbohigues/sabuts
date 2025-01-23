@@ -1,4 +1,7 @@
 export enum Categories {
-  historia = 0,
-  indumentaria = 1,
+  historia_de_valencia = 'historia_de_valencia',
+  falles = 'falles',
+  musica = 'musica',
+  literatura = 'literatura',
+  poble_de_cullera = 'poble_de_cullera',
 }
