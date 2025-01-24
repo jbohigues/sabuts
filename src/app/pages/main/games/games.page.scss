@@ -1,0 +1,13 @@
+.gamesTurnOfUser,
+.gamesTurnOfRival {
+  overflow-y: auto;
+  max-height: 40%;
+}
+
+h3 {
+  margin-top: 0;
+}
+
+h4:first-child {
+  margin-top: 0;
+}

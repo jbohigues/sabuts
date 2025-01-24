@@ -1,2 +1,79 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+
+:root {
+  //Reset ionic
+  --ion-color-primary: #f04d4dc4;
+  --raval-red: #c50c2b;
+  --raval-gray: #33393e;
+  --raval-black: #000000;
+
+  --text-white: #ffffff;
+  --text-black: #000000;
+
+  --bg-input: #d4d4d434;
+  --bg-black: #000000;
+  --bg-question: #fbfbfb29;
+  --bg-white-opacity: #f4f5f8;
+
+  --border-input: #aaaaaa;
+  --border-input-transparent: #aaaaaa41;
+}
+
+* {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  // font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+app-login-layout {
+  height: 100dvh;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text-white);
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.error {
+  color: var(--ion-color-primary);
+  font-size: smaller;
+  margin: 0;
+}
+
+.custom-avatar,
+.custom-avatar span {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-avatar {
+  span {
+    color: var(--text-black);
+    font-size: 18px;
+  }
+
+  &.profile {
+    width: 64px;
+    height: 64px;
+
+    span {
+      font-size: 24px;
+    }
+  }
+}
+
+.ellipsis {
+  white-space: nowrap !important; /* Evita que el texto se divida en múltiples líneas */
+  overflow: hidden !important; /* Oculta el contenido que excede el ancho */
+  text-overflow: ellipsis !important; /* Agrega los puntos suspensivos */
+  max-width: 100% !important; /* Asegura que el span no exceda el ancho del contenedor */
+}

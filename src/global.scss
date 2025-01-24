@@ -34,4 +34,8 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
+
+//! esto permite poner la app en modo oscuro
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+@import "./theme/variables.scss";

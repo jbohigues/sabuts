@@ -1,0 +1,147 @@
+<app-header title="Inici" [menuButton]="true"></app-header>
+
+<ion-content
+  class="ion-padding"
+  fixed-slot-placement="before"
+  [scrollEvents]="true"
+  (ionScroll)="onScroll($event)"
+>
+  @if (showScrollButton) {
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button size="small" (click)="scrollToTop()">
+      <ion-icon name="arrow-up"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  }
+
+  <!--! PRESENTACIÓ -->
+  <ion-card class="presentationcard">
+    <ion-card-header>
+      <ion-card-title> Benvinguda o benvigut a... </ion-card-title>
+      <img
+        src="assets/images/logos/logo_name.webp"
+        alt="Logo Sabuts"
+        class="logosabuts"
+      />
+    </ion-card-header>
+    <ion-card-content>
+      <p>
+        Endinsa’t en un viatge fascinant per la
+        <strong>cultura valenciana</strong> amb aquesta divertida i educativa
+        aplicació. Posa a prova els teus coneixements en temàtiques com
+        història, música, literatura, Falles, gastronomia, tradicions i molt
+        més!
+      </p>
+      <p>
+        <strong>Juga partides en línia</strong> contra els teus amics per
+        demostrar qui sap més sobre la nostra terreta. Cada partida és una
+        oportunitat per aprendre i descobrir curiositats sobre Cullera,
+        <strong>les falles i la cultura valenciana</strong>
+        en general mentre competeixes i t’ho passes d’allò més bé.
+      </p>
+      <p>
+        Prepara’t per demostrar el teu domini en les nostres arrels, superar
+        reptes i ser el rei o reina de la cultura valenciana!
+      </p>
+      <p><strong>Descobreix-ho ara!</strong></p>
+    </ion-card-content>
+    <ion-img
+      src="assets/images/logos/logo_without_name.webp"
+      alt="Rat Penat de Sabuts"
+      class="logoratpenat"
+    ></ion-img>
+  </ion-card>
+
+  <!--! COMPANY -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Company d'aventures</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>
+        Vos presentem al nostre company d’aventures:
+        <strong>el Rat Penat!</strong> Quina cara més simpàtica, veritat? Ell
+        serà el vostre fidel acompanyant en totes les partides.
+      </p>
+      <p>
+        Fixeu-vos bé en les seues <strong>ulleres</strong>, perquè amaguen una
+        sorpresa: el <strong>color</strong>
+        canviarà depenent de la temàtica de la pregunta! Estes son les
+        categories:
+      </p>
+      <ion-list>
+        <app-custom-item
+          alt="Avatar de la Història de València"
+          src="/assets/images/logos/logo-blue-glasses.webp"
+          h2="Història de València:"
+          p="Preguntes sobre esdeveniments, personatges i curiositats de la
+              història de València."
+        ></app-custom-item>
+        <app-custom-item
+          alt="Avatar de les Falles"
+          src="/assets/images/logos/logo-red-glasses.webp"
+          h2="Falles:"
+          p="Temes relacionats amb l'origen, tradicions i evolució de les
+              Falles com a festa icònica."
+        ></app-custom-item>
+        <app-custom-item
+          alt="Avatar de la Música"
+          src="/assets/images/logos/logo-yellow-glasses.webp"
+          h2="Música:"
+          p="Qüestions sobre gèneres, compositors i cançons tradicionals de la
+              Comunitat Valenciana."
+        ></app-custom-item>
+        <app-custom-item
+          alt="Avatar de la Literatura"
+          src="/assets/images/logos/logo-pink-glasses.webp"
+          h2="Literatura:"
+          p="Preguntes sobre autors, obres i moviments literaris valencians."
+        ></app-custom-item>
+        <app-custom-item
+          alt="Avatar del Poble de Cullera"
+          src="/assets/images/logos/logo-orange-glasses.webp"
+          h2="Poble de Cullera:"
+          p="Curiositats, història i tradicions d'aquesta localitat emblemàtica."
+        ></app-custom-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!--! QUI SOM -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Qui som?</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>
+        Som el grup d’ús i promoció del valencià de la
+        <strong>Falla Raval de Cullera</strong>, un col·lectiu apassionat per la
+        nostra llengua, la nostra cultura i el nostre poble.
+      </p>
+      <p>
+        La nostra missió és <strong>promocionar el valencià</strong>, enaltir
+        les nostres arrels i fer valdre tot allò que ens fa únics com a
+        comunitat. Amb este joc hem volgut combinar totes estes intencions en
+        una proposta lúdica i entretinguda, que a més us permeta aprendre i
+        gaudir de la <strong>nostra terra</strong>
+        d’una forma diferent.
+      </p>
+      <p>
+        Estem molt contents de poder posar a les vostres mans esta aplicació, i
+        esperem que disfruteu tant jugant com nosaltres hem disfrutat creant-la.
+      </p>
+      <p>
+        <strong>
+          Benvinguts i benvingudes al nostre joc, un homenatge al valencià i a
+          Cullera!
+        </strong>
+      </p>
+      <img
+        src="assets/images/escut.webp"
+        alt="Escut Falla Raval de Cullera"
+        class="escutimage"
+      />
+    </ion-card-content>
+  </ion-card>
+  <h2></h2>
+</ion-content>

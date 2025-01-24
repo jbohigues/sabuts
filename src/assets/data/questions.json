@@ -1,0 +1,2208 @@
+[
+  {
+    "id": 1,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va fundar la ciutat de València?",
+    "answers": [
+      { "isCorrect": false, "value": "218 a.C." },
+      { "isCorrect": true, "value": "138 a.C." },
+      { "isCorrect": false, "value": "711 d.C." },
+      { "isCorrect": false, "value": "1238 d.C." }
+    ]
+  },
+  {
+    "id": 2,
+    "category": "historia_de_valencia",
+    "question": "Qui va fundar la ciutat de València?",
+    "answers": [
+      { "isCorrect": false, "value": "Escipió l'Africà" },
+      { "isCorrect": false, "value": "Juli Cèsar" },
+      { "isCorrect": true, "value": "Dècim Juni Brut" },
+      { "isCorrect": false, "value": "August" }
+    ]
+  },
+  {
+    "id": 3,
+    "category": "historia_de_valencia",
+    "question": "En quin any va conquistar Jaume I la ciutat de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1232" },
+      { "isCorrect": false, "value": "1235" },
+      { "isCorrect": true, "value": "1238" },
+      { "isCorrect": false, "value": "1245" }
+    ]
+  },
+  {
+    "id": 4,
+    "category": "falles",
+    "question": "Quin és l'origen de les Falles?",
+    "answers": [
+      { "isCorrect": false, "value": "Una celebració religiosa cristiana" },
+      { "isCorrect": false, "value": "Una festa romana antiga" },
+      { "isCorrect": false, "value": "Un ritual morisc" },
+      { "isCorrect": true, "value": "La crema dels trastos vells dels fusters" }
+    ]
+  },
+  {
+    "id": 5,
+    "category": "falles",
+    "question": "En quin segle es van iniciar les Falles com a festa?",
+    "answers": [
+      { "isCorrect": false, "value": "Segle XVI" },
+      { "isCorrect": true, "value": "Segle XVIII" },
+      { "isCorrect": false, "value": "Segle XIX" },
+      { "isCorrect": false, "value": "Segle XX" }
+    ]
+  },
+  {
+    "id": 6,
+    "category": "musica",
+    "question": "Quin instrument és típic de la música valenciana?",
+    "answers": [
+      { "isCorrect": false, "value": "La gaita" },
+      { "isCorrect": false, "value": "L'acordió" },
+      { "isCorrect": true, "value": "La dolçaina" },
+      { "isCorrect": false, "value": "El violí" }
+    ]
+  },
+  {
+    "id": 7,
+    "category": "literatura",
+    "question": "Qui va escriure 'Tirant lo Blanc'?",
+    "answers": [
+      { "isCorrect": false, "value": "Ausiàs March" },
+      { "isCorrect": false, "value": "Joan Roís de Corella" },
+      { "isCorrect": false, "value": "Isabel de Villena" },
+      { "isCorrect": true, "value": "Joanot Martorell" }
+    ]
+  },
+  {
+    "id": 8,
+    "category": "poble_de_cullera",
+    "question": "On està situada Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "A la comarca de l'Horta Sud" },
+      { "isCorrect": true, "value": "A la comarca de la Ribera Baixa" },
+      { "isCorrect": false, "value": "A la comarca de la Safor" },
+      { "isCorrect": false, "value": "A la comarca de la Costera" }
+    ]
+  },
+  {
+    "id": 9,
+    "category": "historia_de_valencia",
+    "question": "Quin riu passa per València?",
+    "answers": [
+      { "isCorrect": false, "value": "El Xúquer" },
+      { "isCorrect": false, "value": "El Segura" },
+      { "isCorrect": true, "value": "El Túria" },
+      { "isCorrect": false, "value": "El Palància" }
+    ]
+  },
+  {
+    "id": 10,
+    "category": "historia_de_valencia",
+    "question": "Quin és el nom de la catedral de València?",
+    "answers": [
+      { "isCorrect": false, "value": "Catedral de Sant Vicent" },
+      { "isCorrect": false, "value": "Catedral del Micalet" },
+      { "isCorrect": true, "value": "Catedral de Santa Maria" },
+      {
+        "isCorrect": false,
+        "value": "Catedral de la Mare de Déu dels Desemparats"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "category": "falles",
+    "question": "Quin any es va celebrar la primera Falla oficial?",
+    "answers": [
+      { "isCorrect": false, "value": "1850" },
+      { "isCorrect": true, "value": "1901" },
+      { "isCorrect": false, "value": "1920" },
+      { "isCorrect": false, "value": "1939" }
+    ]
+  },
+  {
+    "id": 12,
+    "category": "musica",
+    "question": "Qui és considerat el pare de la música valenciana moderna?",
+    "answers": [
+      { "isCorrect": false, "value": "Ovidi Montllor" },
+      { "isCorrect": false, "value": "Al Tall" },
+      { "isCorrect": true, "value": "Raimon" },
+      { "isCorrect": false, "value": "Pep Gimeno 'Botifarra'" }
+    ]
+  },
+  {
+    "id": 13,
+    "category": "literatura",
+    "question": "Quin escriptor valencià va guanyar el Premi d'Honor de les Lletres Catalanes en 1975?",
+    "answers": [
+      { "isCorrect": false, "value": "Vicent Andrés Estellés" },
+      { "isCorrect": true, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Enric Valor" },
+      { "isCorrect": false, "value": "Manuel Sanchis Guarner" }
+    ]
+  },
+  {
+    "id": 14,
+    "category": "poble_de_cullera",
+    "question": "Quin és el plat típic de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "La fideuà" },
+      { "isCorrect": true, "value": "L'arròs a banda" },
+      { "isCorrect": false, "value": "La paella" },
+      { "isCorrect": false, "value": "El suquet de peix" }
+    ]
+  },
+  {
+    "id": 15,
+    "category": "historia_de_valencia",
+    "question": "Quin rei moro va governar València abans de la conquesta cristiana?",
+    "answers": [
+      { "isCorrect": true, "value": "Abu Zayd" },
+      { "isCorrect": false, "value": "Al-Azraq" },
+      { "isCorrect": false, "value": "Boabdil" },
+      { "isCorrect": false, "value": "Abd al-Aziz" }
+    ]
+  },
+  {
+    "id": 16,
+    "category": "historia_de_valencia",
+    "question": "En quin any es va inaugurar la Ciutat de les Arts i les Ciències?",
+    "answers": [
+      { "isCorrect": false, "value": "1992" },
+      { "isCorrect": false, "value": "2000" },
+      { "isCorrect": true, "value": "1998" },
+      { "isCorrect": false, "value": "2005" }
+    ]
+  },
+  {
+    "id": 17,
+    "category": "historia_de_valencia",
+    "question": "Quin és el nom de la festa que se celebra el 9 d'octubre a València?",
+    "answers": [
+      { "isCorrect": false, "value": "Dia de les Falles" },
+      { "isCorrect": false, "value": "Dia de la Paella" },
+      { "isCorrect": true, "value": "Dia de la Comunitat Valenciana" },
+      { "isCorrect": false, "value": "Dia de Sant Vicent Ferrer" }
+    ]
+  },
+  {
+    "id": 18,
+    "category": "musica",
+    "question": "Qui va compondre l'himne de la Comunitat Valenciana?",
+    "answers": [
+      { "isCorrect": false, "value": "Joaquín Rodrigo" },
+      { "isCorrect": true, "value": "Josep Serrano" },
+      { "isCorrect": false, "value": "Manuel Palau" },
+      { "isCorrect": false, "value": "Óscar Esplá" }
+    ]
+  },
+  {
+    "id": 19,
+    "category": "literatura",
+    "question": "Quin poeta valencià va escriure 'Llibre de meravelles'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Ausiàs March" },
+      { "isCorrect": true, "value": "Vicent Andrés Estellés" },
+      { "isCorrect": false, "value": "Maria Beneyto" }
+    ]
+  },
+  {
+    "id": 20,
+    "category": "poble_de_cullera",
+    "question": "Quin és el monument més emblemàtic de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "La Torre del Marenyet" },
+      { "isCorrect": false, "value": "L'Església de Sant Antoni" },
+      { "isCorrect": true, "value": "El Castell de Cullera" },
+      { "isCorrect": false, "value": "El Far de Cullera" }
+    ]
+  },
+  {
+    "id": 21,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va fundar la Universitat de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1348" },
+      { "isCorrect": true, "value": "1499" },
+      { "isCorrect": false, "value": "1550" },
+      { "isCorrect": false, "value": "1707" }
+    ]
+  },
+  {
+    "id": 22,
+    "category": "historia_de_valencia",
+    "question": "Qui va ser l'últim rei moro de València?",
+    "answers": [
+      { "isCorrect": false, "value": "Abu Zayd" },
+      { "isCorrect": false, "value": "Al-Azraq" },
+      { "isCorrect": true, "value": "Zayyan ibn Mardanish" },
+      { "isCorrect": false, "value": "Yahya al-Qadir" }
+    ]
+  },
+  {
+    "id": 23,
+    "category": "historia_de_valencia",
+    "question": "Quin és el nom de la plaça principal de València?",
+    "answers": [
+      { "isCorrect": false, "value": "Plaça de la Reina" },
+      { "isCorrect": true, "value": "Plaça de l'Ajuntament" },
+      { "isCorrect": false, "value": "Plaça del Mercat" },
+      { "isCorrect": false, "value": "Plaça de la Verge" }
+    ]
+  },
+  {
+    "id": 24,
+    "category": "falles",
+    "question": "Quin any es va declarar la festa de les Falles com a Patrimoni Immaterial de la Humanitat per la UNESCO?",
+    "answers": [
+      { "isCorrect": false, "value": "2010" },
+      { "isCorrect": false, "value": "2014" },
+      { "isCorrect": true, "value": "2016" },
+      { "isCorrect": false, "value": "2018" }
+    ]
+  },
+  {
+    "id": 25,
+    "category": "musica",
+    "question": "Quin és el nom del grup de música tradicional valenciana més conegut?",
+    "answers": [
+      { "isCorrect": false, "value": "Obrint Pas" },
+      { "isCorrect": true, "value": "Al Tall" },
+      { "isCorrect": false, "value": "La Gossa Sorda" },
+      { "isCorrect": false, "value": "Aspencat" }
+    ]
+  },
+  {
+    "id": 26,
+    "category": "literatura",
+    "question": "Qui va escriure 'El Llibre del gentil e dels tres savis'?",
+    "answers": [
+      { "isCorrect": true, "value": "Ramon Llull" },
+      { "isCorrect": false, "value": "Ausiàs March" },
+      { "isCorrect": false, "value": "Joanot Martorell" },
+      { "isCorrect": false, "value": "Francesc Eiximenis" }
+    ]
+  },
+  {
+    "id": 27,
+    "category": "poble_de_cullera",
+    "question": "Quin riu passa per Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "El Túria" },
+      { "isCorrect": false, "value": "El Serpis" },
+      { "isCorrect": true, "value": "El Xúquer" },
+      { "isCorrect": false, "value": "El Palància" }
+    ]
+  },
+  {
+    "id": 28,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va construir la Llotja de la Seda de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1238" },
+      { "isCorrect": true, "value": "1482" },
+      { "isCorrect": false, "value": "1609" },
+      { "isCorrect": false, "value": "1707" }
+    ]
+  },
+  {
+    "id": 29,
+    "category": "historia_de_valencia",
+    "question": "Qui va ser el primer president de la Generalitat Valenciana després de la dictadura?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Lerma" },
+      { "isCorrect": true, "value": "Josep Lluís Albinyana" },
+      { "isCorrect": false, "value": "Eduardo Zaplana" },
+      { "isCorrect": false, "value": "Francisco Camps" }
+    ]
+  },
+  {
+    "id": 30,
+    "category": "falles",
+    "question": "Quin és el nom de la mascletà més famosa de les Falles?",
+    "answers": [
+      { "isCorrect": false, "value": "La mascletà del Mercat Central" },
+      { "isCorrect": true, "value": "La mascletà de la Plaça de l'Ajuntament" },
+      {
+        "isCorrect": false,
+        "value": "La mascletà de la Ciutat de les Arts i les Ciències"
+      },
+      { "isCorrect": false, "value": "La mascletà del Parc de Capçalera" }
+    ]
+  },
+  {
+    "id": 31,
+    "category": "musica",
+    "question": "Quin instrument de percussió és típic de la música valenciana?",
+    "answers": [
+      { "isCorrect": false, "value": "La pandereta" },
+      { "isCorrect": false, "value": "El bombo" },
+      { "isCorrect": true, "value": "El tabalet" },
+      { "isCorrect": false, "value": "Les castanyoles" }
+    ]
+  },
+  {
+    "id": 32,
+    "category": "literatura",
+    "question": "Qui va escriure 'Diccionari per a ociosos'?",
+    "answers": [
+      { "isCorrect": false, "value": "Enric Valor" },
+      { "isCorrect": true, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Manuel Sanchis Guarner" },
+      { "isCorrect": false, "value": "Carles Salvador" }
+    ]
+  },
+  {
+    "id": 33,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom de la platja principal de Cullera?",
+    "answers": [
+      { "isCorrect": true, "value": "Platja de Sant Antoni" },
+      { "isCorrect": false, "value": "Platja del Saler" },
+      { "isCorrect": false, "value": "Platja de la Malva-rosa" },
+      { "isCorrect": false, "value": "Platja del Dosser" }
+    ]
+  },
+  {
+    "id": 34,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va inaugurar el Palau de les Arts Reina Sofia?",
+    "answers": [
+      { "isCorrect": false, "value": "1998" },
+      { "isCorrect": false, "value": "2003" },
+      { "isCorrect": true, "value": "2005" },
+      { "isCorrect": false, "value": "2010" }
+    ]
+  },
+  {
+    "id": 35,
+    "category": "historia_de_valencia",
+    "question": "Qui va ser el primer arquebisbe de València després de la conquesta cristiana?",
+    "answers": [
+      { "isCorrect": false, "value": "Sant Vicent Ferrer" },
+      { "isCorrect": true, "value": "Ferrer de Sant Martí" },
+      { "isCorrect": false, "value": "Andreu Albalat" },
+      { "isCorrect": false, "value": "Arnau de Peralta" }
+    ]
+  },
+  {
+    "id": 36,
+    "category": "historia_de_valencia",
+    "question": "Quin és el nom de la festa que se celebra el 17 de gener a València?",
+    "answers": [
+      { "isCorrect": false, "value": "Sant Vicent Màrtir" },
+      { "isCorrect": false, "value": "Sant Josep" },
+      { "isCorrect": true, "value": "Sant Antoni del Porquet" },
+      { "isCorrect": false, "value": "Sant Blai" }
+    ]
+  },
+  {
+    "id": 37,
+    "category": "musica",
+    "question": "Quin compositor valencià va escriure l'òpera 'Maror'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joaquín Rodrigo" },
+      { "isCorrect": true, "value": "Manuel Palau" },
+      { "isCorrect": false, "value": "Óscar Esplá" },
+      { "isCorrect": false, "value": "Matilde Salvador" }
+    ]
+  },
+  {
+    "id": 38,
+    "category": "literatura",
+    "question": "Quin escriptor valencià va rebre el Premi de les Lletres Valencianes en 2019?",
+    "answers": [
+      { "isCorrect": false, "value": "Ferran Torrent" },
+      { "isCorrect": false, "value": "Josep Piera" },
+      { "isCorrect": true, "value": "Isabel-Clara Simó" },
+      { "isCorrect": false, "value": "Joan Francesc Mira" }
+    ]
+  },
+  {
+    "id": 39,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom del far de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Far de la Badia" },
+      { "isCorrect": true, "value": "Far de la Punta del Faro" },
+      { "isCorrect": false, "value": "Far del Cap de Cullera" },
+      { "isCorrect": false, "value": "Far de la Muntanya de l'Or" }
+    ]
+  },
+  {
+    "id": 40,
+    "category": "historia_de_valencia",
+    "question": "En quin any es va fundar el Tribunal de les Aigües de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1238" },
+      { "isCorrect": false, "value": "1707" },
+      { "isCorrect": true, "value": "960" },
+      { "isCorrect": false, "value": "1094" }
+    ]
+  },
+  {
+    "id": 41,
+    "category": "historia_de_valencia",
+    "question": "Qui va ser el primer rei cristià de València?",
+    "answers": [
+      { "isCorrect": false, "value": "Pere el Gran" },
+      { "isCorrect": true, "value": "Jaume I" },
+      { "isCorrect": false, "value": "Alfons el Magnànim" },
+      { "isCorrect": false, "value": "Ferran el Catòlic" }
+    ]
+  },
+  {
+    "id": 42,
+    "category": "historia_de_valencia",
+    "question": "Quin és el nom de la festa que se celebra el 22 de gener a València?",
+    "answers": [
+      { "isCorrect": false, "value": "Sant Vicent Ferrer" },
+      { "isCorrect": false, "value": "Sant Josep" },
+      { "isCorrect": true, "value": "Sant Vicent Màrtir" },
+      { "isCorrect": false, "value": "Sant Jordi" }
+    ]
+  },
+  {
+    "id": 43,
+    "category": "musica",
+    "question": "Quin grup de música valenciana va popularitzar la cançó 'Tio Canya'?",
+    "answers": [
+      { "isCorrect": false, "value": "Obrint Pas" },
+      { "isCorrect": true, "value": "Al Tall" },
+      { "isCorrect": false, "value": "La Gossa Sorda" },
+      { "isCorrect": false, "value": "Aspencat" }
+    ]
+  },
+  {
+    "id": 44,
+    "category": "literatura",
+    "question": "Qui va escriure 'Rondalles Valencianes'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Vicent Blasco Ibáñez" },
+      { "isCorrect": true, "value": "Enric Valor" },
+      { "isCorrect": false, "value": "Manuel Sanchis Guarner" }
+    ]
+  },
+  {
+    "id": 45,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom de la muntanya més alta de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "El Montgó" },
+      { "isCorrect": false, "value": "La Serra Grossa" },
+      { "isCorrect": true, "value": "La Muntanya de l'Or" },
+      { "isCorrect": false, "value": "El Mondúver" }
+    ]
+  },
+  {
+    "id": 46,
+    "category": "historia_de_valencia",
+    "question": "En quin any es va inaugurar el Mercat Central de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1900" },
+      { "isCorrect": true, "value": "1928" },
+      { "isCorrect": false, "value": "1950" },
+      { "isCorrect": false, "value": "1910" }
+    ]
+  },
+  {
+    "id": 47,
+    "category": "historia_de_valencia",
+    "question": "Qui va ser l'últim virrei de València?",
+    "answers": [
+      { "isCorrect": true, "value": "Antonio Folch de Cardona" },
+      { "isCorrect": false, "value": "Lluís Guillem de Montcada" },
+      { "isCorrect": false, "value": "Carles d'Àustria" },
+      { "isCorrect": false, "value": "Felip V" }
+    ]
+  },
+  {
+    "id": 48,
+    "category": "falles",
+    "question": "Quin és el nom de la cremà més important de les Falles?",
+    "answers": [
+      { "isCorrect": false, "value": "La cremà de la Falla Na Jordana" },
+      { "isCorrect": true, "value": "La cremà de la Falla de l'Ajuntament" },
+      { "isCorrect": false, "value": "La cremà de la Falla del Pilar" },
+      { "isCorrect": false, "value": "La cremà de la Falla Convent Jerusalem" }
+    ]
+  },
+  {
+    "id": 49,
+    "category": "musica",
+    "question": "Quin instrument de vent és típic de la música valenciana?",
+    "answers": [
+      { "isCorrect": false, "value": "La flauta travessera" },
+      { "isCorrect": false, "value": "El saxofon" },
+      { "isCorrect": true, "value": "La dolçaina" },
+      { "isCorrect": false, "value": "L'oboè" }
+    ]
+  },
+  {
+    "id": 50,
+    "category": "literatura",
+    "question": "Qui va escriure 'Nosaltres, els valencians'?",
+    "answers": [
+      { "isCorrect": false, "value": "Manuel Sanchis Guarner" },
+      { "isCorrect": false, "value": "Vicent Andrés Estellés" },
+      { "isCorrect": true, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Enric Valor" }
+    ]
+  },
+  {
+    "id": 51,
+    "category": "historia_de_valencia",
+    "question": "Quin rei va atorgar a València el títol de 'Molt Noble i Lleial Ciutat'?",
+    "answers": [
+      { "isCorrect": false, "value": "Jaume I" },
+      { "isCorrect": false, "value": "Alfons el Magnànim" },
+      { "isCorrect": true, "value": "Pere el Cerimoniós" },
+      { "isCorrect": false, "value": "Ferran el Catòlic" }
+    ]
+  },
+  {
+    "id": 52,
+    "category": "falles",
+    "question": "Quin és el nom de la figura central de les Falles?",
+    "answers": [
+      { "isCorrect": false, "value": "El ninot" },
+      { "isCorrect": true, "value": "El remat" },
+      { "isCorrect": false, "value": "La cremà" },
+      { "isCorrect": false, "value": "La plantà" }
+    ]
+  },
+  {
+    "id": 53,
+    "category": "musica",
+    "question": "Quin és l'instrument de corda més característic de la música valenciana?",
+    "answers": [
+      { "isCorrect": true, "value": "La guitarra" },
+      { "isCorrect": false, "value": "El llaüt" },
+      { "isCorrect": false, "value": "La bandúrria" },
+      { "isCorrect": false, "value": "El violí" }
+    ]
+  },
+  {
+    "id": 54,
+    "category": "literatura",
+    "question": "Qui va escriure la novel·la 'Cañas y barro'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Enric Valor" },
+      { "isCorrect": false, "value": "Manuel Sanchis Guarner" },
+      { "isCorrect": true, "value": "Vicente Blasco Ibáñez" }
+    ]
+  },
+  {
+    "id": 55,
+    "category": "poble_de_cullera",
+    "question": "Quin tipus de peix és típic de la gastronomia de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "La sardina" },
+      { "isCorrect": false, "value": "El lluç" },
+      { "isCorrect": true, "value": "L'anguila" },
+      { "isCorrect": false, "value": "El bacallà" }
+    ]
+  },
+  {
+    "id": 56,
+    "category": "historia_de_valencia",
+    "question": "En quin any es va construir el Micalet?",
+    "answers": [
+      { "isCorrect": false, "value": "1238" },
+      { "isCorrect": true, "value": "1381" },
+      { "isCorrect": false, "value": "1492" },
+      { "isCorrect": false, "value": "1609" }
+    ]
+  },
+  {
+    "id": 57,
+    "category": "falles",
+    "question": "Quin dia comencen oficialment les Falles?",
+    "answers": [
+      { "isCorrect": false, "value": "15 de març" },
+      { "isCorrect": true, "value": "1 de març" },
+      { "isCorrect": false, "value": "19 de març" },
+      { "isCorrect": false, "value": "12 de març" }
+    ]
+  },
+  {
+    "id": 58,
+    "category": "musica",
+    "question": "Quin cantant valencià va popularitzar la cançó 'Al vent'?",
+    "answers": [
+      { "isCorrect": false, "value": "Ovidi Montllor" },
+      { "isCorrect": false, "value": "Al Tall" },
+      { "isCorrect": true, "value": "Raimon" },
+      { "isCorrect": false, "value": "Pep Gimeno 'Botifarra'" }
+    ]
+  },
+  {
+    "id": 59,
+    "category": "literatura",
+    "question": "Quin escriptor valencià va guanyar el Premi d'Honor de les Lletres Catalanes en 1982?",
+    "answers": [
+      { "isCorrect": true, "value": "Enric Valor" },
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Vicent Andrés Estellés" },
+      { "isCorrect": false, "value": "Manuel Sanchis Guarner" }
+    ]
+  },
+  {
+    "id": 60,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom de la torre de guaita situada a Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Torre del Castell" },
+      { "isCorrect": false, "value": "Torre de l'Or" },
+      { "isCorrect": true, "value": "Torre de Marenyet" },
+      { "isCorrect": false, "value": "Torre del Far" }
+    ]
+  },
+  {
+    "id": 61,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va fundar el Jardí Botànic de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1567" },
+      { "isCorrect": true, "value": "1802" },
+      { "isCorrect": false, "value": "1899" },
+      { "isCorrect": false, "value": "1920" }
+    ]
+  },
+  {
+    "id": 62,
+    "category": "falles",
+    "question": "Quin és el nom de la figura que representa la Fallera Major?",
+    "answers": [
+      { "isCorrect": false, "value": "La Geperudeta" },
+      { "isCorrect": true, "value": "La Bellea del Foc" },
+      { "isCorrect": false, "value": "La Dama d'Elx" },
+      { "isCorrect": false, "value": "La Delicà de Gandia" }
+    ]
+  },
+  {
+    "id": 63,
+    "category": "musica",
+    "question": "Quin és el nom del festival de música en valencià més important?",
+    "answers": [
+      { "isCorrect": false, "value": "Feslloch" },
+      { "isCorrect": false, "value": "Festivern" },
+      { "isCorrect": true, "value": "Trobada" },
+      { "isCorrect": false, "value": "Medusa Sunbeach" }
+    ]
+  },
+  {
+    "id": 64,
+    "category": "literatura",
+    "question": "Qui va escriure el poemari 'Les roses marginals'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": true, "value": "Vicent Andrés Estellés" },
+      { "isCorrect": false, "value": "Maria Beneyto" },
+      { "isCorrect": false, "value": "Carles Salvador" }
+    ]
+  },
+  {
+    "id": 65,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom de la llacuna situada prop de Cullera?",
+    "answers": [
+      { "isCorrect": true, "value": "L'Estany Gran" },
+      { "isCorrect": false, "value": "L'Albufera" },
+      { "isCorrect": false, "value": "El Marjal" },
+      { "isCorrect": false, "value": "La Marjal dels Moros" }
+    ]
+  },
+  {
+    "id": 66,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va inaugurar l'Estació del Nord de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1852" },
+      { "isCorrect": false, "value": "1890" },
+      { "isCorrect": true, "value": "1917" },
+      { "isCorrect": false, "value": "1935" }
+    ]
+  },
+  {
+    "id": 67,
+    "category": "falles",
+    "question": "Quin és el nom del premi que s'atorga a la millor falla de València?",
+    "answers": [
+      { "isCorrect": false, "value": "Premi d'Or" },
+      { "isCorrect": false, "value": "Ninot d'Honor" },
+      { "isCorrect": true, "value": "Premi Secció Especial" },
+      { "isCorrect": false, "value": "Falla d'Excel·lència" }
+    ]
+  },
+  {
+    "id": 68,
+    "category": "musica",
+    "question": "Quin grup valencià va popularitzar la cançó 'La Muixeranga'?",
+    "answers": [
+      { "isCorrect": true, "value": "Obrint Pas" },
+      { "isCorrect": false, "value": "Al Tall" },
+      { "isCorrect": false, "value": "La Gossa Sorda" },
+      { "isCorrect": false, "value": "Aspencat" }
+    ]
+  },
+  {
+    "id": 69,
+    "category": "literatura",
+    "question": "Qui va escriure la novel·la 'El temps dels nens'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Francesc Mira" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" },
+      { "isCorrect": true, "value": "Ferran Torrent" },
+      { "isCorrect": false, "value": "Josep Piera" }
+    ]
+  },
+  {
+    "id": 70,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom de la festa patronal de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Festes de Sant Vicent" },
+      { "isCorrect": false, "value": "Festes de la Mare de Déu del Carme" },
+      { "isCorrect": true, "value": "Festes de la Mare de Déu del Castell" },
+      { "isCorrect": false, "value": "Festes de Sant Joan" }
+    ]
+  },
+  {
+    "id": 71,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va fundar el Tribunal de les Aigües de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1238" },
+      { "isCorrect": true, "value": "960" },
+      { "isCorrect": false, "value": "1707" },
+      { "isCorrect": false, "value": "1094" }
+    ]
+  },
+  {
+    "id": 72,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte on es trien les Falleres Majors?",
+    "answers": [
+      { "isCorrect": false, "value": "La Crida" },
+      { "isCorrect": false, "value": "L'Ofrena" },
+      { "isCorrect": true, "value": "La Fonteta" },
+      { "isCorrect": false, "value": "La Plantà" }
+    ]
+  },
+  {
+    "id": 73,
+    "category": "musica",
+    "question": "Quin compositor valencià va escriure el pasdoble 'València'?",
+    "answers": [
+      { "isCorrect": true, "value": "José Padilla Sánchez" },
+      { "isCorrect": false, "value": "Manuel Palau" },
+      { "isCorrect": false, "value": "Joaquín Rodrigo" },
+      { "isCorrect": false, "value": "Salvador Giner" }
+    ]
+  },
+  {
+    "id": 74,
+    "category": "literatura",
+    "question": "Qui va escriure 'El desig dels dies'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Vicent Andrés Estellés" },
+      { "isCorrect": true, "value": "Josep Piera" },
+      { "isCorrect": false, "value": "Maria Beneyto" }
+    ]
+  },
+  {
+    "id": 75,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom del santuari situat a la muntanya de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Santuari de Sant Vicent" },
+      { "isCorrect": true, "value": "Santuari de la Mare de Déu del Castell" },
+      { "isCorrect": false, "value": "Santuari de Sant Antoni" },
+      { "isCorrect": false, "value": "Santuari de la Verge dels Desemparats" }
+    ]
+  },
+  {
+    "id": 76,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va fundar la Universitat Politècnica de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1932" },
+      { "isCorrect": false, "value": "1956" },
+      { "isCorrect": true, "value": "1968" },
+      { "isCorrect": false, "value": "1971" }
+    ]
+  },
+  {
+    "id": 77,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte que marca l'inici de les Falles?",
+    "answers": [
+      { "isCorrect": true, "value": "La Crida" },
+      { "isCorrect": false, "value": "La Plantà" },
+      { "isCorrect": false, "value": "L'Ofrena" },
+      { "isCorrect": false, "value": "La Mascletà" }
+    ]
+  },
+  {
+    "id": 78,
+    "category": "musica",
+    "question": "Quin cantautor valencià va compondre 'Jo vinc d'un silenci'?",
+    "answers": [
+      { "isCorrect": false, "value": "Ovidi Montllor" },
+      { "isCorrect": true, "value": "Raimon" },
+      { "isCorrect": false, "value": "Lluís Llach" },
+      { "isCorrect": false, "value": "Pep Gimeno 'Botifarra'" }
+    ]
+  },
+  {
+    "id": 79,
+    "category": "literatura",
+    "question": "Qui va escriure la novel·la 'Cremeu Barcelona'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": true, "value": "Guillem Martí" },
+      { "isCorrect": false, "value": "Ferran Torrent" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" }
+    ]
+  },
+  {
+    "id": 80,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom del parc natural situat prop de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Parc Natural del Túria" },
+      { "isCorrect": true, "value": "Parc Natural de l'Albufera" },
+      { "isCorrect": false, "value": "Parc Natural del Montgó" },
+      { "isCorrect": false, "value": "Parc Natural de la Serra d'Irta" }
+    ]
+  },
+  {
+    "id": 81,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va celebrar l'Exposició Regional Valenciana?",
+    "answers": [
+      { "isCorrect": false, "value": "1888" },
+      { "isCorrect": false, "value": "1900" },
+      { "isCorrect": true, "value": "1909" },
+      { "isCorrect": false, "value": "1929" }
+    ]
+  },
+  {
+    "id": 82,
+    "category": "falles",
+    "question": "Quin és el nom de la figura que es salva de la cremà?",
+    "answers": [
+      { "isCorrect": true, "value": "El Ninot Indultat" },
+      { "isCorrect": false, "value": "La Fallera Major" },
+      { "isCorrect": false, "value": "El Remat" },
+      { "isCorrect": false, "value": "La Geperudeta" }
+    ]
+  },
+  {
+    "id": 83,
+    "category": "musica",
+    "question": "Quin grup valencià va popularitzar la cançó 'Puta'?",
+    "answers": [
+      { "isCorrect": false, "value": "Al Tall" },
+      { "isCorrect": false, "value": "Obrint Pas" },
+      { "isCorrect": true, "value": "La Gossa Sorda" },
+      { "isCorrect": false, "value": "Zoo" }
+    ]
+  },
+  {
+    "id": 84,
+    "category": "literatura",
+    "question": "Qui va escriure 'Borja Papa'?",
+    "answers": [
+      { "isCorrect": false, "value": "Ferran Torrent" },
+      { "isCorrect": true, "value": "Joan Francesc Mira" },
+      { "isCorrect": false, "value": "Josep Piera" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" }
+    ]
+  },
+  {
+    "id": 85,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom de la platja més llarga de Cullera?",
+    "answers": [
+      { "isCorrect": true, "value": "Platja de Sant Antoni" },
+      { "isCorrect": false, "value": "Platja del Racó" },
+      { "isCorrect": false, "value": "Platja del Far" },
+      { "isCorrect": false, "value": "Platja del Marenyet" }
+    ]
+  },
+  {
+    "id": 86,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va inaugurar el Palau de la Generalitat Valenciana?",
+    "answers": [
+      { "isCorrect": false, "value": "1418" },
+      { "isCorrect": true, "value": "1421" },
+      { "isCorrect": false, "value": "1510" },
+      { "isCorrect": false, "value": "1609" }
+    ]
+  },
+  {
+    "id": 87,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte on es lliuren els premis a les millors falles?",
+    "answers": [
+      { "isCorrect": false, "value": "La Cremà" },
+      { "isCorrect": false, "value": "L'Ofrena" },
+      { "isCorrect": true, "value": "El Lliurament de Premis" },
+      { "isCorrect": false, "value": "La Despertà" }
+    ]
+  },
+  {
+    "id": 88,
+    "category": "musica",
+    "question": "Quin compositor valencià va escriure el 'Concert d'Aranjuez'?",
+    "answers": [
+      { "isCorrect": true, "value": "Joaquín Rodrigo" },
+      { "isCorrect": false, "value": "Manuel Palau" },
+      { "isCorrect": false, "value": "Óscar Esplá" },
+      { "isCorrect": false, "value": "Salvador Giner" }
+    ]
+  },
+  {
+    "id": 89,
+    "category": "literatura",
+    "question": "Qui va escriure 'La vida en l'abisme'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Enric Valor" },
+      { "isCorrect": true, "value": "Ferran Torrent" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" }
+    ]
+  },
+  {
+    "id": 90,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom del mercat municipal de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Mercat Central" },
+      { "isCorrect": true, "value": "Mercat Municipal" },
+      { "isCorrect": false, "value": "Mercat del Peix" },
+      { "isCorrect": false, "value": "Mercat de Sant Antoni" }
+    ]
+  },
+  {
+    "id": 91,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va fundar el Real Club Nàutic de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1867" },
+      { "isCorrect": false, "value": "1890" },
+      { "isCorrect": true, "value": "1903" },
+      { "isCorrect": false, "value": "1920" }
+    ]
+  },
+  {
+    "id": 92,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte on es cremen les falles?",
+    "answers": [
+      { "isCorrect": true, "value": "La Cremà" },
+      { "isCorrect": false, "value": "La Plantà" },
+      { "isCorrect": false, "value": "L'Ofrena" },
+      { "isCorrect": false, "value": "La Despertà" }
+    ]
+  },
+  {
+    "id": 93,
+    "category": "musica",
+    "question": "Quin grup valencià va popularitzar la cançó 'Esperant l'alba'?",
+    "answers": [
+      { "isCorrect": false, "value": "Al Tall" },
+      { "isCorrect": true, "value": "Obrint Pas" },
+      { "isCorrect": false, "value": "La Gossa Sorda" },
+      { "isCorrect": false, "value": "Aspencat" }
+    ]
+  },
+  {
+    "id": 94,
+    "category": "literatura",
+    "question": "Qui va escriure 'El quadern gris'?",
+    "answers": [
+      { "isCorrect": true, "value": "Josep Pla" },
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Enric Valor" },
+      { "isCorrect": false, "value": "Vicent Andrés Estellés" }
+    ]
+  },
+  {
+    "id": 95,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom del riu que desemboca a Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "El Túria" },
+      { "isCorrect": true, "value": "El Xúquer" },
+      { "isCorrect": false, "value": "El Serpis" },
+      { "isCorrect": false, "value": "El Palància" }
+    ]
+  },
+  {
+    "id": 96,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va inaugurar el Palau de la Música de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1978" },
+      { "isCorrect": false, "value": "1985" },
+      { "isCorrect": true, "value": "1987" },
+      { "isCorrect": false, "value": "1992" }
+    ]
+  },
+  {
+    "id": 97,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte on es presenta la fallera major infantil?",
+    "answers": [
+      { "isCorrect": false, "value": "La Crida" },
+      { "isCorrect": false, "value": "L'Ofrena" },
+      { "isCorrect": true, "value": "La Fonteta" },
+      { "isCorrect": false, "value": "La Plantà" }
+    ]
+  },
+  {
+    "id": 98,
+    "category": "musica",
+    "question": "Quin cantautor valencià va compondre 'A la vora de la mar'?",
+    "answers": [
+      { "isCorrect": true, "value": "Lluís el Sifoner" },
+      { "isCorrect": false, "value": "Raimon" },
+      { "isCorrect": false, "value": "Ovidi Montllor" },
+      { "isCorrect": false, "value": "Pep Gimeno 'Botifarra'" }
+    ]
+  },
+  {
+    "id": 99,
+    "category": "literatura",
+    "question": "Quin autor valencià va escriure 'El quadern gris'?",
+    "answers": [
+      { "isCorrect": true, "value": "Josep Pla" },
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Enric Valor" },
+      { "isCorrect": false, "value": "Vicent Andrés Estellés" }
+    ]
+  },
+  {
+    "id": 100,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom de la muntanya més alta de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "El Montgó" },
+      { "isCorrect": true, "value": "La Muntanya de l'Or" },
+      { "isCorrect": false, "value": "El Mondúver" },
+      { "isCorrect": false, "value": "La Serra Grossa" }
+    ]
+  },
+  {
+    "id": 101,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va fundar el València Club de Futbol?",
+    "answers": [
+      { "isCorrect": false, "value": "1910" },
+      { "isCorrect": false, "value": "1915" },
+      { "isCorrect": true, "value": "1919" },
+      { "isCorrect": false, "value": "1923" }
+    ]
+  },
+  {
+    "id": 102,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte on es disparen focs artificials durant les Falles?",
+    "answers": [
+      { "isCorrect": false, "value": "La Mascletà" },
+      { "isCorrect": true, "value": "La Nit del Foc" },
+      { "isCorrect": false, "value": "La Cremà" },
+      { "isCorrect": false, "value": "L'Albà" }
+    ]
+  },
+  {
+    "id": 103,
+    "category": "musica",
+    "question": "Quin grup valencià va popularitzar la cançó 'Som'?",
+    "answers": [
+      { "isCorrect": false, "value": "Al Tall" },
+      { "isCorrect": false, "value": "Obrint Pas" },
+      { "isCorrect": false, "value": "La Gossa Sorda" },
+      { "isCorrect": true, "value": "Zoo" }
+    ]
+  },
+  {
+    "id": 104,
+    "category": "literatura",
+    "question": "Qui va escriure 'Les veus del Pamano'?",
+    "answers": [
+      { "isCorrect": true, "value": "Jaume Cabré" },
+      { "isCorrect": false, "value": "Joan Francesc Mira" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" },
+      { "isCorrect": false, "value": "Ferran Torrent" }
+    ]
+  },
+  {
+    "id": 105,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom de l'illa situada davant de la costa de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Illa de Tabarca" },
+      { "isCorrect": false, "value": "Illa de Benidorm" },
+      { "isCorrect": true, "value": "Illa dels Pensaments" },
+      { "isCorrect": false, "value": "Illa de la Llum" }
+    ]
+  },
+  {
+    "id": 106,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va inaugurar el Bioparc de València?",
+    "answers": [
+      { "isCorrect": false, "value": "2000" },
+      { "isCorrect": false, "value": "2005" },
+      { "isCorrect": true, "value": "2008" },
+      { "isCorrect": false, "value": "2010" }
+    ]
+  },
+  {
+    "id": 107,
+    "category": "falles",
+    "question": "Quin és el nom de la revista oficial de les Falles?",
+    "answers": [
+      { "isCorrect": true, "value": "El Turista Fallero" },
+      { "isCorrect": false, "value": "Foc i Flama" },
+      { "isCorrect": false, "value": "La Traca" },
+      { "isCorrect": false, "value": "L'Espurna" }
+    ]
+  },
+  {
+    "id": 108,
+    "category": "musica",
+    "question": "Quin cantautor valencià va compondre 'Abril 74'?",
+    "answers": [
+      { "isCorrect": false, "value": "Ovidi Montllor" },
+      { "isCorrect": true, "value": "Lluís Llach" },
+      { "isCorrect": false, "value": "Raimon" },
+      { "isCorrect": false, "value": "Pep Gimeno 'Botifarra'" }
+    ]
+  },
+  {
+    "id": 109,
+    "category": "literatura",
+    "question": "Qui va escriure 'El temps de les cireres'?",
+    "answers": [
+      { "isCorrect": false, "value": "Isabel-Clara Simó" },
+      { "isCorrect": false, "value": "Carme Riera" },
+      { "isCorrect": true, "value": "Montserrat Roig" },
+      { "isCorrect": false, "value": "Maria Aurèlia Capmany" }
+    ]
+  },
+  {
+    "id": 110,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom del festival de música electrònica que se celebra a Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Arenal Sound" },
+      { "isCorrect": false, "value": "FIB" },
+      { "isCorrect": true, "value": "Medusa Sunbeach Festival" },
+      { "isCorrect": false, "value": "Rototom Sunsplash" }
+    ]
+  },
+  {
+    "id": 111,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va inaugurar l'Oceanogràfic de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1998" },
+      { "isCorrect": false, "value": "2000" },
+      { "isCorrect": true, "value": "2003" },
+      { "isCorrect": false, "value": "2005" }
+    ]
+  },
+  {
+    "id": 112,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte on es planten les falles?",
+    "answers": [
+      { "isCorrect": false, "value": "La Cremà" },
+      { "isCorrect": true, "value": "La Plantà" },
+      { "isCorrect": false, "value": "L'Ofrena" },
+      { "isCorrect": false, "value": "La Despertà" }
+    ]
+  },
+  {
+    "id": 113,
+    "category": "musica",
+    "question": "Quin grup valencià va popularitzar la cançó 'Camals mullats'?",
+    "answers": [
+      { "isCorrect": false, "value": "Al Tall" },
+      { "isCorrect": false, "value": "Obrint Pas" },
+      { "isCorrect": true, "value": "La Gossa Sorda" },
+      { "isCorrect": false, "value": "Aspencat" }
+    ]
+  },
+  {
+    "id": 114,
+    "category": "literatura",
+    "question": "Qui va escriure 'La mà de l'anglès'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Francesc Mira" },
+      { "isCorrect": true, "value": "Josep Piera" },
+      { "isCorrect": false, "value": "Ferran Torrent" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" }
+    ]
+  },
+  {
+    "id": 115,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom del barri mariner de Cullera?",
+    "answers": [
+      { "isCorrect": true, "value": "El Barri del Pou" },
+      { "isCorrect": false, "value": "El Cabanyal" },
+      { "isCorrect": false, "value": "El Grau" },
+      { "isCorrect": false, "value": "La Marina" }
+    ]
+  },
+  {
+    "id": 116,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va celebrar la Copa Amèrica de vela a València?",
+    "answers": [
+      { "isCorrect": false, "value": "2003" },
+      { "isCorrect": false, "value": "2005" },
+      { "isCorrect": true, "value": "2007" },
+      { "isCorrect": false, "value": "2010" }
+    ]
+  },
+  {
+    "id": 117,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte on es disparen petards al matí durant les Falles?",
+    "answers": [
+      { "isCorrect": true, "value": "La Despertà" },
+      { "isCorrect": false, "value": "La Mascletà" },
+      { "isCorrect": false, "value": "L'Albà" },
+      { "isCorrect": false, "value": "La Nit del Foc" }
+    ]
+  },
+  {
+    "id": 118,
+    "category": "musica",
+    "question": "Quin cantautor valencià va compondre 'La samarreta'?",
+    "answers": [
+      { "isCorrect": false, "value": "Raimon" },
+      { "isCorrect": true, "value": "Ovidi Montllor" },
+      { "isCorrect": false, "value": "Lluís el Sifoner" },
+      { "isCorrect": false, "value": "Pep Gimeno 'Botifarra'" }
+    ]
+  },
+  {
+    "id": 119,
+    "category": "literatura",
+    "question": "Qui va escriure 'El crim del triangle'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Enric Valor" },
+      { "isCorrect": true, "value": "Ferran Torrent" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" }
+    ]
+  },
+  {
+    "id": 120,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom de la torre de guaita situada a la platja de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Torre del Castell" },
+      { "isCorrect": true, "value": "Torre del Marenyet" },
+      { "isCorrect": false, "value": "Torre de l'Or" },
+      { "isCorrect": false, "value": "Torre del Far" }
+    ]
+  },
+  {
+    "id": 121,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va inaugurar el Museu de Belles Arts de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1800" },
+      { "isCorrect": true, "value": "1839" },
+      { "isCorrect": false, "value": "1903" },
+      { "isCorrect": false, "value": "1946" }
+    ]
+  },
+  {
+    "id": 122,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte on es lliuren els premis a les millors falles infantils?",
+    "answers": [
+      { "isCorrect": false, "value": "La Cremà Infantil" },
+      { "isCorrect": false, "value": "L'Ofrena Infantil" },
+      { "isCorrect": true, "value": "El Lliurament de Premis Infantils" },
+      { "isCorrect": false, "value": "La Despertà Infantil" }
+    ]
+  },
+  {
+    "id": 123,
+    "category": "musica",
+    "question": "Quin grup valencià va popularitzar la cançó 'Poder Petit'?",
+    "answers": [
+      { "isCorrect": false, "value": "Al Tall" },
+      { "isCorrect": true, "value": "Obrint Pas" },
+      { "isCorrect": false, "value": "La Gossa Sorda" },
+      { "isCorrect": false, "value": "Zoo" }
+    ]
+  },
+  {
+    "id": 124,
+    "category": "literatura",
+    "question": "Qui va escriure la novel·la 'L'últim patriarca'?",
+    "answers": [
+      { "isCorrect": false, "value": "Isabel-Clara Simó" },
+      { "isCorrect": true, "value": "Najat El Hachmi" },
+      { "isCorrect": false, "value": "Carme Riera" },
+      { "isCorrect": false, "value": "Maria Barbal" }
+    ]
+  },
+  {
+    "id": 125,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom del parc aquàtic de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Aqualandia" },
+      { "isCorrect": false, "value": "Aquarama" },
+      { "isCorrect": true, "value": "Aquopolis" },
+      { "isCorrect": false, "value": "Aquapark" }
+    ]
+  },
+  {
+    "id": 126,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va fundar el Levante Unión Deportiva?",
+    "answers": [
+      { "isCorrect": false, "value": "1900" },
+      { "isCorrect": false, "value": "1905" },
+      { "isCorrect": true, "value": "1909" },
+      { "isCorrect": false, "value": "1920" }
+    ]
+  },
+  {
+    "id": 127,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte on es fa l'ofrena de flors a la Mare de Déu dels Desemparats?",
+    "answers": [
+      { "isCorrect": false, "value": "La Crida" },
+      { "isCorrect": false, "value": "La Plantà" },
+      { "isCorrect": true, "value": "L'Ofrena" },
+      { "isCorrect": false, "value": "La Cremà" }
+    ]
+  },
+  {
+    "id": 128,
+    "category": "musica",
+    "question": "Quin cantautor valencià va compondre 'Verges i gossos'?",
+    "answers": [
+      { "isCorrect": true, "value": "Raimon" },
+      { "isCorrect": false, "value": "Ovidi Montllor" },
+      { "isCorrect": false, "value": "Lluís Llach" },
+      { "isCorrect": false, "value": "Pep Gimeno 'Botifarra'" }
+    ]
+  },
+  {
+    "id": 129,
+    "category": "literatura",
+    "question": "Qui va escriure 'La ciutat de València'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": true, "value": "Manuel Sanchis Guarner" },
+      { "isCorrect": false, "value": "Vicent Andrés Estellés" },
+      { "isCorrect": false, "value": "Enric Valor" }
+    ]
+  },
+  {
+    "id": 130,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom del principal club nàutic de Cullera?",
+    "answers": [
+      { "isCorrect": true, "value": "Club Nàutic Cullera" },
+      { "isCorrect": false, "value": "Real Club Nàutic de Cullera" },
+      { "isCorrect": false, "value": "Club Marítim de Cullera" },
+      { "isCorrect": false, "value": "Yacht Club Cullera" }
+    ]
+  },
+  {
+    "id": 131,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va inaugurar l'Alqueria del Basket, la ciutat esportiva del València Basket?",
+    "answers": [
+      { "isCorrect": false, "value": "2010" },
+      { "isCorrect": false, "value": "2015" },
+      { "isCorrect": true, "value": "2017" },
+      { "isCorrect": false, "value": "2020" }
+    ]
+  },
+  {
+    "id": 132,
+    "category": "falles",
+    "question": "Quin és el nom del museu dedicat a les Falles a València?",
+    "answers": [
+      { "isCorrect": false, "value": "Museu del Ninot" },
+      { "isCorrect": true, "value": "Museu Faller de València" },
+      { "isCorrect": false, "value": "Museu de l'Artista Faller" },
+      { "isCorrect": false, "value": "Museu de la Seda i les Falles" }
+    ]
+  },
+  {
+    "id": 133,
+    "category": "musica",
+    "question": "Quin grup valencià va popularitzar la cançó 'Pescadors de nit'?",
+    "answers": [
+      { "isCorrect": true, "value": "Al Tall" },
+      { "isCorrect": false, "value": "Obrint Pas" },
+      { "isCorrect": false, "value": "La Gossa Sorda" },
+      { "isCorrect": false, "value": "Aspencat" }
+    ]
+  },
+  {
+    "id": 134,
+    "category": "literatura",
+    "question": "Qui va escriure 'El desig dels dies'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Vicent Andrés Estellés" },
+      { "isCorrect": true, "value": "Josep Piera" },
+      { "isCorrect": false, "value": "Maria Beneyto" }
+    ]
+  },
+  {
+    "id": 135,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom de la platja situada al nord de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Platja del Saler" },
+      { "isCorrect": false, "value": "Platja de la Devesa" },
+      { "isCorrect": true, "value": "Platja del Dossel" },
+      { "isCorrect": false, "value": "Platja de l'Albufera" }
+    ]
+  },
+  {
+    "id": 136,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va fundar la Reial Acadèmia de Belles Arts de Sant Carles?",
+    "answers": [
+      { "isCorrect": false, "value": "1700" },
+      { "isCorrect": true, "value": "1768" },
+      { "isCorrect": false, "value": "1812" },
+      { "isCorrect": false, "value": "1833" }
+    ]
+  },
+  {
+    "id": 137,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte on es disparen focs artificials l'última nit de les Falles?",
+    "answers": [
+      { "isCorrect": false, "value": "La Nit del Foc" },
+      { "isCorrect": false, "value": "La Cremà" },
+      { "isCorrect": true, "value": "La Nit de la Cremà" },
+      { "isCorrect": false, "value": "L'Apoteosi Final" }
+    ]
+  },
+  {
+    "id": 138,
+    "category": "musica",
+    "question": "Quin grup valencià va popularitzar la cançó 'Abril 74'?",
+    "answers": [
+      { "isCorrect": false, "value": "Al Tall" },
+      { "isCorrect": true, "value": "Obrint Pas" },
+      { "isCorrect": false, "value": "La Gossa Sorda" },
+      { "isCorrect": false, "value": "Aspencat" }
+    ]
+  },
+  {
+    "id": 139,
+    "category": "literatura",
+    "question": "Qui va escriure 'Júlia'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Enric Valor" },
+      { "isCorrect": true, "value": "Isabel-Clara Simó" },
+      { "isCorrect": false, "value": "Ferran Torrent" }
+    ]
+  },
+  {
+    "id": 140,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom del principal mercat de Cullera?",
+    "answers": [
+      { "isCorrect": true, "value": "Mercat Municipal" },
+      { "isCorrect": false, "value": "Mercat Central" },
+      { "isCorrect": false, "value": "Mercat del Peix" },
+      { "isCorrect": false, "value": "Mercat de Sant Antoni" }
+    ]
+  },
+  {
+    "id": 141,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va fundar la Societat d'Amics del País de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1750" },
+      { "isCorrect": true, "value": "1776" },
+      { "isCorrect": false, "value": "1808" },
+      { "isCorrect": false, "value": "1833" }
+    ]
+  },
+  {
+    "id": 142,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte on es llegeix un poema satíric durant les Falles?",
+    "answers": [
+      { "isCorrect": false, "value": "La Crida" },
+      { "isCorrect": false, "value": "L'Ofrena" },
+      { "isCorrect": true, "value": "La Lectura del Llibret" },
+      { "isCorrect": false, "value": "La Despertà" }
+    ]
+  },
+  {
+    "id": 143,
+    "category": "musica",
+    "question": "Quin grup valencià va popularitzar la cançó 'La flama'?",
+    "answers": [
+      { "isCorrect": false, "value": "Al Tall" },
+      { "isCorrect": true, "value": "Obrint Pas" },
+      { "isCorrect": false, "value": "La Gossa Sorda" },
+      { "isCorrect": false, "value": "Aspencat" }
+    ]
+  },
+  {
+    "id": 144,
+    "category": "literatura",
+    "question": "Qui va escriure 'Matèria de Bretanya'?",
+    "answers": [
+      { "isCorrect": true, "value": "Carmelina Sánchez-Cutillas" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" },
+      { "isCorrect": false, "value": "Maria Beneyto" },
+      { "isCorrect": false, "value": "Joan Francesc Mira" }
+    ]
+  },
+  {
+    "id": 145,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom del principal parc natural prop de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Parc Natural del Túria" },
+      { "isCorrect": true, "value": "Parc Natural de l'Albufera" },
+      { "isCorrect": false, "value": "Parc Natural de la Serra d'Irta" },
+      { "isCorrect": false, "value": "Parc Natural del Montgó" }
+    ]
+  },
+  {
+    "id": 146,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va inaugurar l'Estadi de Mestalla?",
+    "answers": [
+      { "isCorrect": false, "value": "1910" },
+      { "isCorrect": false, "value": "1919" },
+      { "isCorrect": true, "value": "1923" },
+      { "isCorrect": false, "value": "1931" }
+    ]
+  },
+  {
+    "id": 147,
+    "category": "falles",
+    "question": "Quin és el nom de l'acte on es tria la Fallera Major de València?",
+    "answers": [
+      { "isCorrect": false, "value": "La Crida" },
+      { "isCorrect": false, "value": "L'Ofrena" },
+      { "isCorrect": true, "value": "La Fonteta" },
+      { "isCorrect": false, "value": "La Plantà" }
+    ]
+  },
+  {
+    "id": 148,
+    "category": "musica",
+    "question": "Quin cantautor valencià va compondre 'Tots els colors del món'?",
+    "answers": [
+      { "isCorrect": false, "value": "Raimon" },
+      { "isCorrect": false, "value": "Ovidi Montllor" },
+      { "isCorrect": true, "value": "Lluís el Sifoner" },
+      { "isCorrect": false, "value": "Pep Gimeno 'Botifarra'" }
+    ]
+  },
+  {
+    "id": 149,
+    "category": "literatura",
+    "question": "Qui va escriure 'El cor de la ciutat'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Enric Valor" },
+      { "isCorrect": true, "value": "Lluís Fernàndez" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" }
+    ]
+  },
+  {
+    "id": 150,
+    "category": "poble_de_cullera",
+    "question": "Quin és el nom de la principal zona de restaurants i oci nocturn de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "El Perelló" },
+      { "isCorrect": false, "value": "El Saler" },
+      { "isCorrect": true, "value": "El Racó" },
+      { "isCorrect": false, "value": "La Devesa" }
+    ]
+  },
+  {
+    "id": 151,
+    "category": "historia_de_valencia",
+    "question": "En quin any es va fundar la Universitat de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1400" },
+      { "isCorrect": false, "value": "1450" },
+      { "isCorrect": true, "value": "1499" },
+      { "isCorrect": false, "value": "1550" }
+    ]
+  },
+  {
+    "id": 152,
+    "category": "Gastronomia valenciana",
+    "question": "Quin és l'ingredient principal de l'all i pebre?",
+    "answers": [
+      { "isCorrect": false, "value": "Pollastre" },
+      { "isCorrect": true, "value": "Anguila" },
+      { "isCorrect": false, "value": "Conill" },
+      { "isCorrect": false, "value": "Vedella" }
+    ]
+  },
+  {
+    "id": 153,
+    "category": "Geografia valenciana",
+    "question": "Quina és la muntanya més alta de la Comunitat Valenciana?",
+    "answers": [
+      { "isCorrect": true, "value": "Penyagolosa" },
+      { "isCorrect": false, "value": "Montgó" },
+      { "isCorrect": false, "value": "Aitana" },
+      { "isCorrect": false, "value": "Calderón" }
+    ]
+  },
+  {
+    "id": 154,
+    "category": "Art valencià",
+    "question": "Quin pintor valencià va crear 'El col·loqui dels gossos'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joaquín Sorolla" },
+      { "isCorrect": false, "value": "Juan de Juanes" },
+      { "isCorrect": true, "value": "Francisco de Goya" },
+      { "isCorrect": false, "value": "Vicente López" }
+    ]
+  },
+  {
+    "id": 155,
+    "category": "Esports valencians",
+    "question": "Quin esport tradicional valencià es juga amb una pilota de cuir?",
+    "answers": [
+      { "isCorrect": false, "value": "Colombicultura" },
+      { "isCorrect": false, "value": "Tir i arrossegament" },
+      { "isCorrect": true, "value": "Pilota valenciana" },
+      { "isCorrect": false, "value": "Birles" }
+    ]
+  },
+  {
+    "id": 156,
+    "category": "Festes valencianes",
+    "question": "En quina ciutat se celebra la festa de la Magdalena?",
+    "answers": [
+      { "isCorrect": false, "value": "València" },
+      { "isCorrect": true, "value": "Castelló de la Plana" },
+      { "isCorrect": false, "value": "Alacant" },
+      { "isCorrect": false, "value": "Elx" }
+    ]
+  },
+  {
+    "id": 157,
+    "category": "musica",
+    "question": "Quin instrument de vent és típic de la música valenciana?",
+    "answers": [
+      { "isCorrect": true, "value": "Dolçaina" },
+      { "isCorrect": false, "value": "Flauta travessera" },
+      { "isCorrect": false, "value": "Saxofon" },
+      { "isCorrect": false, "value": "Trompeta" }
+    ]
+  },
+  {
+    "id": 158,
+    "category": "literatura",
+    "question": "Qui va escriure 'Llibre de meravelles'?",
+    "answers": [
+      { "isCorrect": false, "value": "Ausiàs March" },
+      { "isCorrect": false, "value": "Joanot Martorell" },
+      { "isCorrect": true, "value": "Vicent Andrés Estellés" },
+      { "isCorrect": false, "value": "Joan Fuster" }
+    ]
+  },
+  {
+    "id": 159,
+    "category": "Arquitectura valenciana",
+    "question": "Quin arquitecte va dissenyar la Ciutat de les Arts i les Ciències?",
+    "answers": [
+      { "isCorrect": false, "value": "Norman Foster" },
+      { "isCorrect": false, "value": "Frank Gehry" },
+      { "isCorrect": true, "value": "Santiago Calatrava" },
+      { "isCorrect": false, "value": "Zaha Hadid" }
+    ]
+  },
+  {
+    "id": 160,
+    "category": "historia_de_valencia",
+    "question": "Quin rei va atorgar els Furs de València?",
+    "answers": [
+      { "isCorrect": true, "value": "Jaume I" },
+      { "isCorrect": false, "value": "Pere el Gran" },
+      { "isCorrect": false, "value": "Alfons el Magnànim" },
+      { "isCorrect": false, "value": "Ferran el Catòlic" }
+    ]
+  },
+  {
+    "id": 161,
+    "category": "Gastronomia valenciana",
+    "question": "Quin és l'ingredient principal de l'orxata?",
+    "answers": [
+      { "isCorrect": false, "value": "Ametlla" },
+      { "isCorrect": true, "value": "Xufa" },
+      { "isCorrect": false, "value": "Arròs" },
+      { "isCorrect": false, "value": "Avellana" }
+    ]
+  },
+  {
+    "id": 162,
+    "category": "Geografia valenciana",
+    "question": "Quin és el riu més llarg que passa per la Comunitat Valenciana?",
+    "answers": [
+      { "isCorrect": false, "value": "Túria" },
+      { "isCorrect": true, "value": "Xúquer" },
+      { "isCorrect": false, "value": "Segura" },
+      { "isCorrect": false, "value": "Serpis" }
+    ]
+  },
+  {
+    "id": 163,
+    "category": "Art valencià",
+    "question": "Quin estil arquitectònic predomina en la Llotja de la Seda de València?",
+    "answers": [
+      { "isCorrect": false, "value": "Romànic" },
+      { "isCorrect": false, "value": "Barroc" },
+      { "isCorrect": true, "value": "Gòtic" },
+      { "isCorrect": false, "value": "Renaixentista" }
+    ]
+  },
+  {
+    "id": 164,
+    "category": "Esports valencians",
+    "question": "En quin esport destaca el valencià David Ferrer?",
+    "answers": [
+      { "isCorrect": true, "value": "Tennis" },
+      { "isCorrect": false, "value": "Futbol" },
+      { "isCorrect": false, "value": "Bàsquet" },
+      { "isCorrect": false, "value": "Natació" }
+    ]
+  },
+  {
+    "id": 165,
+    "category": "Festes valencianes",
+    "question": "Quina festa se celebra a Elx el 14 i 15 d'agost?",
+    "answers": [
+      { "isCorrect": false, "value": "Les Fogueres" },
+      { "isCorrect": false, "value": "La Tomatina" },
+      { "isCorrect": true, "value": "El Misteri d'Elx" },
+      { "isCorrect": false, "value": "Les Falles" }
+    ]
+  },
+  {
+    "id": 166,
+    "category": "musica",
+    "question": "Quin compositor valencià va escriure el 'Concert d'Aranjuez'?",
+    "answers": [
+      { "isCorrect": false, "value": "Manuel Palau" },
+      { "isCorrect": true, "value": "Joaquín Rodrigo" },
+      { "isCorrect": false, "value": "Óscar Esplá" },
+      { "isCorrect": false, "value": "Salvador Giner" }
+    ]
+  },
+  {
+    "id": 167,
+    "category": "literatura",
+    "question": "Qui va escriure 'La plaça del Diamant'?",
+    "answers": [
+      { "isCorrect": true, "value": "Mercè Rodoreda" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" },
+      { "isCorrect": false, "value": "Maria Aurèlia Capmany" },
+      { "isCorrect": false, "value": "Carme Riera" }
+    ]
+  },
+  {
+    "id": 168,
+    "category": "Arquitectura valenciana",
+    "question": "En quin any es va construir el Mercat Central de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1890" },
+      { "isCorrect": false, "value": "1900" },
+      { "isCorrect": true, "value": "1928" },
+      { "isCorrect": false, "value": "1950" }
+    ]
+  },
+  {
+    "id": 169,
+    "category": "historia_de_valencia",
+    "question": "Quin any va tenir lloc la Batalla d'Almansa?",
+    "answers": [
+      { "isCorrect": false, "value": "1705" },
+      { "isCorrect": true, "value": "1707" },
+      { "isCorrect": false, "value": "1710" },
+      { "isCorrect": false, "value": "1714" }
+    ]
+  },
+  {
+    "id": 170,
+    "category": "Gastronomia valenciana",
+    "question": "Quin és l'ingredient principal de la fideuà?",
+    "answers": [
+      { "isCorrect": false, "value": "Arròs" },
+      { "isCorrect": false, "value": "Carn" },
+      { "isCorrect": true, "value": "Fideus" },
+      { "isCorrect": false, "value": "Verdures" }
+    ]
+  },
+  {
+    "id": 171,
+    "category": "Geografia valenciana",
+    "question": "Quina és l'illa més gran de la Comunitat Valenciana?",
+    "answers": [
+      { "isCorrect": true, "value": "Tabarca" },
+      { "isCorrect": false, "value": "Benidorm" },
+      { "isCorrect": false, "value": "Portitxol" },
+      { "isCorrect": false, "value": "Columbretes" }
+    ]
+  },
+  {
+    "id": 172,
+    "category": "Art valencià",
+    "question": "Quin pintor valencià va crear 'El crit'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joaquín Sorolla" },
+      { "isCorrect": false, "value": "Juan de Juanes" },
+      { "isCorrect": false, "value": "Francisco de Goya" },
+      { "isCorrect": true, "value": "Josep Renau" }
+    ]
+  },
+  {
+    "id": 173,
+    "category": "Esports valencians",
+    "question": "En quin esport destaca la valenciana Ana Carrascosa?",
+    "answers": [
+      { "isCorrect": false, "value": "Natació" },
+      { "isCorrect": true, "value": "Judo" },
+      { "isCorrect": false, "value": "Atletisme" },
+      { "isCorrect": false, "value": "Gimnàstica" }
+    ]
+  },
+  {
+    "id": 174,
+    "category": "Festes valencianes",
+    "question": "En quina ciutat se celebra la festa de les Fogueres?",
+    "answers": [
+      { "isCorrect": false, "value": "València" },
+      { "isCorrect": false, "value": "Castelló de la Plana" },
+      { "isCorrect": true, "value": "Alacant" },
+      { "isCorrect": false, "value": "Elx" }
+    ]
+  },
+  {
+    "id": 175,
+    "category": "musica",
+    "question": "Quin grup valencià va popularitzar la cançó 'Tio Canya'?",
+    "answers": [
+      { "isCorrect": true, "value": "Al Tall" },
+      { "isCorrect": false, "value": "Obrint Pas" },
+      { "isCorrect": false, "value": "La Gossa Sorda" },
+      { "isCorrect": false, "value": "Aspencat" }
+    ]
+  },
+  {
+    "id": 176,
+    "category": "literatura",
+    "question": "Qui va escriure 'El temps dels nens'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Francesc Mira" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" },
+      { "isCorrect": true, "value": "Ferran Torrent" },
+      { "isCorrect": false, "value": "Josep Piera" }
+    ]
+  },
+  {
+    "id": 177,
+    "category": "Arquitectura valenciana",
+    "question": "Quin estil arquitectònic predomina en el Palau del Marqués de Dosaigües?",
+    "answers": [
+      { "isCorrect": false, "value": "Gòtic" },
+      { "isCorrect": false, "value": "Renaixentista" },
+      { "isCorrect": true, "value": "Barroc" },
+      { "isCorrect": false, "value": "Neoclàssic" }
+    ]
+  },
+  {
+    "id": 178,
+    "category": "historia_de_valencia",
+    "question": "Quin any es va produir la Revolta de les Germanies?",
+    "answers": [
+      { "isCorrect": false, "value": "1500" },
+      { "isCorrect": true, "value": "1519" },
+      { "isCorrect": false, "value": "1609" },
+      { "isCorrect": false, "value": "1707" }
+    ]
+  },
+  {
+    "id": 179,
+    "category": "Gastronomia valenciana",
+    "question": "Quin és l'ingredient principal de l'esgarrat?",
+    "answers": [
+      { "isCorrect": false, "value": "Carn" },
+      { "isCorrect": false, "value": "Peix" },
+      { "isCorrect": true, "value": "Pebrot" },
+      { "isCorrect": false, "value": "Tomaca" }
+    ]
+  },
+  {
+    "id": 180,
+    "category": "Geografia valenciana",
+    "question": "Quin és el cap més meridional de la Comunitat Valenciana?",
+    "answers": [
+      { "isCorrect": false, "value": "Cap de Sant Antoni" },
+      { "isCorrect": false, "value": "Cap de la Nau" },
+      { "isCorrect": true, "value": "Cap de l'Horta" },
+      { "isCorrect": false, "value": "Cap de Cullera" }
+    ]
+  },
+  {
+    "id": 181,
+    "category": "Art valencià",
+    "question": "Quin pintor valencià va crear la sèrie 'Visió d'Espanya' per a la Hispanic Society of America?",
+    "answers": [
+      { "isCorrect": true, "value": "Joaquín Sorolla" },
+      { "isCorrect": false, "value": "Francisco de Goya" },
+      { "isCorrect": false, "value": "Juan de Juanes" },
+      { "isCorrect": false, "value": "Josep Renau" }
+    ]
+  },
+  {
+    "id": 182,
+    "category": "Esports valencians",
+    "question": "Quin equip de futbol valencià ha guanyat més vegades la Lliga espanyola?",
+    "answers": [
+      { "isCorrect": true, "value": "València CF" },
+      { "isCorrect": false, "value": "Llevant UE" },
+      { "isCorrect": false, "value": "Elx CF" },
+      { "isCorrect": false, "value": "Vila-real CF" }
+    ]
+  },
+  {
+    "id": 183,
+    "category": "Festes valencianes",
+    "question": "En quina localitat se celebra la Tomatina?",
+    "answers": [
+      { "isCorrect": false, "value": "Xàtiva" },
+      { "isCorrect": false, "value": "Alzira" },
+      { "isCorrect": true, "value": "Bunyol" },
+      { "isCorrect": false, "value": "Sagunt" }
+    ]
+  },
+  {
+    "id": 184,
+    "category": "musica",
+    "question": "Quin cantautor valencià va compondre 'Al vent'?",
+    "answers": [
+      { "isCorrect": false, "value": "Ovidi Montllor" },
+      { "isCorrect": true, "value": "Raimon" },
+      { "isCorrect": false, "value": "Lluís el Sifoner" },
+      { "isCorrect": false, "value": "Pep Gimeno 'Botifarra'" }
+    ]
+  },
+  {
+    "id": 185,
+    "category": "literatura",
+    "question": "Qui va escriure 'Nosaltres, els valencians'?",
+    "answers": [
+      { "isCorrect": true, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Vicent Andrés Estellés" },
+      { "isCorrect": false, "value": "Enric Valor" },
+      { "isCorrect": false, "value": "Manuel Sanchis Guarner" }
+    ]
+  },
+  {
+    "id": 186,
+    "category": "Arquitectura valenciana",
+    "question": "Quin any es va inaugurar l'Hemisfèric a la Ciutat de les Arts i les Ciències?",
+    "answers": [
+      { "isCorrect": false, "value": "1995" },
+      { "isCorrect": true, "value": "1998" },
+      { "isCorrect": false, "value": "2000" },
+      { "isCorrect": false, "value": "2005" }
+    ]
+  },
+  {
+    "id": 187,
+    "category": "historia_de_valencia",
+    "question": "Quin rei va conquerir València als musulmans?",
+    "answers": [
+      { "isCorrect": true, "value": "Jaume I" },
+      { "isCorrect": false, "value": "Pere el Gran" },
+      { "isCorrect": false, "value": "Alfons el Magnànim" },
+      { "isCorrect": false, "value": "Ferran el Catòlic" }
+    ]
+  },
+  {
+    "id": 188,
+    "category": "Gastronomia valenciana",
+    "question": "Quin és l'ingredient principal de l'arnadí?",
+    "answers": [
+      { "isCorrect": false, "value": "Arròs" },
+      { "isCorrect": false, "value": "Carn" },
+      { "isCorrect": true, "value": "Carabassa" },
+      { "isCorrect": false, "value": "Peix" }
+    ]
+  },
+  {
+    "id": 189,
+    "category": "Geografia valenciana",
+    "question": "Quina és la comarca més septentrional de la Comunitat Valenciana?",
+    "answers": [
+      { "isCorrect": true, "value": "Els Ports" },
+      { "isCorrect": false, "value": "L'Alt Maestrat" },
+      { "isCorrect": false, "value": "El Baix Maestrat" },
+      { "isCorrect": false, "value": "La Plana Alta" }
+    ]
+  },
+  {
+    "id": 190,
+    "category": "Art valencià",
+    "question": "Quin escultor valencià va crear l'escultura 'La Pamela' a València?",
+    "answers": [
+      { "isCorrect": false, "value": "Andreu Alfaro" },
+      { "isCorrect": true, "value": "Miquel Navarro" },
+      { "isCorrect": false, "value": "Manolo Valdés" },
+      { "isCorrect": false, "value": "Julio González" }
+    ]
+  },
+  {
+    "id": 191,
+    "category": "Esports valencians",
+    "question": "En quin esport destaca el valencià David Casinos?",
+    "answers": [
+      { "isCorrect": false, "value": "Natació" },
+      { "isCorrect": false, "value": "Ciclisme" },
+      { "isCorrect": true, "value": "Atletisme paralímpic" },
+      { "isCorrect": false, "value": "Tenis de taula" }
+    ]
+  },
+  {
+    "id": 192,
+    "category": "Festes valencianes",
+    "question": "Quina festa se celebra a Alcoi el 23 d'abril?",
+    "answers": [
+      { "isCorrect": false, "value": "Les Falles" },
+      { "isCorrect": false, "value": "La Tomatina" },
+      { "isCorrect": true, "value": "Moros i Cristians" },
+      { "isCorrect": false, "value": "La Magdalena" }
+    ]
+  },
+  {
+    "id": 193,
+    "category": "musica",
+    "question": "Quin grup valencià va popularitzar la cançó 'La samarreta'?",
+    "answers": [
+      { "isCorrect": false, "value": "Al Tall" },
+      { "isCorrect": false, "value": "Obrint Pas" },
+      { "isCorrect": true, "value": "La Gossa Sorda" },
+      { "isCorrect": false, "value": "Aspencat" }
+    ]
+  },
+  {
+    "id": 194,
+    "category": "literatura",
+    "question": "Qui va escriure 'Rondalles valencianes'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": false, "value": "Vicent Andrés Estellés" },
+      { "isCorrect": true, "value": "Enric Valor" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" }
+    ]
+  },
+  {
+    "id": 195,
+    "category": "Arquitectura valenciana",
+    "question": "Quin arquitecte va dissenyar l'Estació del Nord de València?",
+    "answers": [
+      { "isCorrect": true, "value": "Demetrio Ribes" },
+      { "isCorrect": false, "value": "Santiago Calatrava" },
+      { "isCorrect": false, "value": "Antoni Gaudí" },
+      { "isCorrect": false, "value": "Rafael Guastavino" }
+    ]
+  },
+  {
+    "id": 196,
+    "category": "historia_de_valencia",
+    "question": "En quin any es va produir l'expulsió dels moriscos del Regne de València?",
+    "answers": [
+      { "isCorrect": false, "value": "1492" },
+      { "isCorrect": false, "value": "1521" },
+      { "isCorrect": true, "value": "1609" },
+      { "isCorrect": false, "value": "1707" }
+    ]
+  },
+  {
+    "id": 197,
+    "category": "Gastronomia valenciana",
+    "question": "Quin és l'ingredient principal de la coca de llanda?",
+    "answers": [
+      { "isCorrect": false, "value": "Xocolata" },
+      { "isCorrect": false, "value": "Poma" },
+      { "isCorrect": true, "value": "Taronja" },
+      { "isCorrect": false, "value": "Formatge" }
+    ]
+  },
+  {
+    "id": 198,
+    "category": "Geografia valenciana",
+    "question": "Quin és el parc natural més gran de la Comunitat Valenciana?",
+    "answers": [
+      { "isCorrect": false, "value": "L'Albufera" },
+      { "isCorrect": true, "value": "Serra d'Espadà" },
+      { "isCorrect": false, "value": "El Montgó" },
+      { "isCorrect": false, "value": "Penyagolosa" }
+    ]
+  },
+  {
+    "id": 199,
+    "category": "Art valencià",
+    "question": "Quin pintor valencià va crear 'La barraca'?",
+    "answers": [
+      { "isCorrect": true, "value": "Joaquín Sorolla" },
+      { "isCorrect": false, "value": "Juan de Juanes" },
+      { "isCorrect": false, "value": "Francisco de Goya" },
+      { "isCorrect": false, "value": "Josep Renau" }
+    ]
+  },
+  {
+    "id": 200,
+    "category": "Esports valencians",
+    "question": "Quin pilot valencià ha guanyat el Campionat del Món de MotoGP?",
+    "answers": [
+      { "isCorrect": false, "value": "Héctor Barberá" },
+      { "isCorrect": false, "value": "Nico Terol" },
+      { "isCorrect": true, "value": "Jorge Martínez 'Aspar'" },
+      { "isCorrect": false, "value": "Héctor Faubel" }
+    ]
+  }
+]

@@ -1,0 +1,19 @@
+.user-profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 3rem;
+
+  h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 5px 0;
+    color: var(--ion-color-medium);
+  }
+}

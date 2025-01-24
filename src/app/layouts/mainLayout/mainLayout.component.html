@@ -1,0 +1,44 @@
+<ion-split-pane contentId="main-content">
+  <ion-menu contentId="main-content" side="start" type="overlay">
+    <ion-content class="ion-padding">
+      <div class="user-profile ion-text-center">
+        <div>
+          @defer (on viewport) {
+          <app-logo></app-logo>
+          } @placeholder {
+          <small>Carregant...</small>
+          }
+          <!-- @if (user) {
+          <ion-text>
+            <h2>{{ user.name }}</h2>
+            <p>Punts totals: {{ user.totalPoints }}</p>
+          </ion-text>
+          } -->
+        </div>
+        <ion-button expand="block" (click)="signOut()">
+          <ion-icon slot="start" name="log-out"></ion-icon>
+          Tancar sessió
+        </ion-button>
+      </div>
+    </ion-content>
+  </ion-menu>
+
+  <div class="ion-page" id="main-content">
+    <ion-tabs>
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="home">
+          <ion-icon name="home-outline"></ion-icon>
+          Inici
+        </ion-tab-button>
+        <ion-tab-button tab="games">
+          <ion-icon name="game-controller-outline"></ion-icon>
+          Partides
+        </ion-tab-button>
+        <ion-tab-button tab="profile">
+          <ion-icon name="person-outline"></ion-icon>
+          Perfil
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </div>
+</ion-split-pane>

@@ -1,0 +1,35 @@
+@if (currentUserPlayer && rivalPlayer) {
+<ion-item-sliding>
+  <ion-item>
+    <ion-avatar
+      class="custom-avatar"
+      slot="start"
+      [ngStyle]="{ 'background-color': rivalPlayer.backgroundColor }"
+    >
+      <span>
+        {{ rivalPlayer.userName.substring(0, 2).toUpperCase() }}
+      </span>
+    </ion-avatar>
+    <ion-label>
+      <h2>{{ rivalPlayer.userName }}</h2>
+      <ion-text color="medium" class="player-score">
+        {{ currentUserPlayer.score }} - {{ rivalPlayer.score }}
+      </ion-text>
+    </ion-label>
+    @if (myTurn) {
+    <ion-button shape="round" (click)="playGame(game)">
+      <ion-icon
+        name="play"
+        [slot]="isSmallScreen ? 'icon-only' : 'start'"
+      ></ion-icon>
+      {{ isSmallScreen ? "" : "Jugar" }}
+    </ion-button>
+    }
+  </ion-item>
+  <ion-item-options side="end">
+    <ion-item-option color="danger" (click)="confirmDeleteGame()">
+      <ion-icon slot="icon-only" name="trash"></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+</ion-item-sliding>
+}

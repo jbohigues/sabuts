@@ -1,0 +1,143 @@
+<app-header title="Perfil" [menuButton]="true"></app-header>
+
+<ion-content
+  class="ion-padding"
+  fixed-slot-placement="before"
+  [scrollEvents]="true"
+  (ionScroll)="onScroll($event)"
+>
+  <div class="flexdiv">
+    @if (currentUser) {
+    <ion-avatar
+      class="custom-avatar profile"
+      slot="start"
+      [ngStyle]="{'background-color': currentUser.backgroundColor}"
+    >
+      <span> {{currentUser.userName.substring(0,2).toUpperCase() }} </span>
+    </ion-avatar>
+    <div>
+      <h4>{{'@'+currentUser.userName}}</h4>
+      <ion-badge color="primary">{{currentUser.totalPoints}} pts</ion-badge>
+    </div>
+    }
+  </div>
+
+  <ion-segment
+    [(ngModel)]="selectedSegment"
+    (ionChange)="segmentChanged($event)"
+  >
+    <ion-segment-button value="friends">
+      <ion-label>
+        Amics {{friendsList.length > 0 ? '('+friendsList.length+')' : ''}}
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="requests">
+      <ion-label>
+        Sol·licituds {{friendRequestList.length > 0 ?
+        '('+friendRequestList.length+')' : ''}}
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div [ngSwitch]="selectedSegment">
+    @switch (selectedSegment) { @case ('friends') {
+    <ion-list>
+      @if (loadingFriends) {
+      <ion-spinner name="dots"></ion-spinner>
+      } @else { @if (friendsList.length) { @for (friend of friendsList; track
+      friend.id) {
+      <ion-item-sliding>
+        <ion-item>
+          <ion-avatar
+            class="custom-avatar"
+            slot="start"
+            [ngStyle]="{'background-color': friend.friendUser.backgroundColor}"
+          >
+            <span>
+              {{friend.friendUser.userName.substring(0,2).toUpperCase() }}
+            </span>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ friend.friendUser.name }}</h2>
+            <p>{{ '@'+friend.friendUser.userName }}</p>
+          </ion-label>
+          <ion-badge slot="end">
+            {{ friend.friendUser.totalPoints }} pts
+          </ion-badge>
+        </ion-item>
+        <!-- TODO: ver que hacemos con estas opciones -->
+        <!-- <ion-item-options side="end">
+          <ion-item-option color="primary">
+            <ion-icon slot="icon-only" name="game-controller"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options> -->
+      </ion-item-sliding>
+      } }@else {
+      <ion-item> No has agregat cap amic/a </ion-item>
+      } }
+    </ion-list>
+    } @case ('requests') {
+    <ion-list>
+      @if (loadingFriendRequest) {
+      <ion-spinner name="dots"></ion-spinner>
+      } @else { @if (friendRequestList.length) { @for (request of
+      friendRequestList; track request.id) {
+      <ion-item>
+        <ion-avatar
+          class="custom-avatar"
+          slot="start"
+          [ngStyle]="{'background-color': request.sendingUser.backgroundColor}"
+        >
+          <span>
+            {{request.sendingUser.userName.substring(0,2).toUpperCase() }}
+          </span>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ request.sendingUser.name }}</h2>
+          <p>{{ '@'+request.sendingUser.userName }}</p>
+        </ion-label>
+        <ion-button
+          fill="clear"
+          (click)="presentActionSheet(true, request.id!)"
+        >
+          <ion-icon
+            size="large"
+            name="checkmark-circle"
+            color="success"
+          ></ion-icon>
+        </ion-button>
+        <ion-button
+          fill="clear"
+          (click)="presentActionSheet(false, request.id!)"
+        >
+          <ion-icon size="large" name="close-circle" color="danger"></ion-icon>
+        </ion-button>
+      </ion-item>
+      } }@else {
+      <ion-item> No tens sol·licituts pendents </ion-item>
+      } }
+    </ion-list>
+    } }
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button size="small">
+      <ion-icon name="settings-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="openModal()">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="presentAddFriendPrompt()">
+        <ion-icon name="person-add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+</ion-content>

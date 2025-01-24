@@ -1,0 +1,78 @@
+<app-login-layout pageTitle="Registre" backButton="/auth">
+  <app-logo class="ion-margin-bottom"></app-logo>
+
+  <form [formGroup]="formAuth" (ngSubmit)="submit()">
+    <div>
+      <ion-input
+        type="text"
+        formControlName="userName"
+        label="Nom"
+        label-placement="floating"
+        fill="outline"
+        required
+      ></ion-input>
+      @if (formAuth.get('userName')?.touched &&
+      formAuth.get('userName')?.invalid) {
+      <ion-text>
+        @if (formAuth.get('userName')?.errors?.['required']) {
+        <p class="error ion-margin-bottom">El nom és obligatori</p>
+        }
+      </ion-text>
+      }
+    </div>
+
+    <div>
+      <ion-input
+        type="email"
+        formControlName="email"
+        label="Correu electrònic"
+        label-placement="floating"
+        fill="outline"
+        required
+      ></ion-input>
+      @if (formAuth.get('email')?.touched && formAuth.get('email')?.invalid) {
+      <ion-text>
+        @if (formAuth.get('email')?.errors?.['required']) {
+        <p class="error ion-margin-bottom">El correu és obligatori</p>
+        } @if (formAuth.get('email')?.errors?.['email']) {
+        <p class="error ion-margin-bottom">
+          El correu no té un format correcte
+        </p>
+        }
+      </ion-text>
+      }
+    </div>
+
+    <div>
+      <ion-input
+        type="password"
+        formControlName="password"
+        label="Contrasenya"
+        label-placement="floating"
+        fill="outline"
+        clearOnEdit="false"
+      >
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+        @if (formAuth.get('password')?.touched &&
+        formAuth.get('password')?.invalid) {
+        <ion-text>
+          @if (formAuth.get('password')?.errors?.['required']) {
+          <p class="error ion-margin-bottom">La contrasenya és obligatoria</p>
+          } @if (formAuth.get('password')?.errors?.['pattern']) {
+          <p class="error ion-margin-bottom">
+            La contrasenya ha de tindre minúscules, majúscules, nombres i un
+            mínim de 6 caràcters
+          </p>
+          }
+        </ion-text>
+        }
+      </ion-input>
+    </div>
+
+    <div>
+      <ion-button expand="block" type="submit" [disabled]="formAuth.invalid">
+        Registrar-me
+      </ion-button>
+    </div>
+  </form>
+</app-login-layout>

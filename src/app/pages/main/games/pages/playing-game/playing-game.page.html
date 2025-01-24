@@ -1,0 +1,102 @@
+<app-header title="Partida" backButton="/games"></app-header>
+<ion-content class="ion-padding">
+  <ion-img
+    src="assets/images/logos/logo_with_name.webp"
+    alt="Rat Penat de Sabuts"
+    class="logofondo"
+  ></ion-img>
+
+  @if (!loading && currentUserPlayer && rivalPlayer) {
+  <section>
+    <article>
+      <div class="flexdiv">
+        <div>
+          <ion-avatar
+            class="custom-avatar"
+            slot="start"
+            [ngStyle]="{ 'background-color': currentUserPlayer.backgroundColor }"
+          >
+            <span>
+              {{ currentUserPlayer.userName.substring(0, 2).toUpperCase() }}
+            </span>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ currentUserPlayer.userName }}</h2>
+          </ion-label>
+        </div>
+
+        <div>
+          <ion-text>
+            <h3>
+              {{ currentUserPlayer.score }} <span>VS</span> {{ rivalPlayer.score
+              }}
+            </h3>
+          </ion-text>
+        </div>
+
+        <div>
+          <ion-avatar
+            class="custom-avatar"
+            slot="start"
+            [ngStyle]="{ 'background-color': rivalPlayer.backgroundColor }"
+          >
+            <span>
+              {{ rivalPlayer.userName.substring(0, 2).toUpperCase() }}
+            </span>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ rivalPlayer.userName }}</h2>
+          </ion-label>
+        </div>
+      </div>
+    </article>
+    <article [ngClass]="{'ion-padding question-card': showQuestion}">
+      @if (showQuestion && currentQuestion) {
+      <header>
+        <img
+          [src]="'assets/images/icons/icon_'+categorieMap.get(currentQuestion.category)?.color+'.webp'"
+          alt="Logo categoria"
+          class="logocategoria"
+        />
+        <small>{{categorieMap.get(currentQuestion.category)?.label}}</small>
+        <h3>{{currentQuestion.question}}</h3>
+      </header>
+
+      @for (answer of currentQuestion.answers; track $index) {
+      <p>
+        <ion-item
+          button
+          lines="full"
+          [disabled]="answerSelected"
+          [ngClass]="{
+            'correct-answer': answerSelected && answer.isCorrect,
+            'incorrect-answer': answerSelected && !answer.isCorrect && currentAnswer === answer
+          }"
+          (click)="answerQuestion(answer)"
+        >
+          <ion-label> {{answer.value}} </ion-label>
+        </ion-item>
+      </p>
+      }
+
+      <ion-progress-bar [buffer]="buffer" [value]="progress"></ion-progress-bar>
+      <p class="timer">
+        <ion-icon name="hourglass"></ion-icon>
+        {{timeLeft}}
+      </p>
+
+      @if(answerSelected) {
+      <ion-button expand="block" type="submit" (click)="makeQuestion()">
+        Continuar
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-button>
+      } } @else {
+      <ion-button expand="block" type="submit" (click)="makeQuestion()">
+        Respondre pregunta
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-button>
+      }
+    </article>
+  </section>
+  }
+</ion-content>

@@ -1,0 +1,14 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+a {
+  display: block;
+}
+
+p.small {
+  font-size: smaller;
+}

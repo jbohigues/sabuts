@@ -1,0 +1,29 @@
+img {
+  width: 3rem;
+  aspect-ratio: 1/1;
+  animation: rotacion 0.2s cubic-bezier(0.4, 0, 0.6, 1) infinite alternate;
+  transform-origin: center;
+}
+
+article {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border-input-transparent);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+
+  h2 {
+    color: var(--text-white);
+  }
+}
+
+@keyframes rotacion {
+  0% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(5deg);
+  }
+}

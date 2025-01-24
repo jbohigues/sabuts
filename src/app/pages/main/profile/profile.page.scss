@@ -1,0 +1,19 @@
+h4,
+p {
+  margin: 0;
+}
+
+h4 {
+  margin-bottom: 5px;
+  overflow: hidden; /* Ocultar el contenido que desborda */
+  white-space: nowrap; /* No permitir saltos de línea */
+  text-overflow: ellipsis; /* Mostrar puntos suspensivos (...) */
+  max-width: calc(100dvw - 115px); /* Ajusta este valor según sea necesario */
+}
+
+.flexdiv {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}

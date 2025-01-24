@@ -1,0 +1,130 @@
+<app-header title="Partides" [menuButton]="true"></app-header>
+<ion-content
+  #gamecontent
+  class="ion-padding"
+  fixed-slot-placement="before"
+  [scrollEvents]="true"
+  (ionScroll)="onScroll($event)"
+>
+  @if (loading) {
+  <ion-spinner></ion-spinner>
+
+  } @else if (currentUser) {
+  <div class="button-container">
+    <ion-button expand="block" (click)="modalOpen = true">
+      Nova Partida
+    </ion-button>
+  </div>
+
+  @if (!gamesTurnOfUser.length && !gamesTurnOfRival.length) {
+  <ion-text>
+    <p>No hi ha partides</p>
+  </ion-text>
+  } @else {
+  <h4>El teu torn ({{gamesTurnOfUser.length}})</h4>
+  @if (!gamesTurnOfUser.length) {
+  <ion-text>
+    <p>Has d'esperar a que responguen els rivals</p>
+  </ion-text>
+
+  } @else {
+  <div class="gamesTurnOfUser">
+    @for (game of gamesTurnOfUser; track game.id) {
+    <app-game-card
+      [currentUser]="currentUser"
+      [game]="game"
+      [myTurn]="true"
+      [isSmallScreen]="isSmallScreen"
+      (deletedEmitter)="deletedGame($event)"
+    ></app-game-card>
+    }
+  </div>
+  }
+
+  <h4>Torn del oponent ({{gamesTurnOfRival.length}})</h4>
+  @if (!gamesTurnOfRival.length) {
+  <ion-text>
+    <p>No hi ha partides</p>
+  </ion-text>
+  } @else {
+  <div class="gamesTurnOfRival">
+    @for (game of gamesTurnOfRival; track game.id) {
+    <app-game-card
+      [currentUser]="currentUser"
+      [game]="game"
+      [myTurn]="false"
+      [isSmallScreen]="isSmallScreen"
+    ></app-game-card>
+    }
+  </div>
+  } }
+
+  <!--! MODAL -->
+  <ion-modal
+    #modal
+    [isOpen]="modalOpen"
+    [initialBreakpoint]="0.75"
+    [breakpoints]="[0, 0.25, 0.5, 0.75]"
+    (didDismiss)="onDidDismiss($event)"
+  >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-button (click)="cancel()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title slot="start">Nova partida</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content
+        #modalcontent
+        class="ion-padding"
+        fixed-slot-placement="before"
+        [scrollEvents]="true"
+        (ionScroll)="onScroll($event)"
+      >
+        <h3>Llistat d'amics/es</h3>
+        <ion-searchbar
+          placeholder="Buscar amic/a"
+          [debounce]="500"
+          (ionInput)="handleInput($event)"
+          (click)="modal.setCurrentBreakpoint(0.75)"
+        ></ion-searchbar>
+        @if (friendsList.length) { @for (friend of friendsList; track friend.id)
+        {
+        <ion-item (click)="confirmCreateGame(friend)">
+          <ion-avatar
+            class="custom-avatar"
+            slot="start"
+            [ngStyle]="{'background-color': friend.friendUser.backgroundColor}"
+          >
+            <span>
+              {{friend.friendUser.userName.substring(0,2).toUpperCase() }}
+            </span>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ '@'+friend.friendUser.userName }}</h2>
+          </ion-label>
+        </ion-item>
+
+        } }@else {
+        <ion-text>
+          <p>No tens amics/es agregats/es</p>
+        </ion-text>
+        } @if (showScrollButton) {
+        <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+          <ion-fab-button size="small" (click)="scrollToTop(modalcontent)">
+            <ion-icon name="arrow-up"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+        }
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  }
+
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+</ion-content>
