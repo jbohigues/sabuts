@@ -20,11 +20,11 @@ import { UserModel } from '@models/users.model';
 import { AnswerModel, QuestionModel } from '@models/question.model';
 import { AlertController } from '@ionic/angular';
 import { Categories } from '@sharedEnums/categories';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import confetti from 'canvas-confetti';
 import { GameStatusEnum } from '@sharedEnums/states';
 import { UserService } from '@services/user.service';
-import { forkJoin, tap } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 interface Category {
   label: string;
