@@ -1,7 +1,6 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
+import { enableProdMode, isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import {
-  ROUTER_CONFIGURATION,
   RouteReuseStrategy,
   provideRouter,
   withComponentInputBinding,
@@ -25,6 +24,7 @@ import {
 } from '@angular/fire/analytics';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { provideServiceWorker } from '@angular/service-worker';
 
 if (environment.production) {
   enableProdMode();
@@ -44,10 +44,15 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular(),
     ScreenTrackingService, // forma parte de Analytics
     UserTrackingService, // forma parte de Analytics
-    //! TODO get a reCAPTCHA Enterprise here https://console.cloud.google.com/security/recaptcha?project=_
-    // provideAppCheck(() => {
-    //   const provider = new ReCaptchaEnterpriseProvider(/* reCAPTCHA Enterprise site key */);
-    //   return initializeAppCheck(undefined, { provider, isTokenAutoRefreshEnabled: true });
-    // }),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
 });
+
+//! TODO get a reCAPTCHA Enterprise here https://console.cloud.google.com/security/recaptcha?project=_
+// provideAppCheck(() => {
+//   const provider = new ReCaptchaEnterpriseProvider(/* reCAPTCHA Enterprise site key */);
+//   return initializeAppCheck(undefined, { provider, isTokenAutoRefreshEnabled: true });
+// }),
