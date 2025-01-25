@@ -16,6 +16,7 @@ export class UtilsService {
   ) {}
 
   loading() {
+    console.log('entro loadincontroller');
     return this.loadingController.create({ spinner: 'crescent' });
   }
 

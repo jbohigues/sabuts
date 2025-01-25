@@ -53,16 +53,21 @@ export class LoginPage {
   });
 
   async login() {
+    console.log('entro');
     const loading = await this.utilsService.loading();
     await loading.present();
+    console.log('entro1');
     const { email, password } = this.formAuth.controls;
     const emailValue = email.value;
     const passwordValue = password.value;
     if (emailValue && passwordValue) {
+      console.log('entro2');
       this.authService.login(emailValue, passwordValue).subscribe({
         next: (user) => {
+          console.log('entro3');
           this.userService.getUserById(user.uid).subscribe({
             next: (res) => {
+              console.log('entro3');
               if (res) {
                 this.utilsService.saveInLocalStorage('user', res);
                 this.utilsService.routerLink('/home');
@@ -73,6 +78,7 @@ export class LoginPage {
                   IconsToast.success_thumbs_up
                 );
               } else {
+                console.log('entro5');
                 this.utilsService.presentToast(
                   'Error al iniciar sessió: Credencials incorrectes',
                   Colors.danger,
@@ -83,6 +89,7 @@ export class LoginPage {
           });
         },
         error: (err) => {
+          console.log('entro6');
           console.error('Error en el login:', err);
           this.utilsService.presentToast(
             'Error al iniciar sessió: Credencials incorrectes',
@@ -92,6 +99,7 @@ export class LoginPage {
           loading.dismiss();
         },
         complete: () => {
+          console.log('entro7');
           loading.dismiss();
         },
       });
