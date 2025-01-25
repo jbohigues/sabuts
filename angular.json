@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "app": {
+    "sabuts": {
       "projectType": "application",
       "schematics": {
         "@ionic/angular-toolkit:page": {
@@ -81,9 +81,6 @@
             },
             "development": {
               "buildTarget": "app:build:development"
-            },
-            "ci": {
-              "progress": false
             }
           },
           "defaultConfiguration": "development"
