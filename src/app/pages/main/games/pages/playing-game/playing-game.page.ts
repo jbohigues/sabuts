@@ -11,6 +11,7 @@ import {
   IonProgressBar,
   IonItem,
   IonImg,
+  IonLoading,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '../../../../../shared/components/header/header.component';
 import { GameService } from '@services/game.service';
@@ -37,6 +38,7 @@ interface Category {
   styleUrls: ['./playing-game.page.scss'],
   standalone: true,
   imports: [
+    IonLoading,
     IonItem,
     IonProgressBar,
     IonIcon,
@@ -64,6 +66,7 @@ export class PlayingGamePage {
   timeLeft: number = 20;
   correctAnswers: number = 0;
   loading: boolean = true;
+  openLoading: boolean = false;
   showQuestion: boolean = false;
   answerSelected: boolean = false;
 
@@ -106,14 +109,13 @@ export class PlayingGamePage {
   }
 
   async ionViewWillEnter() {
-    const loading = await this.utilsService.loading();
-    await loading.present();
+    this.openLoading = true;
 
     this.gameService.getGameById(this.idgame).subscribe({
       next: (res) => {
         if (res) {
           this.playingGame = res;
-          this.setCurrentUserInPlayer1(loading);
+          this.setCurrentUserInPlayer1();
         }
       },
       error: (e) => {
@@ -122,7 +124,7 @@ export class PlayingGamePage {
     });
   }
 
-  private setCurrentUserInPlayer1(loading?: HTMLIonLoadingElement) {
+  private setCurrentUserInPlayer1() {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
     if (this.currentUser) {
       const currentUserIsPlayer1 =
@@ -138,7 +140,7 @@ export class PlayingGamePage {
     }
 
     this.loading = false;
-    loading?.dismiss();
+    this.openLoading = false;
   }
 
   protected makeQuestion() {

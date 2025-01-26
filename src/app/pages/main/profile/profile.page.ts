@@ -19,6 +19,7 @@ import {
   IonSegment,
   IonSpinner,
   IonFabList,
+  IonLoading,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
 import { PartialUserModel, UserModel } from '@models/users.model';
@@ -48,6 +49,7 @@ import { ConfprofileModalComponent } from './modals/confprofile-modal/confprofil
   styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [
+    IonLoading,
     IonFabList,
     IonSpinner,
     IonSegment,
@@ -82,13 +84,13 @@ export class ProfilePage {
 
   // Variables
   selectedSegment: string = 'friends';
-  showScrollButton = false;
+  openLoading: boolean = false;
   loadingFriends: boolean = true;
   loadingFriendRequest: boolean = true;
+  showScrollButton: boolean = false;
 
   // Objects
   currentUser: UserModel | undefined;
-  loadingElement: HTMLIonLoadingElement | undefined;
   friendsList: PartialFriendModel[] = [];
   friendRequestList: PartialFriendRequestModel[] = [];
 
@@ -214,8 +216,8 @@ export class ProfilePage {
   }
 
   private async sendFriendRequest(searchItem: string) {
-    this.loadingElement = await this.utilsService.loading();
-    await this.loadingElement.present();
+    this.openLoading = true;
+
     this.userService.findUserByEmailOrUserName(searchItem).subscribe({
       next: (res) => {
         if (res) {
@@ -227,11 +229,11 @@ export class ProfilePage {
             Colors.danger,
             IconsToast.danger_close_circle
           );
-        this.loadingElement?.dismiss();
+        this.openLoading = false;
       },
       error: (e) => {
         console.error(e);
-        this.loadingElement?.dismiss();
+        this.openLoading = false;
       },
     });
   }
@@ -255,7 +257,7 @@ export class ProfilePage {
               IconsToast.success_checkmark_circle
             );
             this.getUserInfo(this.currentUser!.id);
-            this.loadingElement?.dismiss();
+            this.openLoading = false;
           },
           error: (e) => {
             const errorMessages: Record<string, string> = {
@@ -276,15 +278,15 @@ export class ProfilePage {
               Colors.danger,
               IconsToast.danger_close_circle
             );
-            this.loadingElement?.dismiss();
+            this.openLoading = false;
           },
         });
     }
   }
 
   private async acceptFriendRequest(requestId: string) {
-    this.loadingElement = await this.utilsService.loading();
-    await this.loadingElement.present();
+    this.openLoading = true;
+
     if (this.currentUser && this.currentUser.id) {
       this.friendRequestService
         .acceptFriendRequest(this.currentUser.id, requestId)
@@ -296,18 +298,19 @@ export class ProfilePage {
               IconsToast.success_checkmark_circle
             );
             this.getUserInfo(this.currentUser!.id);
-            this.loadingElement?.dismiss();
+            this.openLoading = false;
           },
           error: (e) => {
             console.error(e);
+            this.openLoading = false;
           },
         });
     }
   }
 
   private async rejectFriendRequest(requestId: string) {
-    this.loadingElement = await this.utilsService.loading();
-    await this.loadingElement.present();
+    this.openLoading = true;
+
     if (this.currentUser && this.currentUser.id) {
       this.friendRequestService
         .rejectFriendRequest(this.currentUser.id, requestId)
@@ -319,10 +322,11 @@ export class ProfilePage {
               IconsToast.success_checkmark_circle
             );
             this.getUserInfo(this.currentUser!.id);
-            this.loadingElement?.dismiss();
+            this.openLoading = false;
           },
           error: (e) => {
             console.error(e);
+            this.openLoading = false;
           },
         });
     }

@@ -12,6 +12,7 @@ import {
   IonInput,
   IonText,
   IonInputPasswordToggle,
+  IonLoading,
 } from '@ionic/angular/standalone';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
@@ -28,6 +29,7 @@ import { UserService } from '@services/user.service';
   styleUrls: ['./sign-up.page.scss'],
   standalone: true,
   imports: [
+    IonLoading,
     IonText,
     IonInput,
     IonButton,
@@ -46,6 +48,7 @@ export class SignUpPage {
   private utilsService = inject(UtilsService);
 
   //Variables
+  openLoading: boolean = false;
   showPassword: boolean = false;
 
   // Objects
@@ -62,8 +65,8 @@ export class SignUpPage {
   });
 
   async submit() {
-    const loading = await this.utilsService.loading();
-    await loading.present();
+    this.openLoading = true;
+
     const { userName, email, password } = this.formAuth.value;
     if (email && password) {
       this.authService.register(email, password).subscribe({
@@ -98,22 +101,22 @@ export class SignUpPage {
             },
             error: (e) => {
               console.error(e);
-              this.presentError(e, loading);
+              this.presentError(e);
             },
             complete: () => {
-              loading.dismiss();
+              this.openLoading = false;
             },
           });
         },
         error: (e) => {
           console.error("Error al registrar l'usuari:", e);
-          this.presentError(e, loading);
+          this.presentError(e);
         },
       });
     }
   }
 
-  private presentError(e: any, loading: HTMLIonLoadingElement) {
+  private presentError(e: any) {
     const message = e.message.includes('email-already-in-use')
       ? 'Error: el correu electrònic ja és registrat'
       : e.message.includes('invalid-email')
@@ -124,6 +127,6 @@ export class SignUpPage {
       Colors.danger,
       IconsToast.danger_close_circle
     );
-    loading.dismiss();
+    this.openLoading = false;
   }
 }

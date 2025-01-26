@@ -58,9 +58,8 @@ export class LoginPage {
   });
 
   async login() {
-    // const loading = await this.utilsService.loading();
-    // await loading.present();
     this.openLoading = true;
+
     const { email, password } = this.formAuth.controls;
     const emailValue = email.value;
     const passwordValue = password.value;
@@ -95,11 +94,9 @@ export class LoginPage {
             Colors.danger,
             IconsToast.danger_close_circle
           );
-          // loading.dismiss();
           this.openLoading = false;
         },
         complete: () => {
-          // loading.dismiss();
           this.openLoading = false;
         },
       });

@@ -42,14 +42,17 @@ export class ForgotPasswordPage {
   private authService = inject(AuthService);
   private utilsService = inject(UtilsService);
 
+  // Variables
+  openLoading: boolean = false;
+
   // Objects
   formAuth = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
   async submit() {
-    const loading = await this.utilsService.loading();
-    await loading.present();
+    this.openLoading = true;
+
     const { email } = this.formAuth.value;
     if (email) {
       this.authService
@@ -74,7 +77,7 @@ export class ForgotPasswordPage {
           );
         })
         .finally(() => {
-          loading.dismiss();
+          this.openLoading = false;
         });
     }
   }
