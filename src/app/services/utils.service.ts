@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
@@ -8,9 +8,11 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class UtilsService {
-  private router = inject(Router);
-  private toastController = inject(ToastController);
-  private loadingController = inject(LoadingController);
+  constructor(
+    private router: Router,
+    private toastController: ToastController,
+    private loadingController: LoadingController
+  ) {}
 
   loading() {
     return this.loadingController.create({ spinner: 'crescent' });
