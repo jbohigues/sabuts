@@ -103,7 +103,7 @@
             </span>
           </ion-avatar>
           <ion-label>
-            <h2>{{ '@'+friend.friendUser.userName }}</h2>
+            <h2>{{ friend.friendUser.userName }}</h2>
           </ion-label>
         </ion-item>
 
@@ -124,7 +124,18 @@
 
   }
 
+  <!-- Needed objects -->
   <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
+  <ion-alert
+    mode="md"
+    [isOpen]="isAlertOpen"
+    [header]="alertHeader"
+    [message]="alertMessage"
+    [buttons]="alertButtons"
+    keyboardClose="false"
+    backdropDismiss="false"
+  ></ion-alert>
 </ion-content>

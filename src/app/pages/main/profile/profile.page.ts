@@ -19,6 +19,9 @@ import {
   IonSegment,
   IonSpinner,
   IonFabList,
+  IonLoading,
+  IonActionSheet,
+  IonAlert,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
 import { PartialUserModel, UserModel } from '@models/users.model';
@@ -26,11 +29,6 @@ import {
   FriendRequestModel,
   PartialFriendRequestModel,
 } from '@models/friendRequest.model';
-import {
-  AlertController,
-  ActionSheetController,
-  ModalController,
-} from '@ionic/angular';
 import { UtilsService } from '@services/utils.service';
 import { FriendService } from '@services/friend.service';
 import { PartialFriendModel } from '@models/friends.model';
@@ -41,6 +39,8 @@ import { ErrorsEnum } from '@sharedEnums/errors';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
 import { ConfprofileModalComponent } from './modals/confprofile-modal/confprofile-modal.component';
+import { ActionSheetButton, AlertButton, AlertInput } from '@ionic/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-profile',
@@ -48,6 +48,9 @@ import { ConfprofileModalComponent } from './modals/confprofile-modal/confprofil
   styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [
+    IonAlert,
+    IonActionSheet,
+    IonLoading,
     IonFabList,
     IonSpinner,
     IonSegment,
@@ -82,21 +85,27 @@ export class ProfilePage {
 
   // Variables
   selectedSegment: string = 'friends';
-  showScrollButton = false;
+  openLoading: boolean = false;
+  isAlertOpen: boolean = false;
+  isActionSheetOpen: boolean = false;
   loadingFriends: boolean = true;
   loadingFriendRequest: boolean = true;
+  showScrollButton: boolean = false;
+
+  alertHeader: string = '';
+  alertMessage: string = '';
+  alertInputs: AlertInput[] = [];
+  alertButtons: AlertButton[] = [];
+
+  actionSheetHeader: string = '';
+  actionSheetButtons: ActionSheetButton[] = [];
 
   // Objects
   currentUser: UserModel | undefined;
-  loadingElement: HTMLIonLoadingElement | undefined;
   friendsList: PartialFriendModel[] = [];
   friendRequestList: PartialFriendRequestModel[] = [];
 
-  constructor(
-    private modalCtrl: ModalController,
-    private alertController: AlertController,
-    private actionSheetCtrl: ActionSheetController
-  ) {}
+  constructor(private modalCtrl: ModalController) {}
 
   ionViewWillEnter() {
     this.loadUserData();
@@ -157,81 +166,83 @@ export class ProfilePage {
   }
 
   async presentAddFriendPrompt() {
-    const alert = await this.alertController.create({
-      header: 'Afegir nou amic/a',
-      inputs: [
-        {
-          type: 'text',
-          name: 'username',
-          placeholder: 'Escriu el correu electrònic del teu amic/a',
-          attributes: {
-            maxlength: 100,
-          },
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel·lar',
-          role: 'cancel',
-        },
-        {
-          text: 'Afegir',
-          handler: (data) => {
-            this.sendFriendRequest(data.username);
-          },
-        },
-      ],
-    });
+    this.alertHeader = 'Afegir nou amic/a';
 
-    await alert.present();
+    this.alertInputs = [
+      {
+        type: 'text',
+        name: 'username',
+        placeholder: 'Escriu el correu electrònic del teu amic/a',
+        attributes: {
+          maxlength: 100,
+        },
+      },
+    ];
+
+    this.alertButtons = [
+      {
+        text: 'Cancel·lar',
+        role: 'cancel',
+      },
+      {
+        text: 'Afegir',
+        handler: (data) => {
+          this.isAlertOpen = false;
+          this.sendFriendRequest(data.username);
+        },
+      },
+    ];
+
+    this.isAlertOpen = true;
   }
 
   async presentActionSheet(accepted: boolean, requestId: string) {
-    const actionSheet = await this.actionSheetCtrl.create({
-      header: `Està segur ${
-        accepted ? "d'acceptar" : 'de rebutjar'
-      } la sol·licitut d'amistat?`,
-      buttons: [
-        {
-          text: accepted ? 'Acceptar' : 'Rebutjar',
-          icon: accepted ? 'checkmark-outline' : 'trash-outline',
-          role: 'destructive',
-          handler: () => {
-            accepted
-              ? this.acceptFriendRequest(requestId)
-              : this.rejectFriendRequest(requestId);
-          },
-        },
-        {
-          text: 'Cancel·lar',
-          icon: 'close-outline',
-          role: 'cancel',
-        },
-      ],
-    });
+    this.actionSheetHeader = `Està segur ${
+      accepted ? "d'acceptar" : 'de rebutjar'
+    } la sol·licitut d'amistat?`;
 
-    await actionSheet.present();
+    this.actionSheetButtons = [
+      {
+        text: accepted ? 'Acceptar' : 'Rebutjar',
+        icon: accepted ? 'checkmark-outline' : 'trash-outline',
+        role: 'destructive',
+        handler: () => {
+          this.isActionSheetOpen = false;
+          accepted
+            ? this.acceptFriendRequest(requestId)
+            : this.rejectFriendRequest(requestId);
+        },
+      },
+      {
+        text: 'Cancel·lar',
+        icon: 'close-outline',
+        role: 'cancel',
+      },
+    ];
+
+    this.isActionSheetOpen = true;
   }
 
   private async sendFriendRequest(searchItem: string) {
-    this.loadingElement = await this.utilsService.loading();
-    await this.loadingElement.present();
+    this.openLoading = true;
+
     this.userService.findUserByEmailOrUserName(searchItem).subscribe({
       next: (res) => {
         if (res) {
           const userToSendRequest = res;
           this.createFriendRequest(userToSendRequest);
-        } else
+        } else {
+          this.openLoading = false;
           this.utilsService.presentToast(
             "No s'han trobat coincidències",
             Colors.danger,
             IconsToast.danger_close_circle
           );
-        this.loadingElement?.dismiss();
+        }
       },
       error: (e) => {
         console.error(e);
-        this.loadingElement?.dismiss();
+        this.openLoading = false;
       },
     });
   }
@@ -255,7 +266,7 @@ export class ProfilePage {
               IconsToast.success_checkmark_circle
             );
             this.getUserInfo(this.currentUser!.id);
-            this.loadingElement?.dismiss();
+            this.openLoading = false;
           },
           error: (e) => {
             const errorMessages: Record<string, string> = {
@@ -271,20 +282,21 @@ export class ProfilePage {
               errorMessages[e.message] ||
               "Error al enviar la sol·licitut d'amistat";
 
+            this.openLoading = false;
+
             this.utilsService.presentToast(
               toastMessage,
               Colors.danger,
               IconsToast.danger_close_circle
             );
-            this.loadingElement?.dismiss();
           },
         });
     }
   }
 
   private async acceptFriendRequest(requestId: string) {
-    this.loadingElement = await this.utilsService.loading();
-    await this.loadingElement.present();
+    this.openLoading = true;
+
     if (this.currentUser && this.currentUser.id) {
       this.friendRequestService
         .acceptFriendRequest(this.currentUser.id, requestId)
@@ -296,18 +308,19 @@ export class ProfilePage {
               IconsToast.success_checkmark_circle
             );
             this.getUserInfo(this.currentUser!.id);
-            this.loadingElement?.dismiss();
+            this.openLoading = false;
           },
           error: (e) => {
             console.error(e);
+            this.openLoading = false;
           },
         });
     }
   }
 
   private async rejectFriendRequest(requestId: string) {
-    this.loadingElement = await this.utilsService.loading();
-    await this.loadingElement.present();
+    this.openLoading = true;
+
     if (this.currentUser && this.currentUser.id) {
       this.friendRequestService
         .rejectFriendRequest(this.currentUser.id, requestId)
@@ -319,10 +332,11 @@ export class ProfilePage {
               IconsToast.success_checkmark_circle
             );
             this.getUserInfo(this.currentUser!.id);
-            this.loadingElement?.dismiss();
+            this.openLoading = false;
           },
           error: (e) => {
             console.error(e);
+            this.openLoading = false;
           },
         });
     }

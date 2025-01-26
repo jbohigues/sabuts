@@ -12,6 +12,7 @@ import {
   IonInput,
   IonText,
   IonInputPasswordToggle,
+  IonLoading,
 } from '@ionic/angular/standalone';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
@@ -28,6 +29,7 @@ import { UserService } from '@services/user.service';
   styleUrls: ['./sign-up.page.scss'],
   standalone: true,
   imports: [
+    IonLoading,
     IonText,
     IonInput,
     IonButton,
@@ -46,6 +48,7 @@ export class SignUpPage {
   private utilsService = inject(UtilsService);
 
   //Variables
+  openLoading: boolean = false;
   showPassword: boolean = false;
 
   // Objects
@@ -62,8 +65,8 @@ export class SignUpPage {
   });
 
   async submit() {
-    const loading = await this.utilsService.loading();
-    await loading.present();
+    this.openLoading = true;
+
     const { userName, email, password } = this.formAuth.value;
     if (email && password) {
       this.authService.register(email, password).subscribe({
@@ -88,42 +91,44 @@ export class SignUpPage {
           this.userService.createUser(usermodel).subscribe({
             next: () => {
               this.utilsService.saveInLocalStorage('user', usermodel);
-              this.utilsService.routerLink('/home');
-              this.formAuth.reset();
-              this.utilsService.presentToast(
-                'Usuari creat amb èxit',
-                Colors.success,
-                IconsToast.success_thumbs_up
-              );
+              this.openLoading = false;
+              setTimeout(() => {
+                this.utilsService.routerLink('/home');
+                this.formAuth.reset();
+                this.utilsService.presentToast(
+                  'Usuari creat amb èxit',
+                  Colors.success,
+                  IconsToast.success_thumbs_up
+                );
+              }, 1);
             },
             error: (e) => {
               console.error(e);
-              this.presentError(e, loading);
-            },
-            complete: () => {
-              loading.dismiss();
+              this.openLoading = false;
+              this.presentError(e);
             },
           });
         },
         error: (e) => {
           console.error("Error al registrar l'usuari:", e);
-          this.presentError(e, loading);
+          this.presentError(e);
         },
       });
     }
   }
 
-  private presentError(e: any, loading: HTMLIonLoadingElement) {
-    const message = e.message.includes('email-already-in-use')
-      ? 'Error: el correu electrònic ja és registrat'
-      : e.message.includes('invalid-email')
-      ? 'Error: el correu electrònic no és vàlid'
-      : "Error: error al registrar l'usuari";
+  private presentError(e: any) {
+    const message =
+      e.message.includes('email-already-in-use') ||
+      e.message.includes('EMAIL_EXISTS')
+        ? 'Error: el correu electrònic ja és registrat'
+        : e.message.includes('invalid-email')
+        ? 'Error: el correu electrònic no és vàlid'
+        : "Error: error al registrar l'usuari";
     this.utilsService.presentToast(
       message,
       Colors.danger,
       IconsToast.danger_close_circle
     );
-    loading.dismiss();
   }
 }

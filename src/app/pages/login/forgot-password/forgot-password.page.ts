@@ -11,6 +11,7 @@ import {
   IonIcon,
   IonText,
   IonInput,
+  IonLoading,
 } from '@ionic/angular/standalone';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
 import { Colors } from '@sharedEnums/colors';
@@ -26,6 +27,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./forgot-password.page.scss'],
   standalone: true,
   imports: [
+    IonLoading,
     IonInput,
     IonText,
     IonIcon,
@@ -42,28 +44,35 @@ export class ForgotPasswordPage {
   private authService = inject(AuthService);
   private utilsService = inject(UtilsService);
 
+  // Variables
+  openLoading: boolean = false;
+
   // Objects
   formAuth = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
   async submit() {
-    const loading = await this.utilsService.loading();
-    await loading.present();
+    this.openLoading = true;
+
     const { email } = this.formAuth.value;
     if (email) {
       this.authService
         .sendRecoveryEmail(email)
         .then(() => {
-          this.utilsService.routerLink('/auth');
-          this.utilsService.presentToast(
-            'Hem enviat un enllaç al seu correu electrònic',
-            Colors.medium,
-            IconsToast.secondary_alert
-          );
+          this.openLoading = false;
+          setTimeout(() => {
+            this.utilsService.routerLink('/auth');
+            this.utilsService.presentToast(
+              'Hem enviat un enllaç al seu correu electrònic',
+              Colors.medium,
+              IconsToast.secondary_alert
+            );
+          }, 1);
         })
         .catch((e) => {
           console.error(e);
+          this.openLoading = false;
           const message = e.message.includes('invalid-email')
             ? 'Error: el correu electrònic no té el format correcte'
             : 'Error al enviar el correu de recuperació';
@@ -72,9 +81,6 @@ export class ForgotPasswordPage {
             Colors.danger,
             IconsToast.danger_close_circle
           );
-        })
-        .finally(() => {
-          loading.dismiss();
         });
     }
   }

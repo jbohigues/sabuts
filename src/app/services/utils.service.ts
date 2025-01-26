@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { Injectable, NgZone } from '@angular/core';
+import { ToastController, MenuController } from '@ionic/angular';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
 import { Router } from '@angular/router';
@@ -10,16 +10,19 @@ import { Router } from '@angular/router';
 export class UtilsService {
   constructor(
     private router: Router,
-    private toastController: ToastController,
-    private loadingController: LoadingController
+    private ngZone: NgZone,
+    private menuController: MenuController,
+    private toastController: ToastController
   ) {}
 
-  loading() {
-    return this.loadingController.create({ spinner: 'crescent' });
+  closeMenu() {
+    this.menuController.close('main-menu');
   }
 
   routerLink(url: string) {
-    return this.router.navigateByUrl(url);
+    this.ngZone.run(() => {
+      this.router.navigate([url]);
+    });
   }
 
   async presentToast(

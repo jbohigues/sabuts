@@ -1,5 +1,10 @@
-<ion-split-pane contentId="main-content">
-  <ion-menu contentId="main-content" side="start" type="overlay">
+<ion-split-pane contentId="main-content" aria-hidden="false">
+  <ion-menu
+    menuId="main-menu"
+    contentId="main-content"
+    side="start"
+    type="overlay"
+  >
     <ion-content class="ion-padding">
       <div class="user-profile ion-text-center">
         <div>
@@ -8,12 +13,6 @@
           } @placeholder {
           <small>Carregant...</small>
           }
-          <!-- @if (user) {
-          <ion-text>
-            <h2>{{ user.name }}</h2>
-            <p>Punts totals: {{ user.totalPoints }}</p>
-          </ion-text>
-          } -->
         </div>
         <ion-button expand="block" (click)="signOut()">
           <ion-icon slot="start" name="log-out"></ion-icon>
@@ -23,7 +22,7 @@
     </ion-content>
   </ion-menu>
 
-  <div class="ion-page" id="main-content">
+  <div class="ion-page" id="main-content" aria-hidden="false">
     <ion-tabs>
       <ion-tab-bar slot="bottom">
         <ion-tab-button tab="home">

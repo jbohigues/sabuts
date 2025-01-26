@@ -16,7 +16,7 @@
       <span> {{currentUser.userName.substring(0,2).toUpperCase() }} </span>
     </ion-avatar>
     <div>
-      <h4>{{'@'+currentUser.userName}}</h4>
+      <h4>{{currentUser.userName}}</h4>
       <ion-badge color="primary">{{currentUser.totalPoints}} pts</ion-badge>
     </div>
     }
@@ -59,7 +59,7 @@
           </ion-avatar>
           <ion-label>
             <h2>{{ friend.friendUser.name }}</h2>
-            <p>{{ '@'+friend.friendUser.userName }}</p>
+            <p>{{ friend.friendUser.userName }}</p>
           </ion-label>
           <ion-badge slot="end">
             {{ friend.friendUser.totalPoints }} pts
@@ -97,7 +97,7 @@
         </ion-avatar>
         <ion-label>
           <h2>{{ request.sendingUser.name }}</h2>
-          <p>{{ '@'+request.sendingUser.userName }}</p>
+          <p>{{ request.sendingUser.userName }}</p>
         </ion-label>
         <ion-button
           fill="clear"
@@ -137,7 +137,30 @@
     </ion-fab-list>
   </ion-fab>
 
+  <!-- Needed objects -->
   <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
+  <ion-loading [isOpen]="openLoading"></ion-loading>
+
+  <ion-alert
+    mode="md"
+    [isOpen]="isAlertOpen"
+    [header]="alertHeader"
+    [message]="alertMessage"
+    [inputs]="alertInputs"
+    [buttons]="alertButtons"
+    keyboardClose="false"
+    backdropDismiss="false"
+  ></ion-alert>
+
+  <ion-action-sheet
+    mode="md"
+    [isOpen]="isActionSheetOpen"
+    [header]="actionSheetHeader"
+    [buttons]="actionSheetButtons"
+    keyboardClose="false"
+    backdropDismiss="false"
+  ></ion-action-sheet>
 </ion-content>

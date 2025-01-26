@@ -17,10 +17,10 @@ import {
   IonFab,
   IonFabButton,
   IonSearchbar,
+  IonAlert,
 } from '@ionic/angular/standalone';
 import { GameModel } from '@models/games.model';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
-import { AlertController } from '@ionic/angular';
 import { GameService } from '@services/game.service';
 import { UtilsService } from '@services/utils.service';
 import { UserModel } from '@models/users.model';
@@ -33,6 +33,7 @@ import { GameStatusEnum } from '@sharedEnums/states';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
 import {
+  AlertButton,
   OverlayEventDetail,
   SearchbarInputEventDetail,
 } from '@ionic/core/components';
@@ -60,6 +61,7 @@ import {
     IonRefresherContent,
     IonRefresher,
     IonContent,
+    IonAlert,
     HeaderComponent,
     CommonModule,
     GameCardComponent,
@@ -77,8 +79,13 @@ export class GamesPage {
   totalScore: number = 0;
   loading: boolean = false;
   modalOpen: boolean = false;
+  isAlertOpen: boolean = false;
   isSmallScreen: boolean = false;
   showScrollButton: boolean = false;
+
+  alertHeader: string = '';
+  alertMessage: string = '';
+  alertButtons: AlertButton[] = [];
 
   // Objects
   idusers: string[] = [];
@@ -89,7 +96,7 @@ export class GamesPage {
   friendsListOriginal: PartialFriendModel[] = [];
   currentUser: UserModel | undefined;
 
-  constructor(private alertController: AlertController) {
+  constructor() {
     this.breakpointObserver
       .observe([Breakpoints.XSmall])
       .subscribe((result) => {
@@ -217,24 +224,24 @@ export class GamesPage {
 
   // Mensaje confirmacion
   protected async confirmCreateGame(friend: PartialFriendModel) {
-    const alert = await this.alertController.create({
-      header: 'Confirmar partida',
-      message: `Estàs segur de voler començar una partida amb @${friend.friendUser.userName}?`,
-      buttons: [
-        {
-          text: 'Cancel·lar',
-          role: 'cancel',
-          cssClass: 'secondary',
+    this.alertHeader = 'Confirmar partida';
+    this.alertMessage = `Estàs segur de voler començar una partida amb @${friend.friendUser.userName}?`;
+
+    this.alertButtons = [
+      {
+        text: 'Cancel·lar',
+        role: 'cancel',
+        cssClass: 'secondary',
+      },
+      {
+        text: 'Acceptar',
+        handler: () => {
+          this.createGame(friend);
         },
-        {
-          text: 'Acceptar',
-          handler: () => {
-            this.createGame(friend);
-          },
-        },
-      ],
-    });
-    await alert.present();
+      },
+    ];
+
+    this.isAlertOpen = true;
   }
 
   private createGame(friend: PartialFriendModel) {
@@ -265,7 +272,10 @@ export class GamesPage {
 
     this.gameService.createGame(game).subscribe({
       next: (res) => {
-        if (res) this.modal.dismiss(null, 'created');
+        if (res) {
+          this.isAlertOpen = false;
+          this.modal.dismiss(null, 'created');
+        }
       },
       error: (e) => {
         console.error(e);

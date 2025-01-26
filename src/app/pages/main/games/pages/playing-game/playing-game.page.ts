@@ -11,6 +11,9 @@ import {
   IonProgressBar,
   IonItem,
   IonImg,
+  IonLoading,
+  IonAlert,
+  AlertButton,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '../../../../../shared/components/header/header.component';
 import { GameService } from '@services/game.service';
@@ -18,7 +21,6 @@ import { GameModel, UserOfGameModel } from '@models/games.model';
 import { UtilsService } from '@services/utils.service';
 import { UserModel } from '@models/users.model';
 import { AnswerModel, QuestionModel } from '@models/question.model';
-import { AlertController } from '@ionic/angular';
 import { Categories } from '@sharedEnums/categories';
 import { environment } from 'src/environments/environment';
 import confetti from 'canvas-confetti';
@@ -37,6 +39,7 @@ interface Category {
   styleUrls: ['./playing-game.page.scss'],
   standalone: true,
   imports: [
+    IonLoading,
     IonItem,
     IonProgressBar,
     IonIcon,
@@ -46,6 +49,7 @@ interface Category {
     IonAvatar,
     IonContent,
     IonImg,
+    IonAlert,
     CommonModule,
     FormsModule,
     HeaderComponent,
@@ -59,14 +63,23 @@ export class PlayingGamePage {
   private userService = inject(UserService);
   private utilsService = inject(UtilsService);
 
+  // Variables
   progress: number = 0;
   buffer: number = 0.06;
   timeLeft: number = 20;
   correctAnswers: number = 0;
+
+  alertHeader: string = '';
+  alertMessage: string = '';
+  alertButtons: AlertButton[] = [];
+
   loading: boolean = true;
+  isAlertOpen: boolean = false;
+  openLoading: boolean = false;
   showQuestion: boolean = false;
   answerSelected: boolean = false;
 
+  // Objects
   timer: any;
   categories = Categories;
   playingGame: GameModel | undefined;
@@ -78,7 +91,7 @@ export class PlayingGamePage {
 
   categorieMap: Map<string, Category> = new Map();
 
-  constructor(private alertController: AlertController) {
+  constructor() {
     this.categorieMap.set(Categories.historia_de_valencia, {
       label: 'Història de València',
       color: 'blue',
@@ -106,23 +119,38 @@ export class PlayingGamePage {
   }
 
   async ionViewWillEnter() {
-    const loading = await this.utilsService.loading();
-    await loading.present();
-
+    this.openLoading = true;
     this.gameService.getGameById(this.idgame).subscribe({
       next: (res) => {
         if (res) {
           this.playingGame = res;
-          this.setCurrentUserInPlayer1(loading);
+          this.setCurrentUserInPlayer1();
         }
       },
       error: (e) => {
         console.error(e);
       },
     });
+    // this.loadGameOfLocalStorage();
+
+    // if (this.playingGame) {
+    //   this.setCurrentUserInPlayer1();
+    // } else {
+    //   this.gameService.getGameById(this.idgame).subscribe({
+    //     next: (res) => {
+    //       if (res) {
+    //         this.playingGame = res;
+    //         this.setCurrentUserInPlayer1();
+    //       }
+    //     },
+    //     error: (e) => {
+    //       console.error(e);
+    //     },
+    //   });
+    // }
   }
 
-  private setCurrentUserInPlayer1(loading?: HTMLIonLoadingElement) {
+  private setCurrentUserInPlayer1() {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
     if (this.currentUser) {
       const currentUserIsPlayer1 =
@@ -138,7 +166,7 @@ export class PlayingGamePage {
     }
 
     this.loading = false;
-    loading?.dismiss();
+    this.openLoading = false;
   }
 
   protected makeQuestion() {
@@ -181,6 +209,7 @@ export class PlayingGamePage {
     clearInterval(this.timer);
   }
 
+  //TODO: falta ver que hacemos cuando termina el tiempo!!!!
   private timeExpired() {
     // Lógica cuando se acaba el tiempo
     console.log('¡Tiempo agotado!');
@@ -216,6 +245,8 @@ export class PlayingGamePage {
       this.correctAnswers++;
       this.currentUserPlayer.score = this.currentUserPlayer.score + 1;
 
+      // this.saveGameInLocalStorage();
+
       if (this.currentUserPlayer.score == environment.pointsToWinGame) {
         this.fireConfetti();
         this.showWinGameMessage();
@@ -223,6 +254,36 @@ export class PlayingGamePage {
         this.showMaxCorrectAnswersMessage();
     }
   }
+
+  // private saveGameInLocalStorage() {
+  //   if (this.playingGame) {
+  //     this.utilsService.saveInLocalStorage(
+  //       `play_${this.playingGame.id}`,
+  //       this.playingGame
+  //     );
+
+  //     this.utilsService.saveInLocalStorage(
+  //       `correctanswers_play_${this.playingGame.id}`,
+  //       this.correctAnswers
+  //     );
+  //   }
+  // }
+
+  // private loadGameOfLocalStorage() {
+  //   this.playingGame = this.utilsService.getFromLocalStorage(
+  //     `play_${this.idgame}`
+  //   );
+  //   this.correctAnswers = this.utilsService.getFromLocalStorage(
+  //     `correctanswers_play_${this.idgame}`
+  //   );
+  // }
+
+  // private clearGameOfLocalStorage() {
+  //   this.utilsService.removeItemOfLocalStorage(`play_${this.idgame}`);
+  //   this.utilsService.removeItemOfLocalStorage(
+  //     `correctanswers_play_${this.idgame}`
+  //   );
+  // }
 
   private updateGameScore(wingame: boolean) {
     if (this.playingGame && this.rivalPlayer && this.currentUserPlayer) {
@@ -251,100 +312,105 @@ export class PlayingGamePage {
   }
 
   private async showMaxCorrectAnswersMessage() {
-    const alert = await this.alertController.create({
-      header: 'Màxim de respostes correctes',
-      message: `Has aplegat al màxim de respostes correctes, has d'esperar fins que responga el teu contrincant`,
-      keyboardClose: false,
-      backdropDismiss: false,
-      buttons: [
-        {
-          text: 'Acceptar',
-          handler: () => {
-            if (this.playingGame) {
-              this.updateGameScore(false);
-              this.gameService
-                .updateGame(this.playingGame.id, this.playingGame)
-                .subscribe({
-                  next: () => {
+    this.alertHeader = 'Màxim de respostes correctes';
+    this.alertMessage = `Has aplegat al màxim de respostes correctes, has d'esperar fins que responga el teu contrincant`;
+
+    this.alertButtons = [
+      {
+        text: 'Acceptar',
+        handler: () => {
+          if (this.playingGame) {
+            this.updateGameScore(false);
+            // this.clearGameOfLocalStorage();
+            this.gameService
+              .updateGame(this.playingGame.id, this.playingGame)
+              .subscribe({
+                next: () => {
+                  this.isAlertOpen = false;
+                  setTimeout(() => {
                     this.utilsService.routerLink('games');
-                  },
-                  error: (e) => console.error(e),
-                });
-            }
-          },
+                  }, 1);
+                },
+                error: (e) => console.error(e),
+              });
+          }
         },
-      ],
-    });
-    await alert.present();
+      },
+    ];
+
+    this.isAlertOpen = true;
   }
 
   private async showWinGameMessage() {
-    const alert = await this.alertController.create({
-      header: 'ENHORABONA!',
-      message: `Has aplegat a 15 acerts abans que el rival, així que eres el guanyador de la partida!`,
-      keyboardClose: false,
-      backdropDismiss: false,
-      buttons: [
-        {
-          text: 'Acceptar',
-          handler: () => {
-            if (this.playingGame && this.currentUser) {
-              this.updateGameScore(true);
+    this.alertHeader = 'ENHORABONA!';
+    this.alertMessage = `Has aplegat a 15 acerts abans que el rival, així que eres el guanyador de la partida!`;
 
-              this.currentUser.totalPoints += 5;
+    this.alertButtons = [
+      {
+        text: 'Acceptar',
+        handler: () => {
+          if (this.playingGame && this.currentUser) {
+            this.updateGameScore(true);
 
-              forkJoin([
-                this.gameService.updateGame(
-                  this.playingGame.id,
-                  this.playingGame
-                ),
-                this.userService.updateUser(this.currentUser.id, {
-                  totalPoints: this.currentUser.totalPoints,
-                }),
-              ]).subscribe({
-                error: (e) => console.error(e),
-                complete: () => {
-                  this.utilsService.saveInLocalStorage(
-                    'user',
-                    this.currentUser
-                  );
+            this.currentUser.totalPoints += 5;
+
+            forkJoin([
+              this.gameService.updateGame(
+                this.playingGame.id,
+                this.playingGame
+              ),
+              this.userService.updateUser(this.currentUser.id, {
+                totalPoints: this.currentUser.totalPoints,
+              }),
+            ]).subscribe({
+              error: (e) => console.error(e),
+              complete: () => {
+                // this.clearGameOfLocalStorage();
+                this.utilsService.saveInLocalStorage('user', this.currentUser);
+                this.isAlertOpen = false;
+                setTimeout(() => {
                   this.utilsService.routerLink('games');
-                },
-              });
-            }
-          },
+                }, 1);
+              },
+            });
+          }
         },
-      ],
-    });
-    await alert.present();
+      },
+    ];
+
+    this.isAlertOpen = true;
   }
 
   private async showErrorAnswerMessage() {
-    const alert = await this.alertController.create({
-      header: 'INCORRECTE...',
-      message: `Has fallat la resposta aixi que el torn acaba ací, hauràs d'esperar fins que el rival responga.`,
-      keyboardClose: false,
-      backdropDismiss: false,
-      buttons: [
-        {
-          text: 'Acceptar',
-          handler: () => {
-            if (this.playingGame) {
-              this.updateGameScore(false);
-              this.gameService
-                .updateGame(this.playingGame.id, this.playingGame)
-                .subscribe({
-                  next: () => {
+    this.updateGameScore(false);
+    // this.saveGameInLocalStorage();
+
+    this.alertHeader = 'INCORRECTE...';
+    this.alertMessage = `Has fallat la resposta aixi que el torn acaba ací, hauràs d'esperar fins que el rival responga.`;
+
+    this.alertButtons = [
+      {
+        text: 'Acceptar',
+        handler: () => {
+          // this.clearGameOfLocalStorage();
+          if (this.playingGame) {
+            this.gameService
+              .updateGame(this.playingGame.id, this.playingGame)
+              .subscribe({
+                next: () => {
+                  this.isAlertOpen = false;
+                  setTimeout(() => {
                     this.utilsService.routerLink('games');
-                  },
-                  error: (e) => console.error(e),
-                });
-            }
-          },
+                  }, 1);
+                },
+                error: (e) => console.error(e),
+              });
+          }
         },
-      ],
-    });
-    await alert.present();
+      },
+    ];
+
+    this.isAlertOpen = true;
   }
 
   private fireConfetti() {
