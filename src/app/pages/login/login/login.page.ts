@@ -11,6 +11,7 @@ import {
   IonText,
   IonButton,
   IonInputPasswordToggle,
+  IonLoading,
 } from '@ionic/angular/standalone';
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
@@ -28,6 +29,7 @@ import { UserService } from '@services/user.service';
   styleUrls: ['./login.page.scss'],
   standalone: true,
   imports: [
+    IonLoading,
     CommonModule,
     ReactiveFormsModule,
     LoginLayoutComponent,
@@ -46,6 +48,9 @@ export class LoginPage {
   private authService = inject(AuthService);
   private utilsService = inject(UtilsService);
 
+  // Variables
+  openLoading: boolean = false;
+
   // Objects
   formAuth = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -53,8 +58,9 @@ export class LoginPage {
   });
 
   async login() {
-    const loading = await this.utilsService.loading();
-    await loading.present();
+    // const loading = await this.utilsService.loading();
+    // await loading.present();
+    this.openLoading = true;
     const { email, password } = this.formAuth.controls;
     const emailValue = email.value;
     const passwordValue = password.value;
@@ -89,10 +95,12 @@ export class LoginPage {
             Colors.danger,
             IconsToast.danger_close_circle
           );
-          loading.dismiss();
+          // loading.dismiss();
+          this.openLoading = false;
         },
         complete: () => {
-          loading.dismiss();
+          // loading.dismiss();
+          this.openLoading = false;
         },
       });
     }
