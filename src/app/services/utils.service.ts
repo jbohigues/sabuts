@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { ToastController, MenuController } from '@ionic/angular';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class UtilsService {
   constructor(
     private router: Router,
+    private ngZone: NgZone,
     private menuController: MenuController,
     private toastController: ToastController
   ) {}
@@ -19,7 +20,9 @@ export class UtilsService {
   }
 
   routerLink(url: string) {
-    return this.router.navigateByUrl(url);
+    this.ngZone.run(() => {
+      this.router.navigate([url]);
+    });
   }
 
   async presentToast(
