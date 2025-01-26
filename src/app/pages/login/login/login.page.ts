@@ -70,14 +70,18 @@ export class LoginPage {
             next: (res) => {
               if (res) {
                 this.utilsService.saveInLocalStorage('user', res);
-                this.utilsService.routerLink('/home');
-                this.formAuth.reset();
-                this.utilsService.presentToast(
-                  `Hola ${res.userName}, benvingut/a!`,
-                  Colors.success,
-                  IconsToast.success_thumbs_up
-                );
+                this.openLoading = false;
+                setTimeout(() => {
+                  this.utilsService.routerLink('/home');
+                  this.formAuth.reset();
+                  this.utilsService.presentToast(
+                    `Hola ${res.userName}, benvingut/a!`,
+                    Colors.success,
+                    IconsToast.success_thumbs_up
+                  );
+                }, 1);
               } else {
+                this.openLoading = false;
                 this.utilsService.presentToast(
                   'Error al iniciar sessió: Credencials incorrectes',
                   Colors.danger,
@@ -89,15 +93,12 @@ export class LoginPage {
         },
         error: (err) => {
           console.error('Error en el login:', err);
+          this.openLoading = false;
           this.utilsService.presentToast(
             'Error al iniciar sessió: Credencials incorrectes',
             Colors.danger,
             IconsToast.danger_close_circle
           );
-          this.openLoading = false;
-        },
-        complete: () => {
-          this.openLoading = false;
         },
       });
     }

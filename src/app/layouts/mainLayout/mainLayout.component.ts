@@ -51,11 +51,21 @@ export class MainLayoutComponent implements OnInit {
 
   user: UserModel | undefined;
 
+  ionViewWillEnter() {
+    this.init();
+  }
+
   ngOnInit(): void {
-    this.user = this.utilService.getFromLocalStorage('user');
+    this.init();
+  }
+
+  private init() {
+    this.utilService.closeMenu();
+    if (!this.user) this.user = this.utilService.getFromLocalStorage('user');
   }
 
   protected signOut() {
+    this.utilService.closeMenu();
     this.authService.logout().subscribe({
       next: () => {
         this.utilService.clearLocalStorage();

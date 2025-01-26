@@ -223,13 +223,14 @@ export class ProfilePage {
         if (res) {
           const userToSendRequest = res;
           this.createFriendRequest(userToSendRequest);
-        } else
+        } else {
+          this.openLoading = false;
           this.utilsService.presentToast(
             "No s'han trobat coincidències",
             Colors.danger,
             IconsToast.danger_close_circle
           );
-        this.openLoading = false;
+        }
       },
       error: (e) => {
         console.error(e);
@@ -273,12 +274,13 @@ export class ProfilePage {
               errorMessages[e.message] ||
               "Error al enviar la sol·licitut d'amistat";
 
+            this.openLoading = false;
+
             this.utilsService.presentToast(
               toastMessage,
               Colors.danger,
               IconsToast.danger_close_circle
             );
-            this.openLoading = false;
           },
         });
     }

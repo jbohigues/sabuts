@@ -11,6 +11,7 @@ import {
   IonIcon,
   IonText,
   IonInput,
+  IonLoading,
 } from '@ionic/angular/standalone';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
 import { Colors } from '@sharedEnums/colors';
@@ -26,6 +27,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./forgot-password.page.scss'],
   standalone: true,
   imports: [
+    IonLoading,
     IonInput,
     IonText,
     IonIcon,
@@ -58,15 +60,19 @@ export class ForgotPasswordPage {
       this.authService
         .sendRecoveryEmail(email)
         .then(() => {
-          this.utilsService.routerLink('/auth');
-          this.utilsService.presentToast(
-            'Hem enviat un enllaç al seu correu electrònic',
-            Colors.medium,
-            IconsToast.secondary_alert
-          );
+          this.openLoading = false;
+          setTimeout(() => {
+            this.utilsService.routerLink('/auth');
+            this.utilsService.presentToast(
+              'Hem enviat un enllaç al seu correu electrònic',
+              Colors.medium,
+              IconsToast.secondary_alert
+            );
+          }, 1);
         })
         .catch((e) => {
           console.error(e);
+          this.openLoading = false;
           const message = e.message.includes('invalid-email')
             ? 'Error: el correu electrònic no té el format correcte'
             : 'Error al enviar el correu de recuperació';
@@ -75,9 +81,6 @@ export class ForgotPasswordPage {
             Colors.danger,
             IconsToast.danger_close_circle
           );
-        })
-        .finally(() => {
-          this.openLoading = false;
         });
     }
   }

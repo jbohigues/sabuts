@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ToastController, MenuController } from '@ionic/angular';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
 import { Router } from '@angular/router';
@@ -10,8 +10,13 @@ import { Router } from '@angular/router';
 export class UtilsService {
   constructor(
     private router: Router,
+    private menuController: MenuController,
     private toastController: ToastController
   ) {}
+
+  closeMenu() {
+    this.menuController.close('main-menu');
+  }
 
   routerLink(url: string) {
     return this.router.navigateByUrl(url);

@@ -91,20 +91,21 @@ export class SignUpPage {
           this.userService.createUser(usermodel).subscribe({
             next: () => {
               this.utilsService.saveInLocalStorage('user', usermodel);
-              this.utilsService.routerLink('/home');
-              this.formAuth.reset();
-              this.utilsService.presentToast(
-                'Usuari creat amb èxit',
-                Colors.success,
-                IconsToast.success_thumbs_up
-              );
+              this.openLoading = false;
+              setTimeout(() => {
+                this.utilsService.routerLink('/home');
+                this.formAuth.reset();
+                this.utilsService.presentToast(
+                  'Usuari creat amb èxit',
+                  Colors.success,
+                  IconsToast.success_thumbs_up
+                );
+              }, 1);
             },
             error: (e) => {
               console.error(e);
-              this.presentError(e);
-            },
-            complete: () => {
               this.openLoading = false;
+              this.presentError(e);
             },
           });
         },
@@ -117,16 +118,17 @@ export class SignUpPage {
   }
 
   private presentError(e: any) {
-    const message = e.message.includes('email-already-in-use')
-      ? 'Error: el correu electrònic ja és registrat'
-      : e.message.includes('invalid-email')
-      ? 'Error: el correu electrònic no és vàlid'
-      : "Error: error al registrar l'usuari";
+    const message =
+      e.message.includes('email-already-in-use') ||
+      e.message.includes('EMAIL_EXISTS')
+        ? 'Error: el correu electrònic ja és registrat'
+        : e.message.includes('invalid-email')
+        ? 'Error: el correu electrònic no és vàlid'
+        : "Error: error al registrar l'usuari";
     this.utilsService.presentToast(
       message,
       Colors.danger,
       IconsToast.danger_close_circle
     );
-    this.openLoading = false;
   }
 }
