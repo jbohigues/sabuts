@@ -99,5 +99,16 @@
     </article>
   </section>
   }
+
+  <!-- Needed objects -->
   <ion-loading [isOpen]="openLoading"></ion-loading>
+  <ion-alert
+    mode="md"
+    [isOpen]="isAlertOpen"
+    [header]="alertHeader"
+    [message]="alertMessage"
+    [buttons]="alertButtons"
+    keyboardClose="false"
+    backdropDismiss="false"
+  ></ion-alert>
 </ion-content>

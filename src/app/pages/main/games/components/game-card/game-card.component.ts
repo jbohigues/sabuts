@@ -18,10 +18,10 @@ import {
   IonLabel,
   IonItemOption,
 } from '@ionic/angular/standalone';
+import { AlertButton } from '@ionic/core';
 import { GameModel, UserOfGameModel } from '@models/games.model';
 import { UserModel } from '@models/users.model';
 import { GameService } from '@services/game.service';
-import { AlertController } from '@ionic/angular';
 import { UtilsService } from '@services/utils.service';
 
 @Component({
@@ -52,10 +52,13 @@ export class GameCardComponent implements OnInit {
   private gameService = inject(GameService);
   private utilsService = inject(UtilsService);
 
+  alertHeader: string = '';
+  alertMessage: string = '';
+  isAlertOpen: boolean = false;
+  alertButtons: AlertButton[] = [];
+
   rivalPlayer: UserOfGameModel | undefined;
   currentUserPlayer: UserOfGameModel | undefined;
-
-  constructor(private alertController: AlertController) {}
 
   ngOnInit(): void {
     this.setCurrentUserInPlayer1();
@@ -79,30 +82,31 @@ export class GameCardComponent implements OnInit {
   }
 
   protected async confirmDeleteGame() {
-    const alert = await this.alertController.create({
-      header: 'Eliminar partida',
-      message: `Estàs segur d'eliminar la partida amb @${this.game.player1.userName}?`,
-      buttons: [
-        {
-          text: 'Cancel·lar',
-          role: 'cancel',
-          cssClass: 'secondary',
+    this.alertHeader = 'Eliminar partida';
+    this.alertMessage = `Estàs segur d'eliminar la partida amb @${this.game.player1.userName}?`;
+
+    this.alertButtons = [
+      {
+        text: 'Cancel·lar',
+        role: 'cancel',
+        cssClass: 'secondary',
+      },
+      {
+        text: 'Acceptar',
+        handler: () => {
+          this.deleteGame();
         },
-        {
-          text: 'Acceptar',
-          handler: () => {
-            this.deleteGame();
-          },
-        },
-      ],
-    });
-    await alert.present();
+      },
+    ];
+
+    this.isAlertOpen = true;
   }
 
   private deleteGame() {
     this.gameService.deleteGame(this.game.id).subscribe({
       next: () => {
         this.deletedEmitter.emit(true);
+        this.isAlertOpen = false;
       },
       error: (e) => {
         console.error(e);

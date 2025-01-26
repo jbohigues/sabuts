@@ -137,8 +137,30 @@
     </ion-fab-list>
   </ion-fab>
 
+  <!-- Needed objects -->
   <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
   <ion-loading [isOpen]="openLoading"></ion-loading>
+
+  <ion-alert
+    mode="md"
+    [isOpen]="isAlertOpen"
+    [header]="alertHeader"
+    [message]="alertMessage"
+    [inputs]="alertInputs"
+    [buttons]="alertButtons"
+    keyboardClose="false"
+    backdropDismiss="false"
+  ></ion-alert>
+
+  <ion-action-sheet
+    mode="md"
+    [isOpen]="isActionSheetOpen"
+    [header]="actionSheetHeader"
+    [buttons]="actionSheetButtons"
+    keyboardClose="false"
+    backdropDismiss="false"
+  ></ion-action-sheet>
 </ion-content>
