@@ -217,6 +217,9 @@ export class ProfilePage {
         text: 'Cancel·lar',
         icon: 'close-outline',
         role: 'cancel',
+        handler: () => {
+          this.isActionSheetOpen = false;
+        },
       },
     ];
 
