@@ -28,6 +28,7 @@ log.txt
 /tmp
 /out-tsc
 /bazel-out
+/android
 
 # Node
 /node_modules
@@ -75,5 +76,5 @@ Thumbs.db
 .runtimeconfig.json
 
 # Environment files
-# src/environments/environment.ts
+src/environments/environment.ts
 # src/environments/environment.prod.ts
