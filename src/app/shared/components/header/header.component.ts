@@ -5,6 +5,7 @@ import {
   IonButtons,
   IonBackButton,
   IonMenuButton,
+  IonImg,
 } from '@ionic/angular/standalone';
 import { Component, Input } from '@angular/core';
 
@@ -13,6 +14,7 @@ import { Component, Input } from '@angular/core';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   imports: [
+    IonImg,
     IonBackButton,
     IonButtons,
     IonHeader,
