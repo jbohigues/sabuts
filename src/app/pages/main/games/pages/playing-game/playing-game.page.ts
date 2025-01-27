@@ -343,7 +343,7 @@ export class PlayingGamePage {
 
   private async showWinGameMessage() {
     this.alertHeader = 'ENHORABONA!';
-    this.alertMessage = `Has aplegat a 15 acerts abans que el rival, així que eres el guanyador de la partida!`;
+    this.alertMessage = ``;
 
     this.alertButtons = [
       {
