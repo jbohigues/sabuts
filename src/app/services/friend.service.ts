@@ -56,6 +56,7 @@ export class FriendService {
                 id: userDoc.id,
                 name: userData.name,
                 userName: userData.userName,
+                email: userData.email,
                 backgroundColor: userData.backgroundColor,
                 avatarid: userData.avatarid,
                 totalPoints: userData.totalPoints,
