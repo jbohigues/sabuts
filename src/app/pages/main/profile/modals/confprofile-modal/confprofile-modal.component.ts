@@ -68,12 +68,14 @@ export class ConfprofileModalComponent {
     this.editProfileForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(4)]],
       lastName: ['', [Validators.minLength(4)]],
-      userName: ['', [Validators.required, Validators.minLength(4)]],
+      userName: [''],
+      // userName: ['', [Validators.required, Validators.minLength(4)]],
       backgroundColor: ['', [Validators.required]],
       email: [],
       totalPoints: [],
     });
     this.editProfileForm.get('email')?.disable();
+    this.editProfileForm.get('userName')?.disable();
     this.editProfileForm.get('totalPoints')?.disable();
   }
 

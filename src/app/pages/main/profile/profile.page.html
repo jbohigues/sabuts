@@ -59,7 +59,9 @@
           </ion-avatar>
           <ion-label>
             <h2>{{ friend.friendUser.name }}</h2>
-            <p>{{ friend.friendUser.userName }}</p>
+            <ion-text>
+              <small>{{ friend.friendUser.userName }}</small>
+            </ion-text>
           </ion-label>
           <ion-badge slot="end">
             {{ friend.friendUser.totalPoints }} pts
@@ -153,7 +155,8 @@
     [buttons]="alertButtons"
     keyboardClose="false"
     backdropDismiss="false"
-  ></ion-alert>
+  >
+  </ion-alert>
 
   <ion-action-sheet
     mode="md"

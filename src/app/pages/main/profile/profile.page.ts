@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -22,6 +22,7 @@ import {
   IonLoading,
   IonActionSheet,
   IonAlert,
+  IonText,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
 import { PartialUserModel, UserModel } from '@models/users.model';
@@ -71,6 +72,7 @@ import { ModalController } from '@ionic/angular';
     IonItem,
     IonButton,
     IonIcon,
+    IonText,
   ],
   providers: [ModalController],
 })
@@ -105,7 +107,10 @@ export class ProfilePage {
   friendsList: PartialFriendModel[] = [];
   friendRequestList: PartialFriendRequestModel[] = [];
 
-  constructor(private modalCtrl: ModalController) {}
+  constructor(
+    private modalCtrl: ModalController,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ionViewWillEnter() {
     this.loadUserData();
@@ -183,6 +188,9 @@ export class ProfilePage {
       {
         text: 'Cancel·lar',
         role: 'cancel',
+        handler: () => {
+          this.isAlertOpen = false;
+        },
       },
       {
         text: 'Afegir',
@@ -263,15 +271,16 @@ export class ProfilePage {
         .createFriendRequest(userToSendRequest.id!, friendRequest)
         .subscribe({
           next: () => {
+            this.openLoading = false;
             this.utilsService.presentToast(
               "Sol·licitut d'amistat enviada correctament",
               Colors.success,
               IconsToast.success_checkmark_circle
             );
             this.getUserInfo(this.currentUser!.id);
-            this.openLoading = false;
           },
           error: (e) => {
+            this.openLoading = false;
             const errorMessages: Record<string, string> = {
               [ErrorsEnum.already_sent_request]:
                 "Ja has enviat una sol·licitut d'amistat a aquest usuari",
@@ -285,13 +294,12 @@ export class ProfilePage {
               errorMessages[e.message] ||
               "Error al enviar la sol·licitut d'amistat";
 
-            this.openLoading = false;
-
             this.utilsService.presentToast(
               toastMessage,
               Colors.danger,
               IconsToast.danger_close_circle
             );
+            this.cdr.detectChanges();
           },
         });
     }
