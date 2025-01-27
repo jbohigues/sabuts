@@ -6,18 +6,54 @@
     type="overlay"
   >
     <ion-content class="ion-padding">
-      <div class="user-profile ion-text-center">
+      <div class="user-profile ion-padding ion-text-center">
         <div>
           @defer (on viewport) {
-          <app-logo></app-logo>
+          <app-logo [sidebarLogo]="true"></app-logo>
           } @placeholder {
           <small>Carregant...</small>
           }
+
+          <div class="flexdiv">
+            @if (user) {
+            <ion-avatar
+              class="custom-avatar sidebar"
+              slot="start"
+              [ngStyle]="{ 'background-color': user.backgroundColor }"
+            >
+              <span>
+                {{ user.userName.substring(0, 2).toUpperCase() }}
+              </span>
+            </ion-avatar>
+            <div class="ellipsis">
+              <h4 class="ellipsis">{{ user.userName }}</h4>
+              <ion-badge color="primary">{{ user.totalPoints }} pts</ion-badge>
+            </div>
+            }
+          </div>
+
+          <div class="actions">
+            <!-- <ion-button fill="outline">
+              <ion-icon name="create-outline"></ion-icon>
+              <span>Editar perfil</span>
+            </ion-button> -->
+            <ion-button fill="outline">
+              <ion-icon name="person-add"></ion-icon>
+              <span>Afegir amic/a</span>
+            </ion-button>
+            <ion-button fill="outline">
+              <ion-icon slot="icon-only" md="add"></ion-icon>
+              <span>Nova partida</span>
+            </ion-button>
+          </div>
         </div>
-        <ion-button expand="block" (click)="signOut()">
-          <ion-icon slot="start" name="log-out"></ion-icon>
-          Tancar sessió
-        </ion-button>
+        <div>
+          <hr />
+          <ion-button expand="block" (click)="signOut()">
+            <ion-icon slot="start" name="log-out"></ion-icon>
+            Tancar sessió
+          </ion-button>
+        </div>
       </div>
     </ion-content>
   </ion-menu>

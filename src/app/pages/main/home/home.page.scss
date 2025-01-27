@@ -4,17 +4,24 @@ p {
 }
 
 .escutimage,
-.logosabuts {
+.logo_punt_volat {
   display: block;
   margin: 0 auto;
+  padding-bottom: 1rem;
 }
 
-.escutimage {
+.escutimage,
+.logo_punt_volat {
   width: 10rem;
 }
 
+.logo_punt_volat {
+  padding-top: 1rem;
+}
+
 .logosabuts {
-  margin-top: 1rem;
+  max-width: 70%;
+  margin: 0 auto;
 }
 
 .presentationcard {
