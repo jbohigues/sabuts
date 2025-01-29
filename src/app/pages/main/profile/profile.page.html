@@ -6,20 +6,25 @@
   [scrollEvents]="true"
   (ionScroll)="onScroll($event)"
 >
-  <div class="flexdiv">
-    @if (currentUser) {
-    <ion-avatar
-      class="custom-avatar profile"
-      slot="start"
-      [ngStyle]="{'background-color': currentUser.backgroundColor}"
-    >
-      <span> {{currentUser.userName.substring(0,2).toUpperCase() }} </span>
-    </ion-avatar>
-    <div>
-      <h4>{{currentUser.userName}}</h4>
-      <ion-badge color="primary">{{currentUser.totalPoints}} pts</ion-badge>
+  <div class="flexdiv between">
+    <div class="flexdiv">
+      @if (currentUser) {
+      <ion-avatar
+        class="custom-avatar profile"
+        slot="start"
+        [ngStyle]="{'background-color': currentUser.backgroundColor}"
+      >
+        <span> {{currentUser.userName.substring(0,2).toUpperCase() }} </span>
+      </ion-avatar>
+      <div>
+        <h5>{{currentUser.userName}}</h5>
+        <ion-badge color="primary">{{currentUser.totalPoints}} pts</ion-badge>
+      </div>
+      }
     </div>
-    }
+    <ion-fab-button size="small" class="xsmall" (click)="openModal()">
+      <ion-icon name="settings-outline"></ion-icon>
+    </ion-fab-button>
   </div>
 
   <ion-segment
@@ -126,17 +131,9 @@
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button size="small">
-      <ion-icon name="settings-outline"></ion-icon>
+    <ion-fab-button size="small" (click)="presentAddFriendPrompt()">
+      <ion-icon name="person-add"></ion-icon>
     </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button (click)="openModal()">
-        <ion-icon name="create-outline"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button (click)="presentAddFriendPrompt()">
-        <ion-icon name="person-add"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
   </ion-fab>
 
   <!-- Needed objects -->

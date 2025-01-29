@@ -26,8 +26,8 @@
             {{
               editProfileForm
                 .get("userName")
-                ?.value.substring(0, 2)
-                .toUpperCase()
+                ?.value?.substring(0, 2)
+                ?.toUpperCase()
             }}
           </span>
         </ion-avatar>
@@ -52,7 +52,7 @@
       }
 
       <!-- Apellido -->
-      <ion-item>
+      <!-- <ion-item>
         <ion-input
           type="text"
           label="Cognom"
@@ -60,7 +60,7 @@
           formControlName="lastName"
           placeholder="Introdueix el teu cognom"
         ></ion-input>
-      </ion-item>
+      </ion-item> -->
 
       <!-- Nombre de usuario -->
       <ion-item>
@@ -77,6 +77,10 @@
       editProfileForm.get('userName')?.errors?.['required']) {
       <ion-note color="danger" class="ion-margin-start">
         El nom d'usuari és obligatori
+      </ion-note>
+      } @if (editProfileForm.get('userName')?.errors?.['usernameTaken']) {
+      <ion-note color="danger" class="ion-margin-start">
+        Nom d'usuari no disponible
       </ion-note>
       }
 

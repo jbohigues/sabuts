@@ -24,6 +24,11 @@ app-login-layout {
   height: 100%;
 }
 
+.xsmall.fab-button-small {
+  width: 30px;
+  height: 30px;
+}
+
 a {
   text-decoration: none;
   color: var(--text-white);
@@ -56,8 +61,8 @@ a {
   }
 
   &.profile {
-    width: 64px;
-    height: 64px;
+    width: 48px;
+    height: 48px;
 
     span {
       font-size: 24px;

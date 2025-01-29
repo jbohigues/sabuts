@@ -7,7 +7,7 @@
 
 1. [x] Input password: small => minusculas, mayusculas y numeros
 2. [x] Logo punt volat a la dreta del header
-3. [] Nom usuari deuria ser UNIC (limitar caracters => min i max: mos fara un favor)
+3. [x] Nom usuari deuria ser UNIC (limitar caracters => min i max: mos fara un favor)
 
 # HOME
 
@@ -21,8 +21,8 @@
 
 # PERFIL
 
-1. [] Llevar actionsheet: ficar botó configuració perfil a la dreta de dades usuari
-2. [] Canviar actionsheet per afegir amics
+1. [x] Llevar actionsheet: ficar botó configuració perfil a la dreta de dades usuari
+2. [x] Canviar actionsheet per afegir amics
 3. [] Provar a ficar acordeon per a les solicituds: pendents i enviades
 4. [] Filtre en llistat amics: buscar amics per correu? per nom usuari?
 

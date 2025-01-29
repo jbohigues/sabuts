@@ -56,12 +56,12 @@ export class SignUpPage {
     name: new FormControl('', [
       Validators.required,
       Validators.minLength(4),
-      Validators.maxLength(15),
+      Validators.maxLength(20),
     ]),
     userName: new FormControl('', [
       Validators.required,
       Validators.minLength(4),
-      Validators.maxLength(15),
+      Validators.maxLength(20),
     ]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
