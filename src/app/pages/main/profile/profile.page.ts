@@ -5,7 +5,6 @@ import {
   IonContent,
   IonList,
   IonItem,
-  IonButton,
   IonIcon,
   IonLabel,
   IonBadge,
@@ -22,6 +21,8 @@ import {
   IonActionSheet,
   IonAlert,
   IonText,
+  IonButton,
+  IonSearchbar,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
 import { PartialUserModel, UserModel } from '@models/users.model';
@@ -39,7 +40,12 @@ import { ErrorsEnum } from '@sharedEnums/errors';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
 import { ConfprofileModalComponent } from './modals/confprofile-modal/confprofile-modal.component';
-import { ActionSheetButton, AlertButton, AlertInput } from '@ionic/core';
+import {
+  ActionSheetButton,
+  AlertButton,
+  AlertInput,
+  SearchbarInputEventDetail,
+} from '@ionic/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -48,6 +54,8 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [
+    IonSearchbar,
+    IonButton,
     IonAlert,
     IonActionSheet,
     IonLoading,
@@ -68,7 +76,6 @@ import { ModalController } from '@ionic/angular';
     HeaderComponent,
     IonList,
     IonItem,
-    IonButton,
     IonIcon,
     IonText,
   ],
@@ -85,6 +92,7 @@ export class ProfilePage {
 
   // Variables
   selectedSegment: string = 'friends';
+  requestsselectedSegment: string = 'pending';
   openLoading: boolean = false;
   isAlertOpen: boolean = false;
   isActionSheetOpen: boolean = false;
@@ -103,6 +111,7 @@ export class ProfilePage {
   // Objects
   currentUser: UserModel | undefined;
   friendsList: PartialFriendModel[] = [];
+  friendsListOriginal: PartialFriendModel[] = [];
   friendRequestList: PartialFriendRequestModel[] = [];
 
   constructor(
@@ -127,6 +136,10 @@ export class ProfilePage {
     this.selectedSegment = event.detail.value;
   }
 
+  protected segmentRequestsChanged(event: any) {
+    this.requestsselectedSegment = event.detail.value;
+  }
+
   protected refreshPage(event: any) {
     this.ionViewWillEnter();
     event.target.complete();
@@ -145,7 +158,13 @@ export class ProfilePage {
 
     this.friendService.getFriends(id).subscribe({
       next: (res) => {
-        if (res) this.friendsList = res;
+        if (res) {
+          this.friendsList = res;
+          this.friendsListOriginal = res;
+          this.friendsListOriginal.map((friend) =>
+            this.friendsListOriginal.push(friend)
+          );
+        }
         this.loadingFriends = false;
       },
       error: (e) => {
@@ -166,6 +185,17 @@ export class ProfilePage {
           this.loadingFriendRequest = false;
         },
       });
+  }
+
+  protected handleInput(event: CustomEvent<SearchbarInputEventDetail>) {
+    const value = event.detail.value;
+    if (value) {
+      this.friendsList = this.friendsListOriginal.filter((friend) =>
+        friend.friendUser.userName.includes(value)
+      );
+    } else {
+      this.friendsList = this.friendsListOriginal;
+    }
   }
 
   async presentAddFriendPrompt() {

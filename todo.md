@@ -24,7 +24,7 @@
 1. [x] Llevar actionsheet: ficar botó configuració perfil a la dreta de dades usuari
 2. [x] Canviar actionsheet per afegir amics
 3. [] Provar a ficar acordeon per a les solicituds: pendents i enviades
-4. [] Filtre en llistat amics: buscar amics per correu? per nom usuari?
+4. [x] Filtre en llistat amics: buscar amics per correu? per nom usuari?
 
 # PARTIDES
 

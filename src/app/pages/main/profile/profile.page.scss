@@ -29,3 +29,8 @@ h5 {
     }
   }
 }
+
+ion-list {
+  max-height: calc(100dvh - 250px);
+  overflow-y: auto;
+}
