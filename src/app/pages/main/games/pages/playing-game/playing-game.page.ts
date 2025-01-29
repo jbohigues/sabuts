@@ -209,10 +209,9 @@ export class PlayingGamePage {
     clearInterval(this.timer);
   }
 
-  //TODO: falta ver que hacemos cuando termina el tiempo!!!!
   private timeExpired() {
-    // Lógica cuando se acaba el tiempo
-    console.log('¡Tiempo agotado!');
+    this.playIncorrectSound();
+    this.showErrorAnswerMessage(true);
   }
 
   protected answerQuestion(answer: AnswerModel) {
@@ -226,7 +225,7 @@ export class PlayingGamePage {
       this.incrementScore();
     } else {
       this.playIncorrectSound();
-      this.showErrorAnswerMessage();
+      this.showErrorAnswerMessage(false);
     }
   }
 
@@ -381,12 +380,14 @@ export class PlayingGamePage {
     this.isAlertOpen = true;
   }
 
-  private async showErrorAnswerMessage() {
+  private async showErrorAnswerMessage(isTimeOut: boolean) {
     this.updateGameScore(false);
     // this.saveGameInLocalStorage();
 
-    this.alertHeader = 'INCORRECTE...';
-    this.alertMessage = `Has fallat la resposta aixi que el torn acaba ací, hauràs d'esperar fins que el rival responga.`;
+    this.alertHeader = isTimeOut ? 'Oooooh...' : 'INCORRECTE...';
+    this.alertMessage = `${
+      isTimeOut ? "S'ha acabat el temps" : 'Has fallat la resposta'
+    } així que el torn acaba ací, hauràs d'esperar fins que el rival responga.`;
 
     this.alertButtons = [
       {

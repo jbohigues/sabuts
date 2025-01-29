@@ -2,6 +2,7 @@
 
 - hay que ver como tratar el tema de las partidas: que si salen del juego, recuperen lo que tenian (pueden fallar una pregunta, salir y volver a entrar a jugar)
 - revisar todo el tema de controladores: probarlo en movil que hay cosas raras
+- NOTIFICACIONS ??????
 
 # General
 
@@ -29,7 +30,7 @@
 # PARTIDES
 
 1. [] Ficar 3 tabs: Meu torn, Torn Rival, Finalitzades / Historial
-2. [] Ficar la categoria al costat de la imatge
+2. [x] Ficar la categoria al costat de la imatge
 3. [] Llevar missatge guanyar partida: sols enhorabona (mirar de ficar cada lletra d'un color, ficar el murcielago amb algun efecte o algo)
 
 ## IMPORTANTE !!!!!!!!

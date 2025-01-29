@@ -53,12 +53,21 @@
     <article [ngClass]="{'ion-padding question-card': showQuestion}">
       @if (showQuestion && currentQuestion) {
       <header>
-        <img
-          [src]="'assets/images/icons/icon_'+categorieMap.get(currentQuestion.category)?.color+'.webp'"
-          alt="Logo categoria"
-          class="logocategoria"
-        />
-        <small>{{categorieMap.get(currentQuestion.category)?.label}}</small>
+        <div>
+          <div class="divcategoria">
+            <img
+              [src]="'assets/images/icons/icon_'+categorieMap.get(currentQuestion.category)?.color+'.webp'"
+              alt="Logo categoria"
+            />
+            <span>{{categorieMap.get(currentQuestion.category)?.label}}</span>
+          </div>
+          <div class="divcategoria">
+            <p class="timer">
+              {{timeLeft}}
+              <ion-icon name="hourglass"></ion-icon>
+            </p>
+          </div>
+        </div>
         <h3>{{currentQuestion.question}}</h3>
       </header>
 
@@ -80,10 +89,6 @@
       }
 
       <ion-progress-bar [buffer]="buffer" [value]="progress"></ion-progress-bar>
-      <p class="timer">
-        <ion-icon name="hourglass"></ion-icon>
-        {{timeLeft}}
-      </p>
 
       @if(answerSelected) {
       <ion-button expand="block" type="submit" (click)="makeQuestion()">
