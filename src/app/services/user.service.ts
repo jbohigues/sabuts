@@ -120,4 +120,11 @@ export class UserService {
       })
     );
   }
+
+  async checkUsernameAvailability(username: string): Promise<boolean> {
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('userName', '==', username));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.empty;
+  }
 }

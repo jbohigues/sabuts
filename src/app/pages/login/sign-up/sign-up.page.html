@@ -5,8 +5,26 @@
     <div>
       <ion-input
         type="text"
-        formControlName="userName"
+        formControlName="name"
         label="Nom"
+        label-placement="floating"
+        fill="outline"
+        required
+      ></ion-input>
+      @if (formAuth.get('name')?.touched && formAuth.get('name')?.invalid) {
+      <ion-text>
+        @if (formAuth.get('name')?.errors?.['required']) {
+        <p class="error ion-margin-bottom">El nom és obligatori</p>
+        }
+      </ion-text>
+      }
+    </div>
+
+    <div>
+      <ion-input
+        type="text"
+        formControlName="userName"
+        label="Nom d'usuari"
         label-placement="floating"
         fill="outline"
         required
@@ -15,7 +33,7 @@
       formAuth.get('userName')?.invalid) {
       <ion-text>
         @if (formAuth.get('userName')?.errors?.['required']) {
-        <p class="error ion-margin-bottom">El nom és obligatori</p>
+        <p class="error ion-margin-bottom">El nom d'usuari és obligatori</p>
         }
       </ion-text>
       }

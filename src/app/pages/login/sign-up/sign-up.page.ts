@@ -53,9 +53,15 @@ export class SignUpPage {
 
   // Objects
   formAuth = new FormGroup({
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4),
+      Validators.maxLength(15),
+    ]),
     userName: new FormControl('', [
       Validators.required,
       Validators.minLength(4),
+      Validators.maxLength(15),
     ]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
@@ -67,17 +73,29 @@ export class SignUpPage {
   async submit() {
     this.openLoading = true;
 
-    const { userName, email, password } = this.formAuth.value;
-    if (email && password) {
+    const { name, userName, email, password } = this.formAuth.value;
+    if (!name || !userName || !email || !password) return;
+
+    const availableUserName = await this.userService.checkUsernameAvailability(
+      userName
+    );
+    if (!availableUserName) {
+      this.openLoading = false;
+      this.utilsService.presentToast(
+        "El nom d'usuari no està disponible",
+        Colors.danger,
+        IconsToast.danger_close_circle
+      );
+    } else {
       this.authService.register(email, password).subscribe({
         next: (user) => {
           const backgroundColor = this.utilsService.getRandomDarkColor();
 
           const usermodel: UserModel = {
             id: user.uid,
-            name: userName ?? '',
-            email: email ?? '',
-            userName: email.split('@')[0] ?? '',
+            name,
+            email,
+            userName,
             lastName: '',
             avatarid: '',
             backgroundColor,
@@ -94,12 +112,12 @@ export class SignUpPage {
               this.openLoading = false;
               setTimeout(() => {
                 this.utilsService.routerLink('/home');
-                this.formAuth.reset();
                 this.utilsService.presentToast(
                   'Usuari creat amb èxit',
                   Colors.success,
                   IconsToast.success_thumbs_up
                 );
+                this.formAuth.reset();
               }, 1);
             },
             error: (e) => {
