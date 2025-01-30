@@ -3,6 +3,10 @@
   margin-right: 1rem;
 }
 
+.needpadding {
+  padding-left: 1rem;
+}
+
 :host ::ng-deep ion-title {
   padding-left: 0;
 }

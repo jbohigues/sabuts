@@ -18,13 +18,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('@pages/main/games/games.page').then((m) => m.GamesPage),
       },
-      {
-        path: 'games/:_idgame',
-        loadComponent: () =>
-          import('@pages/main/games/pages/playing-game/playing-game.page').then(
-            (m) => m.PlayingGamePage
-          ),
-      },
+
       {
         path: 'profile',
         loadComponent: () =>
@@ -36,6 +30,13 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
     ],
+  },
+  {
+    path: 'games/:_idgame',
+    loadComponent: () =>
+      import('@pages/main/games/pages/playing-game/playing-game.page').then(
+        (m) => m.PlayingGamePage
+      ),
   },
   {
     path: '',

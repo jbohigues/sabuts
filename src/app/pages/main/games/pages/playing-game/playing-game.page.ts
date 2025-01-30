@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -131,6 +131,7 @@ export class PlayingGamePage {
         console.error(e);
       },
     });
+
     // this.loadGameOfLocalStorage();
 
     // if (this.playingGame) {
@@ -148,6 +149,10 @@ export class PlayingGamePage {
     //     },
     //   });
     // }
+  }
+
+  ionViewWillLeave() {
+    this.stopTimer();
   }
 
   private setCurrentUserInPlayer1() {
