@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -70,6 +70,8 @@ export class SignUpPage {
     ]),
   });
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   async submit() {
     this.openLoading = true;
 
@@ -110,19 +112,16 @@ export class SignUpPage {
             next: () => {
               this.utilsService.saveInLocalStorage('user', usermodel);
               this.openLoading = false;
-              setTimeout(() => {
-                this.utilsService.routerLink('/home');
-                this.utilsService.presentToast(
-                  'Usuari creat amb èxit',
-                  Colors.success,
-                  IconsToast.success_thumbs_up
-                );
-                this.formAuth.reset();
-              }, 1);
+              this.utilsService.routerLink('/home');
+              this.utilsService.presentToast(
+                'Usuari creat amb èxit',
+                Colors.success,
+                IconsToast.success_thumbs_up
+              );
+              this.formAuth.reset();
             },
             error: (e) => {
               console.error(e);
-              this.openLoading = false;
               this.presentError(e);
             },
           });
@@ -148,5 +147,7 @@ export class SignUpPage {
       Colors.danger,
       IconsToast.danger_close_circle
     );
+    this.openLoading = false;
+    this.cdr.detectChanges();
   }
 }

@@ -15,6 +15,11 @@
       <ion-text>
         @if (formAuth.get('name')?.errors?.['required']) {
         <p class="error ion-margin-bottom">El nom és obligatori</p>
+        } @if (formAuth.get('name')?.errors?.['minlength'] ||
+        formAuth.get('name')?.errors?.['maxlength']) {
+        <p class="error ion-margin-bottom">
+          El nom ha de tindre entre 4 i 20 caracters
+        </p>
         }
       </ion-text>
       }
@@ -34,6 +39,11 @@
       <ion-text>
         @if (formAuth.get('userName')?.errors?.['required']) {
         <p class="error ion-margin-bottom">El nom d'usuari és obligatori</p>
+        } @if (formAuth.get('userName')?.errors?.['minlength'] ||
+        formAuth.get('userName')?.errors?.['maxlength']) {
+        <p class="error ion-margin-bottom">
+          El nom d'usuari ha de tindre entre 4 i 20 caracters
+        </p>
         }
       </ion-text>
       }

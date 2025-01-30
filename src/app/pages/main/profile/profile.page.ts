@@ -100,11 +100,13 @@ export class ProfilePage {
   loadingFriendRequest: boolean = true;
   showScrollButton: boolean = false;
 
+  // Alert
   alertHeader: string = '';
   alertMessage: string = '';
   alertInputs: AlertInput[] = [];
   alertButtons: AlertButton[] = [];
 
+  // ActionSheet
   actionSheetHeader: string = '';
   actionSheetButtons: ActionSheetButton[] = [];
 
@@ -161,9 +163,6 @@ export class ProfilePage {
         if (res) {
           this.friendsList = res;
           this.friendsListOriginal = res;
-          this.friendsListOriginal.map((friend) =>
-            this.friendsListOriginal.push(friend)
-          );
         }
         this.loadingFriends = false;
       },
