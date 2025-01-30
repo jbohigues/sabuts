@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, effect, inject, OnInit, ViewChild } from '@angular/core';
 import {
   IonContent,
   IonRefresher,
@@ -67,7 +67,7 @@ import {
     GameCardComponent,
   ],
 })
-export class GamesPage {
+export class GamesPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
 
   private gameService = inject(GameService);
@@ -79,6 +79,7 @@ export class GamesPage {
   totalScore: number = 0;
   loading: boolean = false;
   modalOpen: boolean = false;
+  needReload: boolean = false;
   isAlertOpen: boolean = false;
   isSmallScreen: boolean = false;
   showScrollButton: boolean = false;
@@ -102,9 +103,17 @@ export class GamesPage {
       .subscribe((result) => {
         this.isSmallScreen = result.matches; // true si es pequeño, false si no
       });
+
+    effect(
+      () => {
+        this.needReload = this.utilsService.needReloadSignal();
+        if (this.needReload) this.loadUserData();
+      },
+      { allowSignalWrites: true }
+    );
   }
 
-  private ionViewWillEnter() {
+  ionViewWillEnter() {
     this.loadUserData();
   }
 
@@ -123,9 +132,10 @@ export class GamesPage {
   }
 
   private loadUserData() {
+    if (this.needReload) this.utilsService.needReloadSignal.set(false);
+
     this.currentUser = this.utilsService.getFromLocalStorage('user');
-    if (this.currentUser && this.currentUser.id)
-      this.getUserInfo(this.currentUser.id);
+    if (this.currentUser) this.getUserInfo(this.currentUser.id);
     else location.reload();
   }
 
@@ -232,6 +242,9 @@ export class GamesPage {
         text: 'Cancel·lar',
         role: 'cancel',
         cssClass: 'secondary',
+        handler: () => {
+          this.isAlertOpen = false;
+        },
       },
       {
         text: 'Acceptar',

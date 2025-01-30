@@ -24,7 +24,7 @@
   <h4>El teu torn ({{gamesTurnOfUser.length}})</h4>
   @if (!gamesTurnOfUser.length) {
   <ion-text>
-    <p>Has d'esperar a que responguen els rivals</p>
+    <p>Has d'esperar que responguin els rivals</p>
   </ion-text>
 
   } @else {
@@ -54,6 +54,7 @@
       [game]="game"
       [myTurn]="false"
       [isSmallScreen]="isSmallScreen"
+      (deletedEmitter)="deletedGame($event)"
     ></app-game-card>
     }
   </div>
@@ -71,7 +72,7 @@
       <ion-header>
         <ion-toolbar>
           <ion-buttons slot="end">
-            <ion-button (click)="cancel()">Cancel</ion-button>
+            <ion-button (click)="cancel()">Cancel·lar</ion-button>
           </ion-buttons>
           <ion-title slot="start">Nova partida</ion-title>
         </ion-toolbar>

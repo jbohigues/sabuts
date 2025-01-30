@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, signal } from '@angular/core';
 import { ToastController, MenuController } from '@ionic/angular';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class UtilsService {
+  needReloadSignal = signal(false);
+
   constructor(
     private router: Router,
     private ngZone: NgZone,
@@ -19,9 +21,10 @@ export class UtilsService {
     this.menuController.close('main-menu');
   }
 
-  routerLink(url: string) {
+  routerLink(url: string, needReload?: boolean) {
     this.ngZone.run(() => {
-      this.router.navigate([url]);
+      if (needReload != null) this.needReloadSignal.set(needReload);
+      this.router.navigateByUrl(url);
     });
   }
 

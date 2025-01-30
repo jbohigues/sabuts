@@ -33,3 +33,13 @@
   </ion-item-options>
 </ion-item-sliding>
 }
+
+<ion-alert
+  mode="md"
+  [isOpen]="isAlertOpen"
+  [header]="alertHeader"
+  [message]="alertMessage"
+  [buttons]="alertButtons"
+  keyboardClose="false"
+  backdropDismiss="false"
+></ion-alert>

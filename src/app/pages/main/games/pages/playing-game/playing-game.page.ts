@@ -405,9 +405,7 @@ export class PlayingGamePage {
               .subscribe({
                 next: () => {
                   this.isAlertOpen = false;
-                  setTimeout(() => {
-                    this.utilsService.routerLink('games');
-                  }, 1);
+                  this.utilsService.routerLink('games', true);
                 },
                 error: (e) => console.error(e),
               });
