@@ -84,12 +84,6 @@ import { ModalController } from '@ionic/angular';
 export class ProfilePage {
   @ViewChild(IonContent, { static: false }) content!: IonContent;
 
-  // Injects
-  private userService = inject(UserService);
-  private utilsService = inject(UtilsService);
-  private friendService = inject(FriendService);
-  private friendRequestService = inject(FriendRequestService);
-
   // Variables
   selectedSegment: string = 'friends';
   requestsselectedSegment: string = 'pending';
@@ -117,8 +111,12 @@ export class ProfilePage {
   friendRequestList: PartialFriendRequestModel[] = [];
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private modalCtrl: ModalController,
-    private cdr: ChangeDetectorRef
+    private userService: UserService,
+    private utilsService: UtilsService,
+    private friendService: FriendService,
+    private friendRequestService: FriendRequestService
   ) {}
 
   ionViewWillEnter() {

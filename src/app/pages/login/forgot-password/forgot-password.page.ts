@@ -40,10 +40,6 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class ForgotPasswordPage {
-  // Injects
-  private authService = inject(AuthService);
-  private utilsService = inject(UtilsService);
-
   // Variables
   openLoading: boolean = false;
 
@@ -51,6 +47,11 @@ export class ForgotPasswordPage {
   formAuth = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
   });
+
+  constructor(
+    private authService: AuthService,
+    private utilsService: UtilsService
+  ) {}
 
   async submit() {
     this.openLoading = true;

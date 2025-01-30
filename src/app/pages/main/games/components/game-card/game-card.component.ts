@@ -49,9 +49,6 @@ export class GameCardComponent implements OnInit {
   @Input() currentUser!: UserModel;
   @Output() deletedEmitter = new EventEmitter<boolean>();
 
-  private gameService = inject(GameService);
-  private utilsService = inject(UtilsService);
-
   alertHeader: string = '';
   alertMessage: string = '';
   isAlertOpen: boolean = false;
@@ -59,6 +56,11 @@ export class GameCardComponent implements OnInit {
 
   rivalPlayer: UserOfGameModel | undefined;
   currentUserPlayer: UserOfGameModel | undefined;
+
+  constructor(
+    private gameService: GameService,
+    private utilsService: UtilsService
+  ) {}
 
   ngOnInit(): void {
     this.setCurrentUserInPlayer1();

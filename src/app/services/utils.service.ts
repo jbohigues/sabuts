@@ -38,6 +38,7 @@ export class UtilsService {
       position: 'bottom',
       animated: true,
       swipeGesture: 'vertical',
+      htmlAttributes: { inert: true },
       buttons: [
         {
           icon: 'close',

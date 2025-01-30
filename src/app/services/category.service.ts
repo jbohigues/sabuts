@@ -7,7 +7,7 @@ import { Observable, from, map } from 'rxjs';
   providedIn: 'root',
 })
 export class CategoryService {
-  private firestore = inject(Firestore);
+  constructor(private firestore: Firestore) {}
 
   getCategories(): Observable<CategoryModel[]> {
     const categoriesRef = collection(this.firestore, 'categories');

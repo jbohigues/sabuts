@@ -21,7 +21,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
-  private firestore = inject(Firestore);
+  constructor(private firestore: Firestore) {}
 
   // Obtener todas las partidas
   getGames(): Observable<GameModel[]> {

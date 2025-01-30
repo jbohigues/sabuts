@@ -24,7 +24,7 @@ import {
   providedIn: 'root',
 })
 export class FriendService {
-  private firestore = inject(Firestore);
+  constructor(private firestore: Firestore) {}
 
   getFriends(userId: string): Observable<PartialFriendModel[]> {
     const friendsRef = collection(this.firestore, `users/${userId}/friends`);

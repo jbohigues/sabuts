@@ -7,7 +7,7 @@ import { Observable, from, map } from 'rxjs';
   providedIn: 'root',
 })
 export class QuestionService {
-  private firestore = inject(Firestore);
+  constructor(private firestore: Firestore) {}
 
   getQuestions(): Observable<QuestionModel[]> {
     const questionsRef = collection(this.firestore, 'questions');

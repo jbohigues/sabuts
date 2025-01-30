@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   Auth,
   User,
@@ -9,13 +9,19 @@ import {
   sendPasswordResetEmail,
 } from '@angular/fire/auth';
 
-import { Observable, from, map } from 'rxjs';
+import { BehaviorSubject, Observable, from, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private auth = inject(Auth);
+  private loggedIn = new BehaviorSubject<boolean>(false);
+
+  constructor(private auth: Auth) {
+    onAuthStateChanged(this.auth, (user) => {
+      this.loggedIn.next(!!user);
+    });
+  }
 
   login(email: string, password: string): Observable<User> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
@@ -24,13 +30,16 @@ export class AuthService {
   }
 
   isLoggedIn(): Observable<boolean> {
-    return new Observable((observer) => {
-      onAuthStateChanged(this.auth, (res) => {
-        if (res) observer.next(true);
-        else observer.next(false);
-      });
-    });
+    return this.loggedIn.asObservable();
   }
+  // isLoggedIn(): Observable<boolean> {
+  //   return new Observable((observer) => {
+  //     onAuthStateChanged(this.auth, (res) => {
+  //       if (res) observer.next(true);
+  //       else observer.next(false);
+  //     });
+  //   });
+  // }
 
   register(email: string, password: string): Observable<User> {
     return from(

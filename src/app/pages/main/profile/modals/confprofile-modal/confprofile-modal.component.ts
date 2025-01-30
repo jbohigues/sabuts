@@ -59,15 +59,15 @@ import { UserService } from '@services/user.service';
   ],
 })
 export class ConfprofileModalComponent {
-  // Injects
-  private userService = inject(UserService);
-  private utilsService = inject(UtilsService);
-
   // Objects
   editProfileForm: FormGroup;
   currentUser: UserModel | undefined;
 
-  constructor(private modalCtrl: ModalController) {
+  constructor(
+    private modalCtrl: ModalController,
+    private userService: UserService,
+    private utilsService: UtilsService
+  ) {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
 
     this.editProfileForm = new FormGroup({

@@ -43,11 +43,6 @@ import { UserService } from '@services/user.service';
   ],
 })
 export class LoginPage {
-  // Injects
-  private userService = inject(UserService);
-  private authService = inject(AuthService);
-  private utilsService = inject(UtilsService);
-
   // Variables
   openLoading: boolean = false;
 
@@ -56,6 +51,12 @@ export class LoginPage {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });
+
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    private utilsService: UtilsService
+  ) {}
 
   async login() {
     this.openLoading = true;

@@ -36,7 +36,7 @@ import {
   providedIn: 'root',
 })
 export class FriendRequestService {
-  private firestore = inject(Firestore);
+  constructor(private firestore: Firestore) {}
 
   getFriendRequests(
     userId: string,

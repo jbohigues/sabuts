@@ -70,11 +70,6 @@ import {
 export class GamesPage {
   @ViewChild(IonModal) modal!: IonModal;
 
-  private gameService = inject(GameService);
-  private utilsService = inject(UtilsService);
-  private friendService = inject(FriendService);
-  private breakpointObserver = inject(BreakpointObserver);
-
   // Variables
   totalScore: number = 0;
   loading: boolean = false;
@@ -96,7 +91,12 @@ export class GamesPage {
   friendsListOriginal: PartialFriendModel[] = [];
   currentUser: UserModel | undefined;
 
-  constructor() {
+  constructor(
+    private gameService: GameService,
+    private utilsService: UtilsService,
+    private friendService: FriendService,
+    private breakpointObserver: BreakpointObserver
+  ) {
     this.breakpointObserver
       .observe([Breakpoints.XSmall])
       .subscribe((result) => {

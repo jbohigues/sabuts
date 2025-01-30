@@ -59,10 +59,6 @@ export class PlayingGamePage {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('_idgame') idgame!: string;
 
-  private gameService = inject(GameService);
-  private userService = inject(UserService);
-  private utilsService = inject(UtilsService);
-
   // Variables
   progress: number = 0;
   buffer: number = 0.06;
@@ -91,7 +87,11 @@ export class PlayingGamePage {
 
   categorieMap: Map<string, Category> = new Map();
 
-  constructor() {
+  constructor(
+    private gameService: GameService,
+    private userService: UserService,
+    private utilsService: UtilsService
+  ) {
     this.categorieMap.set(Categories.historia_de_valencia, {
       label: 'Història de València',
       color: 'blue',

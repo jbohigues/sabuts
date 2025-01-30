@@ -42,11 +42,6 @@ import { UserService } from '@services/user.service';
   ],
 })
 export class SignUpPage {
-  // Injects
-  private userService = inject(UserService);
-  private authService = inject(AuthService);
-  private utilsService = inject(UtilsService);
-
   //Variables
   openLoading: boolean = false;
   showPassword: boolean = false;
@@ -70,7 +65,12 @@ export class SignUpPage {
     ]),
   });
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private userService: UserService,
+    private authService: AuthService,
+    private utilsService: UtilsService
+  ) {}
 
   async submit() {
     this.openLoading = true;

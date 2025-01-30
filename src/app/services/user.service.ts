@@ -19,7 +19,7 @@ import { Observable, forkJoin, from, map, switchMap } from 'rxjs';
   providedIn: 'root',
 })
 export class UserService {
-  private firestore = inject(Firestore);
+  constructor(private firestore: Firestore) {}
 
   getUsers(): Observable<UserModel[]> {
     const usersRef = collection(this.firestore, 'users');

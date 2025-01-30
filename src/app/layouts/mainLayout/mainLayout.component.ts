@@ -90,12 +90,8 @@ export class MainLayoutComponent implements OnInit {
   @Input() pageTitle!: string;
   @Input() backButton!: string;
 
-  private userService = inject(UserService);
-  private authService = inject(AuthService);
-  private utilsService = inject(UtilsService);
-  private friendRequestService = inject(FriendRequestService);
-  // private gameService = inject(GameService);
-  // private friendService = inject(FriendService);
+  // private gameService :GameService;
+  // private friendService :FriendService;
 
   // modalOpen: boolean = false;
   openLoading: boolean = false;
@@ -113,6 +109,13 @@ export class MainLayoutComponent implements OnInit {
   alertMessage: string = '';
   alertInputs: AlertInput[] = [];
   alertButtons: AlertButton[] = [];
+
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    private utilsService: UtilsService,
+    private friendRequestService: FriendRequestService
+  ) {}
 
   ionViewWillEnter() {
     this.init();
