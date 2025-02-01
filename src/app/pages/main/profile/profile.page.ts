@@ -1,11 +1,10 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonContent,
   IonList,
   IonItem,
-  IonButton,
   IonIcon,
   IonLabel,
   IonBadge,
@@ -18,10 +17,13 @@ import {
   IonFabButton,
   IonSegment,
   IonSpinner,
-  IonFabList,
   IonLoading,
   IonActionSheet,
   IonAlert,
+  IonText,
+  IonButton,
+  IonSearchbar,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
 import { PartialUserModel, UserModel } from '@models/users.model';
@@ -39,7 +41,12 @@ import { ErrorsEnum } from '@sharedEnums/errors';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
 import { ConfprofileModalComponent } from './modals/confprofile-modal/confprofile-modal.component';
-import { ActionSheetButton, AlertButton, AlertInput } from '@ionic/core';
+import {
+  ActionSheetButton,
+  AlertButton,
+  AlertInput,
+  SearchbarInputEventDetail,
+} from '@ionic/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -48,10 +55,12 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [
+    IonToast,
+    IonSearchbar,
+    IonButton,
     IonAlert,
     IonActionSheet,
     IonLoading,
-    IonFabList,
     IonSpinner,
     IonSegment,
     IonFabButton,
@@ -69,8 +78,8 @@ import { ModalController } from '@ionic/angular';
     HeaderComponent,
     IonList,
     IonItem,
-    IonButton,
     IonIcon,
+    IonText,
   ],
   providers: [ModalController],
 })
@@ -85,6 +94,7 @@ export class ProfilePage {
 
   // Variables
   selectedSegment: string = 'friends';
+  requestsselectedSegment: string = 'pending';
   openLoading: boolean = false;
   isAlertOpen: boolean = false;
   isActionSheetOpen: boolean = false;
@@ -92,20 +102,32 @@ export class ProfilePage {
   loadingFriendRequest: boolean = true;
   showScrollButton: boolean = false;
 
+  // Alert
   alertHeader: string = '';
   alertMessage: string = '';
   alertInputs: AlertInput[] = [];
   alertButtons: AlertButton[] = [];
 
+  // Toast
+  isToastOpen: boolean = false;
+  iconToast: string = '';
+  colorToast: string = '';
+  messageToast: string = '';
+
+  // ActionSheet
   actionSheetHeader: string = '';
   actionSheetButtons: ActionSheetButton[] = [];
 
   // Objects
   currentUser: UserModel | undefined;
   friendsList: PartialFriendModel[] = [];
+  friendsListOriginal: PartialFriendModel[] = [];
   friendRequestList: PartialFriendRequestModel[] = [];
 
-  constructor(private modalCtrl: ModalController) {}
+  constructor(
+    private modalCtrl: ModalController,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ionViewWillEnter() {
     this.loadUserData();
@@ -122,6 +144,10 @@ export class ProfilePage {
 
   protected segmentChanged(event: any) {
     this.selectedSegment = event.detail.value;
+  }
+
+  protected segmentRequestsChanged(event: any) {
+    this.requestsselectedSegment = event.detail.value;
   }
 
   protected refreshPage(event: any) {
@@ -142,7 +168,10 @@ export class ProfilePage {
 
     this.friendService.getFriends(id).subscribe({
       next: (res) => {
-        if (res) this.friendsList = res;
+        if (res) {
+          this.friendsList = res;
+          this.friendsListOriginal = res;
+        }
         this.loadingFriends = false;
       },
       error: (e) => {
@@ -165,6 +194,17 @@ export class ProfilePage {
       });
   }
 
+  protected handleInput(event: CustomEvent<SearchbarInputEventDetail>) {
+    const value = event.detail.value;
+    if (value) {
+      this.friendsList = this.friendsListOriginal.filter((friend) =>
+        friend.friendUser.userName.includes(value)
+      );
+    } else {
+      this.friendsList = this.friendsListOriginal;
+    }
+  }
+
   async presentAddFriendPrompt() {
     this.alertHeader = 'Afegir nou amic/a';
 
@@ -183,6 +223,9 @@ export class ProfilePage {
       {
         text: 'Cancel·lar',
         role: 'cancel',
+        handler: () => {
+          this.isAlertOpen = false;
+        },
       },
       {
         text: 'Afegir',
@@ -236,16 +279,19 @@ export class ProfilePage {
           this.createFriendRequest(userToSendRequest);
         } else {
           this.openLoading = false;
-          this.utilsService.presentToast(
-            "No s'han trobat coincidències",
-            Colors.danger,
-            IconsToast.danger_close_circle
-          );
+
+          this.messageToast = "No s'han trobat coincidències";
+          this.colorToast = Colors.danger;
+          this.iconToast = IconsToast.danger_close_circle;
+          this.isToastOpen = true;
+
+          this.cdr.detectChanges();
         }
       },
       error: (e) => {
         console.error(e);
         this.openLoading = false;
+        this.cdr.detectChanges();
       },
     });
   }
@@ -263,15 +309,19 @@ export class ProfilePage {
         .createFriendRequest(userToSendRequest.id!, friendRequest)
         .subscribe({
           next: () => {
-            this.utilsService.presentToast(
-              "Sol·licitut d'amistat enviada correctament",
-              Colors.success,
-              IconsToast.success_checkmark_circle
-            );
-            this.getUserInfo(this.currentUser!.id);
             this.openLoading = false;
+
+            this.messageToast = "Sol·licitut d'amistat enviada correctament";
+            this.colorToast = Colors.success;
+            this.iconToast = IconsToast.success_checkmark_circle;
+            this.isToastOpen = true;
+
+            this.cdr.detectChanges();
+
+            this.getUserInfo(this.currentUser!.id);
           },
           error: (e) => {
+            this.openLoading = false;
             const errorMessages: Record<string, string> = {
               [ErrorsEnum.already_sent_request]:
                 "Ja has enviat una sol·licitut d'amistat a aquest usuari",
@@ -285,13 +335,12 @@ export class ProfilePage {
               errorMessages[e.message] ||
               "Error al enviar la sol·licitut d'amistat";
 
-            this.openLoading = false;
+            this.messageToast = toastMessage;
+            this.colorToast = Colors.danger;
+            this.iconToast = IconsToast.danger_close_circle;
+            this.isToastOpen = true;
 
-            this.utilsService.presentToast(
-              toastMessage,
-              Colors.danger,
-              IconsToast.danger_close_circle
-            );
+            this.cdr.detectChanges();
           },
         });
     }
@@ -305,17 +354,21 @@ export class ProfilePage {
         .acceptFriendRequest(this.currentUser.id, requestId)
         .subscribe({
           next: () => {
-            this.utilsService.presentToast(
-              'Petició acceptada amb èxit',
-              Colors.success,
-              IconsToast.success_checkmark_circle
-            );
-            this.getUserInfo(this.currentUser!.id);
             this.openLoading = false;
+
+            this.messageToast = 'Petició acceptada amb èxit';
+            this.colorToast = Colors.success;
+            this.iconToast = IconsToast.success_checkmark_circle;
+            this.isToastOpen = true;
+
+            this.cdr.detectChanges();
+
+            this.getUserInfo(this.currentUser!.id);
           },
           error: (e) => {
             console.error(e);
             this.openLoading = false;
+            this.cdr.detectChanges();
           },
         });
     }
@@ -329,17 +382,21 @@ export class ProfilePage {
         .rejectFriendRequest(this.currentUser.id, requestId)
         .subscribe({
           next: () => {
-            this.utilsService.presentToast(
-              'Petició rebutjada amb èxit',
-              Colors.success,
-              IconsToast.success_checkmark_circle
-            );
-            this.getUserInfo(this.currentUser!.id);
             this.openLoading = false;
+
+            this.messageToast = 'Petició rebutjada amb èxit';
+            this.colorToast = Colors.success;
+            this.iconToast = IconsToast.success_checkmark_circle;
+            this.isToastOpen = true;
+
+            this.cdr.detectChanges();
+
+            this.getUserInfo(this.currentUser!.id);
           },
           error: (e) => {
             console.error(e);
             this.openLoading = false;
+            this.cdr.detectChanges();
           },
         });
     }
@@ -356,11 +413,10 @@ export class ProfilePage {
     if (role === 'updated') {
       this.loadUserData();
 
-      this.utilsService.presentToast(
-        "Dades de l'usuari actualitzades amb èxit",
-        Colors.success,
-        IconsToast.success_checkmark_circle
-      );
+      this.messageToast = "Dades de l'usuari actualitzades amb èxit";
+      this.colorToast = Colors.success;
+      this.iconToast = IconsToast.success_checkmark_circle;
+      this.isToastOpen = true;
     }
 
     if (role === 'cancel') {

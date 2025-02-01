@@ -4,9 +4,12 @@ import {
   Validators,
   FormsModule,
   ReactiveFormsModule,
-  FormBuilder,
+  FormControl,
+  AbstractControl,
+  AsyncValidatorFn,
+  ValidationErrors,
 } from '@angular/forms';
-import { PartialUserModel, UserModel } from '@models/users.model';
+import { UserModel } from '@models/users.model';
 import { UtilsService } from '@services/utils.service';
 import {
   IonButton,
@@ -64,17 +67,44 @@ export class ConfprofileModalComponent {
   editProfileForm: FormGroup;
   currentUser: UserModel | undefined;
 
-  constructor(private fb: FormBuilder, private modalCtrl: ModalController) {
-    this.editProfileForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(4)]],
-      lastName: ['', [Validators.minLength(4)]],
-      userName: ['', [Validators.required, Validators.minLength(4)]],
-      backgroundColor: ['', [Validators.required]],
-      email: [],
-      totalPoints: [],
+  constructor(private modalCtrl: ModalController) {
+    this.currentUser = this.utilsService.getFromLocalStorage('user');
+
+    this.editProfileForm = new FormGroup({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(20),
+      ]),
+      userName: new FormControl(
+        '',
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(20),
+        ],
+        [this.checkUsernameAvailability(this.currentUser?.id)]
+      ),
+      backgroundColor: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      totalPoints: new FormControl(0),
     });
+
     this.editProfileForm.get('email')?.disable();
     this.editProfileForm.get('totalPoints')?.disable();
+  }
+
+  checkUsernameAvailability(userId?: string): AsyncValidatorFn {
+    return (control: AbstractControl): Promise<ValidationErrors | null> => {
+      const username = control.value;
+
+      // Si el campo está vacío, no hacemos la validación asíncrona
+      if (!username) return Promise.resolve(null);
+
+      return this.userService.checkUsernameAvailability(username, userId).then(
+        (isAvailable) => (isAvailable ? null : { usernameTaken: true }) // Si no está disponible, retornamos un error
+      );
+    };
   }
 
   ionViewWillEnter() {
@@ -82,16 +112,15 @@ export class ConfprofileModalComponent {
   }
 
   private loadUserData() {
-    this.currentUser = this.utilsService.getFromLocalStorage('user');
     if (this.currentUser) {
-      const { name, lastName, userName, email, totalPoints } = this.currentUser;
+      this.editProfileForm.updateValueAndValidity();
+      const { name, userName, email, totalPoints } = this.currentUser;
       const backgroundColor = !this.currentUser.backgroundColor.includes('#')
         ? this.rgbToHex(this.currentUser.backgroundColor)
         : this.currentUser.backgroundColor;
 
       this.editProfileForm.patchValue({
         name,
-        lastName,
         userName,
         backgroundColor,
         email,
@@ -113,17 +142,16 @@ export class ConfprofileModalComponent {
     );
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.currentUser) {
       const updatedAt = new Date();
-      const { name, userName, lastName, backgroundColor } =
-        this.editProfileForm.value;
+      const { name, userName, backgroundColor } = this.editProfileForm.value;
+      if (!name || !userName || !backgroundColor) return;
 
       this.currentUser = {
         ...this.currentUser,
         name,
         userName,
-        lastName,
         backgroundColor,
         updatedAt,
       };
@@ -131,7 +159,6 @@ export class ConfprofileModalComponent {
       const partialUser: Partial<UserModel> = {
         name,
         userName,
-        lastName,
         backgroundColor,
         updatedAt,
       };

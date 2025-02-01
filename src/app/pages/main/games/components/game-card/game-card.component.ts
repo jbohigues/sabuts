@@ -17,6 +17,7 @@ import {
   IonItemOptions,
   IonLabel,
   IonItemOption,
+  IonAlert,
 } from '@ionic/angular/standalone';
 import { AlertButton } from '@ionic/core';
 import { GameModel, UserOfGameModel } from '@models/games.model';
@@ -28,6 +29,7 @@ import { UtilsService } from '@services/utils.service';
   selector: 'app-game-card',
   standalone: true,
   imports: [
+    IonAlert,
     IonItemOption,
     IonLabel,
     IonItemOptions,
@@ -90,6 +92,9 @@ export class GameCardComponent implements OnInit {
         text: 'Cancel·lar',
         role: 'cancel',
         cssClass: 'secondary',
+        handler: () => {
+          this.isAlertOpen = false;
+        },
       },
       {
         text: 'Acceptar',
@@ -105,8 +110,8 @@ export class GameCardComponent implements OnInit {
   private deleteGame() {
     this.gameService.deleteGame(this.game.id).subscribe({
       next: () => {
-        this.deletedEmitter.emit(true);
         this.isAlertOpen = false;
+        this.deletedEmitter.emit(true);
       },
       error: (e) => {
         console.error(e);

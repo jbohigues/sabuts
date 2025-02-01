@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, effect, inject, ViewChild } from '@angular/core';
 import {
   IonContent,
   IonRefresher,
@@ -18,6 +18,7 @@ import {
   IonFabButton,
   IonSearchbar,
   IonAlert,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { GameModel } from '@models/games.model';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
@@ -44,6 +45,7 @@ import {
   styleUrls: ['./games.page.scss'],
   standalone: true,
   imports: [
+    IonToast,
     IonSearchbar,
     IonFabButton,
     IonFab,
@@ -79,13 +81,21 @@ export class GamesPage {
   totalScore: number = 0;
   loading: boolean = false;
   modalOpen: boolean = false;
+  needReload: boolean = false;
   isAlertOpen: boolean = false;
   isSmallScreen: boolean = false;
   showScrollButton: boolean = false;
 
+  // Alert
   alertHeader: string = '';
   alertMessage: string = '';
   alertButtons: AlertButton[] = [];
+
+  // Toast
+  isToastOpen: boolean = false;
+  iconToast: string = '';
+  colorToast: string = '';
+  messageToast: string = '';
 
   // Objects
   idusers: string[] = [];
@@ -102,9 +112,17 @@ export class GamesPage {
       .subscribe((result) => {
         this.isSmallScreen = result.matches; // true si es pequeño, false si no
       });
+
+    effect(
+      () => {
+        this.needReload = this.utilsService.needReloadSignal();
+        if (this.needReload) this.loadUserData();
+      },
+      { allowSignalWrites: true }
+    );
   }
 
-  private ionViewWillEnter() {
+  ionViewWillEnter() {
     this.loadUserData();
   }
 
@@ -123,9 +141,10 @@ export class GamesPage {
   }
 
   private loadUserData() {
+    if (this.needReload) this.utilsService.needReloadSignal.set(false);
+
     this.currentUser = this.utilsService.getFromLocalStorage('user');
-    if (this.currentUser && this.currentUser.id)
-      this.getUserInfo(this.currentUser.id);
+    if (this.currentUser) this.getUserInfo(this.currentUser.id);
     else location.reload();
   }
 
@@ -214,11 +233,11 @@ export class GamesPage {
     if (this.currentUser) {
       this.getActiveGamesByUser(this.currentUser.id);
       this.getFriends(this.currentUser.id);
-      this.utilsService.presentToast(
-        message,
-        Colors.success,
-        IconsToast.success_checkmark_circle
-      );
+
+      this.messageToast = message;
+      this.colorToast = Colors.success;
+      this.iconToast = IconsToast.success_checkmark_circle;
+      this.isToastOpen = true;
     }
   }
 
@@ -232,6 +251,9 @@ export class GamesPage {
         text: 'Cancel·lar',
         role: 'cancel',
         cssClass: 'secondary',
+        handler: () => {
+          this.isAlertOpen = false;
+        },
       },
       {
         text: 'Acceptar',
@@ -279,11 +301,11 @@ export class GamesPage {
       },
       error: (e) => {
         console.error(e);
-        this.utilsService.presentToast(
-          'Error al crear la partida',
-          Colors.danger,
-          IconsToast.danger_close_circle
-        );
+
+        this.messageToast = 'Error al crear la partida';
+        this.colorToast = Colors.danger;
+        this.iconToast = IconsToast.danger_close_circle;
+        this.isToastOpen = true;
       },
     });
   }

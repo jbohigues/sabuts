@@ -4,7 +4,21 @@
   align-items: center;
   flex-direction: column;
   height: 100%;
-  padding-top: 3rem;
+
+  & > div {
+    width: 100%;
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-top: 1rem;
+
+      span {
+        margin-left: 10px;
+      }
+    }
+  }
 
   h2 {
     margin: 0;
@@ -16,4 +30,30 @@
     margin: 5px 0;
     color: var(--ion-color-medium);
   }
+
+  img {
+    width: 150px;
+  }
+}
+
+.flexdiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 3rem;
+
+  & > div {
+    text-align: start;
+
+    h4 {
+      font-size: 1.2rem;
+      margin: 0;
+      margin-bottom: 0.25rem;
+    }
+  }
+}
+
+hr {
+  background-color: var(--border-input-transparent);
 }

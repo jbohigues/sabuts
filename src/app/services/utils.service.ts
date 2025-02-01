@@ -1,51 +1,21 @@
-import { Injectable, NgZone } from '@angular/core';
-import { ToastController, MenuController } from '@ionic/angular';
-import { Colors } from '@sharedEnums/colors';
-import { IconsToast } from '@sharedEnums/iconsToast';
+'use strict';
+import { Injectable, NgZone, signal } from '@angular/core';
+import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
-  constructor(
-    private router: Router,
-    private ngZone: NgZone,
-    private menuController: MenuController,
-    private toastController: ToastController
-  ) {}
+  needReloadSignal = signal(false);
 
-  closeMenu() {
-    this.menuController.close('main-menu');
-  }
+  constructor(private router: Router, private ngZone: NgZone) {}
 
-  routerLink(url: string) {
+  routerLink(url: string, needReload?: boolean) {
     this.ngZone.run(() => {
-      this.router.navigate([url]);
+      if (needReload != null) this.needReloadSignal.set(needReload);
+      this.router.navigateByUrl(url);
     });
-  }
-
-  async presentToast(
-    message: string,
-    color: Colors = Colors.success,
-    icon: IconsToast = IconsToast.success_thumbs_up
-  ) {
-    const toast = await this.toastController.create({
-      message,
-      color,
-      icon,
-      duration: 5000,
-      position: 'bottom',
-      animated: true,
-      swipeGesture: 'vertical',
-      buttons: [
-        {
-          icon: 'close',
-          role: 'cancel',
-        },
-      ],
-    });
-    toast.present();
   }
 
   getRandomDarkColor(): string {

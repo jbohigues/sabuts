@@ -2,6 +2,7 @@ export interface PartialUserModel {
   id: string;
   name: string;
   userName: string;
+  email: string;
   backgroundColor: string;
   avatarid: string;
   totalPoints: number;
@@ -9,7 +10,6 @@ export interface PartialUserModel {
 
 export interface UserModel extends PartialUserModel {
   lastName: string;
-  email: string;
   createdAt: Date;
   updatedAt: Date;
   isAdmin: boolean;

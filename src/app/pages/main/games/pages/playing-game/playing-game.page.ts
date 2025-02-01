@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -91,10 +91,10 @@ export class PlayingGamePage {
 
   categorieMap: Map<string, Category> = new Map();
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     this.categorieMap.set(Categories.historia_de_valencia, {
       label: 'Història de València',
-      color: 'blue',
+      color: 'yellow',
     });
 
     this.categorieMap.set(Categories.falles, {
@@ -104,7 +104,7 @@ export class PlayingGamePage {
 
     this.categorieMap.set(Categories.musica, {
       label: 'Música',
-      color: 'yellow',
+      color: 'blue',
     });
 
     this.categorieMap.set(Categories.literatura, {
@@ -131,6 +131,7 @@ export class PlayingGamePage {
         console.error(e);
       },
     });
+
     // this.loadGameOfLocalStorage();
 
     // if (this.playingGame) {
@@ -150,6 +151,10 @@ export class PlayingGamePage {
     // }
   }
 
+  ionViewWillLeave() {
+    this.stopTimer();
+  }
+
   private setCurrentUserInPlayer1() {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
     if (this.currentUser) {
@@ -167,6 +172,8 @@ export class PlayingGamePage {
 
     this.loading = false;
     this.openLoading = false;
+
+    this.cdr.detectChanges();
   }
 
   protected makeQuestion() {
@@ -209,10 +216,9 @@ export class PlayingGamePage {
     clearInterval(this.timer);
   }
 
-  //TODO: falta ver que hacemos cuando termina el tiempo!!!!
   private timeExpired() {
-    // Lógica cuando se acaba el tiempo
-    console.log('¡Tiempo agotado!');
+    this.playIncorrectSound();
+    this.showErrorAnswerMessage(true);
   }
 
   protected answerQuestion(answer: AnswerModel) {
@@ -226,7 +232,7 @@ export class PlayingGamePage {
       this.incrementScore();
     } else {
       this.playIncorrectSound();
-      this.showErrorAnswerMessage();
+      this.showErrorAnswerMessage(false);
     }
   }
 
@@ -327,9 +333,9 @@ export class PlayingGamePage {
               .subscribe({
                 next: () => {
                   this.isAlertOpen = false;
-                  setTimeout(() => {
-                    this.utilsService.routerLink('games');
-                  }, 1);
+                  this.cdr.detectChanges();
+
+                  this.utilsService.routerLink('games', true);
                 },
                 error: (e) => console.error(e),
               });
@@ -343,7 +349,7 @@ export class PlayingGamePage {
 
   private async showWinGameMessage() {
     this.alertHeader = 'ENHORABONA!';
-    this.alertMessage = `Has aplegat a 15 acerts abans que el rival, així que eres el guanyador de la partida!`;
+    this.alertMessage = ``;
 
     this.alertButtons = [
       {
@@ -368,9 +374,8 @@ export class PlayingGamePage {
                 // this.clearGameOfLocalStorage();
                 this.utilsService.saveInLocalStorage('user', this.currentUser);
                 this.isAlertOpen = false;
-                setTimeout(() => {
-                  this.utilsService.routerLink('games');
-                }, 1);
+                this.cdr.detectChanges();
+                this.utilsService.routerLink('games');
               },
             });
           }
@@ -381,12 +386,14 @@ export class PlayingGamePage {
     this.isAlertOpen = true;
   }
 
-  private async showErrorAnswerMessage() {
+  private async showErrorAnswerMessage(isTimeOut: boolean) {
     this.updateGameScore(false);
     // this.saveGameInLocalStorage();
 
-    this.alertHeader = 'INCORRECTE...';
-    this.alertMessage = `Has fallat la resposta aixi que el torn acaba ací, hauràs d'esperar fins que el rival responga.`;
+    this.alertHeader = isTimeOut ? 'Oooooh...' : 'INCORRECTE...';
+    this.alertMessage = `${
+      isTimeOut ? "S'ha acabat el temps" : 'Has fallat la resposta'
+    } així que el torn acaba ací, hauràs d'esperar fins que el rival responga.`;
 
     this.alertButtons = [
       {
@@ -399,9 +406,7 @@ export class PlayingGamePage {
               .subscribe({
                 next: () => {
                   this.isAlertOpen = false;
-                  setTimeout(() => {
-                    this.utilsService.routerLink('games');
-                  }, 1);
+                  this.utilsService.routerLink('games', true);
                 },
                 error: (e) => console.error(e),
               });

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -13,6 +13,7 @@ import {
   IonText,
   IonInputPasswordToggle,
   IonLoading,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
@@ -29,6 +30,7 @@ import { UserService } from '@services/user.service';
   styleUrls: ['./sign-up.page.scss'],
   standalone: true,
   imports: [
+    IonToast,
     IonLoading,
     IonText,
     IonInput,
@@ -51,33 +53,61 @@ export class SignUpPage {
   openLoading: boolean = false;
   showPassword: boolean = false;
 
+  // Toast
+  isToastOpen: boolean = false;
+  iconToast: string = '';
+  colorToast: string = '';
+  messageToast: string = '';
+
   // Objects
   formAuth = new FormGroup({
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4),
+      Validators.maxLength(20),
+    ]),
     userName: new FormControl('', [
       Validators.required,
       Validators.minLength(4),
+      Validators.maxLength(20),
     ]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
       Validators.required,
-      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/),
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/), // minus, mayus, numeros y 6caracteres (min)
     ]),
   });
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   async submit() {
     this.openLoading = true;
 
-    const { userName, email, password } = this.formAuth.value;
-    if (email && password) {
+    const { name, userName, email, password } = this.formAuth.value;
+    if (!name || !userName || !email || !password) return;
+
+    const availableUserName = await this.userService.checkUsernameAvailability(
+      userName
+    );
+    if (!availableUserName) {
+      this.openLoading = false;
+
+      this.messageToast = "El nom d'usuari no està disponible";
+      this.colorToast = Colors.danger;
+      this.iconToast = IconsToast.danger_close_circle;
+      this.isToastOpen = true;
+
+      this.cdr.detectChanges();
+    } else {
       this.authService.register(email, password).subscribe({
         next: (user) => {
           const backgroundColor = this.utilsService.getRandomDarkColor();
 
           const usermodel: UserModel = {
             id: user.uid,
-            name: userName ?? '',
-            email: email ?? '',
-            userName: email.split('@')[0] ?? '',
+            name,
+            email,
+            userName,
             lastName: '',
             avatarid: '',
             backgroundColor,
@@ -92,19 +122,19 @@ export class SignUpPage {
             next: () => {
               this.utilsService.saveInLocalStorage('user', usermodel);
               this.openLoading = false;
-              setTimeout(() => {
-                this.utilsService.routerLink('/home');
-                this.formAuth.reset();
-                this.utilsService.presentToast(
-                  'Usuari creat amb èxit',
-                  Colors.success,
-                  IconsToast.success_thumbs_up
-                );
-              }, 1);
+              this.formAuth.reset();
+
+              this.messageToast = `Hola ${userName}, benvingut/a!`;
+              this.colorToast = Colors.success;
+              this.iconToast = IconsToast.success_thumbs_up;
+              this.isToastOpen = true;
+
+              this.cdr.detectChanges();
+
+              this.utilsService.routerLink('/home');
             },
             error: (e) => {
               console.error(e);
-              this.openLoading = false;
               this.presentError(e);
             },
           });
@@ -125,10 +155,13 @@ export class SignUpPage {
         : e.message.includes('invalid-email')
         ? 'Error: el correu electrònic no és vàlid'
         : "Error: error al registrar l'usuari";
-    this.utilsService.presentToast(
-      message,
-      Colors.danger,
-      IconsToast.danger_close_circle
-    );
+
+    this.messageToast = message;
+    this.colorToast = Colors.danger;
+    this.iconToast = IconsToast.danger_close_circle;
+    this.isToastOpen = true;
+
+    this.openLoading = false;
+    this.cdr.detectChanges();
   }
 }

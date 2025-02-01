@@ -5,9 +5,33 @@
     <div>
       <ion-input
         type="text"
-        formControlName="userName"
+        formControlName="name"
         label="Nom"
         label-placement="floating"
+        fill="outline"
+        required
+      ></ion-input>
+      @if (formAuth.get('name')?.touched && formAuth.get('name')?.invalid) {
+      <ion-text>
+        @if (formAuth.get('name')?.errors?.['required']) {
+        <p class="error ion-margin-bottom">El nom és obligatori</p>
+        } @if (formAuth.get('name')?.errors?.['minlength'] ||
+        formAuth.get('name')?.errors?.['maxlength']) {
+        <p class="error ion-margin-bottom">
+          El nom ha de tindre entre 4 i 20 caracters
+        </p>
+        }
+      </ion-text>
+      }
+    </div>
+
+    <div>
+      <ion-input
+        type="text"
+        formControlName="userName"
+        label="Nom d'usuari"
+        label-placement="floating"
+        autocomplete="username"
         fill="outline"
         required
       ></ion-input>
@@ -15,7 +39,12 @@
       formAuth.get('userName')?.invalid) {
       <ion-text>
         @if (formAuth.get('userName')?.errors?.['required']) {
-        <p class="error ion-margin-bottom">El nom és obligatori</p>
+        <p class="error ion-margin-bottom">El nom d'usuari és obligatori</p>
+        } @if (formAuth.get('userName')?.errors?.['minlength'] ||
+        formAuth.get('userName')?.errors?.['maxlength']) {
+        <p class="error ion-margin-bottom">
+          El nom d'usuari ha de tindre entre 4 i 20 caracters
+        </p>
         }
       </ion-text>
       }
@@ -27,6 +56,7 @@
         formControlName="email"
         label="Correu electrònic"
         label-placement="floating"
+        autocomplete="email"
         fill="outline"
         required
       ></ion-input>
@@ -49,24 +79,29 @@
         formControlName="password"
         label="Contrasenya"
         label-placement="floating"
+        autocomplete="password"
         fill="outline"
         clearOnEdit="false"
       >
         <ion-input-password-toggle slot="end"></ion-input-password-toggle>
-        @if (formAuth.get('password')?.touched &&
-        formAuth.get('password')?.invalid) {
-        <ion-text>
-          @if (formAuth.get('password')?.errors?.['required']) {
-          <p class="error ion-margin-bottom">La contrasenya és obligatoria</p>
-          } @if (formAuth.get('password')?.errors?.['pattern']) {
-          <p class="error ion-margin-bottom">
-            La contrasenya ha de tindre minúscules, majúscules, nombres i un
-            mínim de 6 caràcters
-          </p>
-          }
-        </ion-text>
-        }
       </ion-input>
+      @if(!formAuth.get('password')?.value){
+      <small>
+        Ha de tindre minúscules, majúscules, nombres i un mínim de 6caràcters
+      </small>
+      }@if (formAuth.get('password')?.touched &&
+      formAuth.get('password')?.invalid) {
+      <ion-text>
+        @if (formAuth.get('password')?.errors?.['required']) {
+        <p class="error ion-margin-bottom">La contrasenya és obligatòria</p>
+        } @if (formAuth.get('password')?.errors?.['pattern']) {
+        <p class="error ion-margin-bottom">
+          La contrasenya ha de tindre majúscules, minúscules, nombres i un mínim
+          de 6 caràcters
+        </p>
+        }
+      </ion-text>
+      }
     </div>
 
     <div>
@@ -77,3 +112,21 @@
   </form>
   <ion-loading [isOpen]="openLoading"></ion-loading>
 </app-login-layout>
+
+<ion-toast
+  [isOpen]="isToastOpen"
+  [message]="messageToast"
+  [color]="colorToast"
+  [icon]="iconToast"
+  [duration]="5000"
+  [position]="'bottom'"
+  [animated]="true"
+  [swipeGesture]="'vertical'"
+  [buttons]="[
+        {
+          icon: 'close',
+          role: 'cancel',
+        },
+      ]"
+  (didDismiss)="isToastOpen = false"
+></ion-toast>

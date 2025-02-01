@@ -53,6 +53,7 @@ export class UserService {
           id: emailSnapshot.docs[0].id,
           name: userData.name,
           userName: userData.userName,
+          email: userData.email,
           backgroundColor: userData.backgroundColor,
           avatarid: userData.avatarid,
           totalPoints: userData.totalPoints,
@@ -118,5 +119,18 @@ export class UserService {
         return forkJoin(deleteOps).pipe(map(() => void 0));
       })
     );
+  }
+
+  async checkUsernameAvailability(
+    username: string,
+    iduser?: string
+  ): Promise<boolean> {
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('userName', '==', username));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) return true;
+    if (iduser) return querySnapshot.docs.some((doc) => doc.id === iduser); // El usuario encontrado es él mismo
+    return false;
   }
 }

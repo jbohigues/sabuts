@@ -1,28 +1,63 @@
-<ion-split-pane contentId="main-content" aria-hidden="false">
+<ion-split-pane contentId="main-content">
   <ion-menu
     menuId="main-menu"
     contentId="main-content"
     side="start"
     type="overlay"
+    togg
   >
     <ion-content class="ion-padding">
-      <div class="user-profile ion-text-center">
+      <div class="user-profile ion-padding ion-text-center">
         <div>
           @defer (on viewport) {
-          <app-logo></app-logo>
+          <app-logo [sidebarLogo]="true"></app-logo>
           } @placeholder {
           <small>Carregant...</small>
           }
+
+          <div class="flexdiv">
+            @if (currentUser) {
+            <ion-avatar
+              class="custom-avatar sidebar"
+              slot="start"
+              [ngStyle]="{ 'background-color': currentUser.backgroundColor }"
+            >
+              <span>
+                {{ currentUser.userName.substring(0, 2).toUpperCase() }}
+              </span>
+            </ion-avatar>
+            <div class="ellipsis">
+              <h4 class="ellipsis">{{ currentUser.userName }}</h4>
+              <ion-badge color="primary"
+                >{{ currentUser.totalPoints }} pts</ion-badge
+              >
+            </div>
+            }
+          </div>
+
+          <div class="actions">
+            <ion-button fill="outline" (click)="presentAddFriendPrompt()">
+              <ion-icon name="person-add"></ion-icon>
+              <span>Afegir amic/a</span>
+            </ion-button>
+            <!-- <ion-button fill="outline" (click)="modalOpen = true">
+              <ion-icon slot="icon-only" md="add"></ion-icon>
+              <span>Nova partida</span>
+            </ion-button> -->
+          </div>
         </div>
-        <ion-button expand="block" (click)="signOut()">
-          <ion-icon slot="start" name="log-out"></ion-icon>
-          Tancar sessió
-        </ion-button>
+        <div>
+          <hr />
+          <ion-button expand="block" (click)="signOut()">
+            <ion-icon slot="start" name="log-out"></ion-icon>
+            Tancar sessió
+          </ion-button>
+        </div>
       </div>
     </ion-content>
   </ion-menu>
 
-  <div class="ion-page" id="main-content" aria-hidden="false">
+  <div class="ion-page" id="main-content">
     <ion-tabs>
       <ion-tab-bar slot="bottom">
         <ion-tab-button tab="home">
@@ -41,3 +76,95 @@
     </ion-tabs>
   </div>
 </ion-split-pane>
+
+<ion-alert
+  mode="md"
+  [isOpen]="isAlertOpen"
+  [header]="alertHeader"
+  [message]="alertMessage"
+  [inputs]="alertInputs"
+  [buttons]="alertButtons"
+  keyboardClose="false"
+  backdropDismiss="false"
+>
+</ion-alert>
+
+<ion-toast
+  [isOpen]="isToastOpen"
+  [message]="messageToast"
+  [color]="colorToast"
+  [icon]="iconToast"
+  [duration]="5000"
+  [position]="'bottom'"
+  [animated]="true"
+  [swipeGesture]="'vertical'"
+  [buttons]="[
+        {
+          icon: 'close',
+          role: 'cancel',
+        },
+      ]"
+  (didDismiss)="isToastOpen = false"
+></ion-toast>
+
+<!--! MODAL -->
+<!-- <ion-modal
+  #modal
+  [isOpen]="modalOpen"
+  [initialBreakpoint]="0.75"
+  [breakpoints]="[0, 0.25, 0.5, 0.75]"
+  (didDismiss)="onDidDismiss($event)"
+>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="end">
+          <ion-button (click)="cancel()">Cancel</ion-button>
+        </ion-buttons>
+        <ion-title slot="start">Nova partida</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content
+      #modalcontent
+      class="ion-padding"
+      fixed-slot-placement="before"
+      [scrollEvents]="true"
+      (ionScroll)="onScroll($event)"
+    >
+      <h3>Llistat d'amics/es</h3>
+      <ion-searchbar
+        placeholder="Buscar amic/a"
+        [debounce]="500"
+        (ionInput)="handleInput($event)"
+        (click)="modal.setCurrentBreakpoint(0.75)"
+      ></ion-searchbar>
+      @if (friendsList.length) { @for (friend of friendsList; track friend.id) {
+      <ion-item (click)="confirmCreateGame(friend)">
+        <ion-avatar
+          class="custom-avatar"
+          slot="start"
+          [ngStyle]="{ 'background-color': friend.friendUser.backgroundColor }"
+        >
+          <span>
+            {{ friend.friendUser.userName.substring(0, 2).toUpperCase() }}
+          </span>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ friend.friendUser.userName }}</h2>
+        </ion-label>
+      </ion-item>
+
+      } }@else {
+      <ion-text>
+        <p>No tens amics/es agregats/es</p>
+      </ion-text>
+      } @if (showScrollButton) {
+      <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+        <ion-fab-button size="small" (click)="scrollToTop(modalcontent)">
+          <ion-icon name="arrow-up"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+      }
+    </ion-content>
+  </ng-template>
+</ion-modal> -->

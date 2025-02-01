@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content class="ion-padding">
   <form [formGroup]="editProfileForm" (ngSubmit)="onSubmit()">
-    <ion-list>
+    <ion-list lines="full">
       <!-- Avatar -->
       <ion-item>
         <ion-input
@@ -26,8 +26,8 @@
             {{
               editProfileForm
                 .get("userName")
-                ?.value.substring(0, 2)
-                .toUpperCase()
+                ?.value?.substring(0, 2)
+                ?.toUpperCase()
             }}
           </span>
         </ion-avatar>
@@ -52,7 +52,7 @@
       }
 
       <!-- Apellido -->
-      <ion-item>
+      <!-- <ion-item>
         <ion-input
           type="text"
           label="Cognom"
@@ -60,7 +60,7 @@
           formControlName="lastName"
           placeholder="Introdueix el teu cognom"
         ></ion-input>
-      </ion-item>
+      </ion-item> -->
 
       <!-- Nombre de usuario -->
       <ion-item>
@@ -69,6 +69,7 @@
           label="Nom d'usuari"
           label-placement="floating"
           formControlName="userName"
+          autocomplete="username"
           placeholder="Introdueix el teu nom d'usuari"
         ></ion-input>
       </ion-item>
@@ -77,6 +78,10 @@
       editProfileForm.get('userName')?.errors?.['required']) {
       <ion-note color="danger" class="ion-margin-start">
         El nom d'usuari és obligatori
+      </ion-note>
+      } @if (editProfileForm.get('userName')?.errors?.['usernameTaken']) {
+      <ion-note color="danger" class="ion-margin-start">
+        Nom d'usuari no disponible
       </ion-note>
       }
 
@@ -87,6 +92,7 @@
           label="Correu Electrònic"
           label-placement="floating"
           formControlName="email"
+          autocomplete="email"
           placeholder="Introdueix el teu correu electrònic"
         ></ion-input>
       </ion-item>

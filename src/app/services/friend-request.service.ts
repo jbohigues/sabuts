@@ -79,6 +79,7 @@ export class FriendRequestService {
                 id: userDoc.id,
                 name: userData.name,
                 userName: userData.userName,
+                email: userData.email,
                 backgroundColor: userData.backgroundColor,
                 avatarid: userData.avatarid,
                 totalPoints: userData.totalPoints,
@@ -134,11 +135,13 @@ export class FriendRequestService {
     // Comprobamos si ya existe una solicitud en ambas direcciones
     const checkReceiverRequest = query(
       receiverRequestsRef,
-      where('sendingUserId', '==', request.sendingUserId)
+      where('sendingUserId', '==', request.sendingUserId),
+      where('status', '==', FriendRequestStatusEnum.pending)
     );
     const checkSenderRequest = query(
       senderRequestsRef,
-      where('sendingUserId', '==', receiverId)
+      where('sendingUserId', '==', receiverId),
+      where('status', '==', FriendRequestStatusEnum.pending)
     );
 
     return from(
