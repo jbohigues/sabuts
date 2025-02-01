@@ -13,6 +13,7 @@ import {
   IonText,
   IonInputPasswordToggle,
   IonLoading,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
@@ -29,6 +30,7 @@ import { UserService } from '@services/user.service';
   styleUrls: ['./sign-up.page.scss'],
   standalone: true,
   imports: [
+    IonToast,
     IonLoading,
     IonText,
     IonInput,
@@ -50,6 +52,12 @@ export class SignUpPage {
   //Variables
   openLoading: boolean = false;
   showPassword: boolean = false;
+
+  // Toast
+  isToastOpen: boolean = false;
+  iconToast: string = '';
+  colorToast: string = '';
+  messageToast: string = '';
 
   // Objects
   formAuth = new FormGroup({
@@ -83,11 +91,13 @@ export class SignUpPage {
     );
     if (!availableUserName) {
       this.openLoading = false;
-      this.utilsService.presentToast(
-        "El nom d'usuari no està disponible",
-        Colors.danger,
-        IconsToast.danger_close_circle
-      );
+
+      this.messageToast = "El nom d'usuari no està disponible";
+      this.colorToast = Colors.danger;
+      this.iconToast = IconsToast.danger_close_circle;
+      this.isToastOpen = true;
+
+      this.cdr.detectChanges();
     } else {
       this.authService.register(email, password).subscribe({
         next: (user) => {
@@ -112,13 +122,16 @@ export class SignUpPage {
             next: () => {
               this.utilsService.saveInLocalStorage('user', usermodel);
               this.openLoading = false;
-              this.utilsService.routerLink('/home');
-              this.utilsService.presentToast(
-                'Usuari creat amb èxit',
-                Colors.success,
-                IconsToast.success_thumbs_up
-              );
               this.formAuth.reset();
+
+              this.messageToast = `Hola ${userName}, benvingut/a!`;
+              this.colorToast = Colors.success;
+              this.iconToast = IconsToast.success_thumbs_up;
+              this.isToastOpen = true;
+
+              this.cdr.detectChanges();
+
+              this.utilsService.routerLink('/home');
             },
             error: (e) => {
               console.error(e);
@@ -142,11 +155,12 @@ export class SignUpPage {
         : e.message.includes('invalid-email')
         ? 'Error: el correu electrònic no és vàlid'
         : "Error: error al registrar l'usuari";
-    this.utilsService.presentToast(
-      message,
-      Colors.danger,
-      IconsToast.danger_close_circle
-    );
+
+    this.messageToast = message;
+    this.colorToast = Colors.danger;
+    this.iconToast = IconsToast.danger_close_circle;
+    this.isToastOpen = true;
+
     this.openLoading = false;
     this.cdr.detectChanges();
   }

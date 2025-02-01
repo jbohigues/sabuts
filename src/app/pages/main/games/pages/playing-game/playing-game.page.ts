@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -91,10 +91,10 @@ export class PlayingGamePage {
 
   categorieMap: Map<string, Category> = new Map();
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     this.categorieMap.set(Categories.historia_de_valencia, {
       label: 'Història de València',
-      color: 'blue',
+      color: 'yellow',
     });
 
     this.categorieMap.set(Categories.falles, {
@@ -104,7 +104,7 @@ export class PlayingGamePage {
 
     this.categorieMap.set(Categories.musica, {
       label: 'Música',
-      color: 'yellow',
+      color: 'blue',
     });
 
     this.categorieMap.set(Categories.literatura, {
@@ -172,6 +172,8 @@ export class PlayingGamePage {
 
     this.loading = false;
     this.openLoading = false;
+
+    this.cdr.detectChanges();
   }
 
   protected makeQuestion() {
@@ -331,9 +333,9 @@ export class PlayingGamePage {
               .subscribe({
                 next: () => {
                   this.isAlertOpen = false;
-                  setTimeout(() => {
-                    this.utilsService.routerLink('games');
-                  }, 1);
+                  this.cdr.detectChanges();
+
+                  this.utilsService.routerLink('games', true);
                 },
                 error: (e) => console.error(e),
               });
@@ -372,9 +374,8 @@ export class PlayingGamePage {
                 // this.clearGameOfLocalStorage();
                 this.utilsService.saveInLocalStorage('user', this.currentUser);
                 this.isAlertOpen = false;
-                setTimeout(() => {
-                  this.utilsService.routerLink('games');
-                }, 1);
+                this.cdr.detectChanges();
+                this.utilsService.routerLink('games');
               },
             });
           }

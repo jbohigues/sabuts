@@ -1,7 +1,6 @@
+'use strict';
 import { Injectable, NgZone, signal } from '@angular/core';
-import { ToastController, MenuController } from '@ionic/angular';
-import { Colors } from '@sharedEnums/colors';
-import { IconsToast } from '@sharedEnums/iconsToast';
+import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -10,45 +9,13 @@ import { Router } from '@angular/router';
 export class UtilsService {
   needReloadSignal = signal(false);
 
-  constructor(
-    private router: Router,
-    private ngZone: NgZone,
-    private menuController: MenuController,
-    private toastController: ToastController
-  ) {}
-
-  closeMenu() {
-    this.menuController.close('main-menu');
-  }
+  constructor(private router: Router, private ngZone: NgZone) {}
 
   routerLink(url: string, needReload?: boolean) {
     this.ngZone.run(() => {
       if (needReload != null) this.needReloadSignal.set(needReload);
       this.router.navigateByUrl(url);
     });
-  }
-
-  async presentToast(
-    message: string,
-    color: Colors = Colors.success,
-    icon: IconsToast = IconsToast.success_thumbs_up
-  ) {
-    const toast = await this.toastController.create({
-      message,
-      color,
-      icon,
-      duration: 5000,
-      position: 'bottom',
-      animated: true,
-      swipeGesture: 'vertical',
-      buttons: [
-        {
-          icon: 'close',
-          role: 'cancel',
-        },
-      ],
-    });
-    toast.present();
   }
 
   getRandomDarkColor(): string {

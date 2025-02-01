@@ -18,6 +18,7 @@ import {
   IonFabButton,
   IonSearchbar,
   IonAlert,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { GameModel } from '@models/games.model';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
@@ -44,6 +45,7 @@ import {
   styleUrls: ['./games.page.scss'],
   standalone: true,
   imports: [
+    IonToast,
     IonSearchbar,
     IonFabButton,
     IonFab,
@@ -84,9 +86,16 @@ export class GamesPage {
   isSmallScreen: boolean = false;
   showScrollButton: boolean = false;
 
+  // Alert
   alertHeader: string = '';
   alertMessage: string = '';
   alertButtons: AlertButton[] = [];
+
+  // Toast
+  isToastOpen: boolean = false;
+  iconToast: string = '';
+  colorToast: string = '';
+  messageToast: string = '';
 
   // Objects
   idusers: string[] = [];
@@ -224,11 +233,11 @@ export class GamesPage {
     if (this.currentUser) {
       this.getActiveGamesByUser(this.currentUser.id);
       this.getFriends(this.currentUser.id);
-      this.utilsService.presentToast(
-        message,
-        Colors.success,
-        IconsToast.success_checkmark_circle
-      );
+
+      this.messageToast = message;
+      this.colorToast = Colors.success;
+      this.iconToast = IconsToast.success_checkmark_circle;
+      this.isToastOpen = true;
     }
   }
 
@@ -292,11 +301,11 @@ export class GamesPage {
       },
       error: (e) => {
         console.error(e);
-        this.utilsService.presentToast(
-          'Error al crear la partida',
-          Colors.danger,
-          IconsToast.danger_close_circle
-        );
+
+        this.messageToast = 'Error al crear la partida';
+        this.colorToast = Colors.danger;
+        this.iconToast = IconsToast.danger_close_circle;
+        this.isToastOpen = true;
       },
     });
   }

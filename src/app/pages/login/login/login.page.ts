@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -12,6 +12,7 @@ import {
   IonButton,
   IonInputPasswordToggle,
   IonLoading,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
@@ -29,6 +30,7 @@ import { UserService } from '@services/user.service';
   styleUrls: ['./login.page.scss'],
   standalone: true,
   imports: [
+    IonToast,
     IonLoading,
     CommonModule,
     ReactiveFormsModule,
@@ -57,6 +59,14 @@ export class LoginPage {
     password: new FormControl('', [Validators.required]),
   });
 
+  // Toast
+  isToastOpen: boolean = false;
+  iconToast: string = '';
+  colorToast: string = '';
+  messageToast: string = '';
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
   async login() {
     this.openLoading = true;
 
@@ -71,22 +81,25 @@ export class LoginPage {
               if (res) {
                 this.utilsService.saveInLocalStorage('user', res);
                 this.openLoading = false;
-                setTimeout(() => {
-                  this.utilsService.routerLink('/home');
-                  this.formAuth.reset();
-                  this.utilsService.presentToast(
-                    `Hola ${res.userName}, benvingut/a!`,
-                    Colors.success,
-                    IconsToast.success_thumbs_up
-                  );
-                }, 1);
+                this.formAuth.reset();
+
+                this.messageToast = `Hola ${res.userName}, benvingut/a!`;
+                this.colorToast = Colors.success;
+                this.iconToast = IconsToast.success_thumbs_up;
+                this.isToastOpen = true;
+
+                this.cdr.detectChanges();
+
+                this.utilsService.routerLink('/home');
               } else {
                 this.openLoading = false;
-                this.utilsService.presentToast(
-                  'Error al iniciar sessió: Credencials incorrectes',
-                  Colors.danger,
-                  IconsToast.danger_close_circle
-                );
+                this.messageToast =
+                  'Error al iniciar sessió: Credencials incorrectes';
+                this.colorToast = Colors.danger;
+                this.iconToast = IconsToast.danger_close_circle;
+                this.isToastOpen = true;
+
+                this.cdr.detectChanges();
               }
             },
           });
@@ -94,11 +107,14 @@ export class LoginPage {
         error: (err) => {
           console.error('Error en el login:', err);
           this.openLoading = false;
-          this.utilsService.presentToast(
-            'Error al iniciar sessió: Credencials incorrectes',
-            Colors.danger,
-            IconsToast.danger_close_circle
-          );
+
+          this.messageToast =
+            'Error al iniciar sessió: Credencials incorrectes';
+          this.colorToast = Colors.danger;
+          this.iconToast = IconsToast.danger_close_circle;
+          this.isToastOpen = true;
+
+          this.cdr.detectChanges();
         },
       });
     }

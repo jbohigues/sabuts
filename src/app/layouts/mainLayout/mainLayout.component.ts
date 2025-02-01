@@ -1,4 +1,11 @@
-import { Component, inject, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -13,6 +20,7 @@ import {
   IonAvatar,
   IonBadge,
   IonAlert,
+  IonToast,
   // IonModal,
   // IonHeader,
   // IonToolbar,
@@ -64,6 +72,7 @@ import { GameModel } from '@models/games.model';
     // IonToolbar,
     // IonHeader,
     // IonModal,
+    IonToast,
     IonAlert,
     IonBadge,
     IonAvatar,
@@ -99,7 +108,6 @@ export class MainLayoutComponent implements OnInit {
 
   // modalOpen: boolean = false;
   openLoading: boolean = false;
-  isAlertOpen: boolean = false;
   showScrollButton: boolean = false;
 
   idusers: string[] = [];
@@ -109,10 +117,19 @@ export class MainLayoutComponent implements OnInit {
   friendsListOriginal: PartialFriendModel[] = [];
 
   // Alert
+  isAlertOpen: boolean = false;
   alertHeader: string = '';
   alertMessage: string = '';
   alertInputs: AlertInput[] = [];
   alertButtons: AlertButton[] = [];
+
+  // Toast
+  isToastOpen: boolean = false;
+  iconToast: string = '';
+  colorToast: string = '';
+  messageToast: string = '';
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ionViewWillEnter() {
     this.init();
@@ -123,7 +140,6 @@ export class MainLayoutComponent implements OnInit {
   }
 
   private init() {
-    this.utilsService.closeMenu();
     this.currentUser = this.utilsService.getFromLocalStorage('user');
 
     // if (this.currentUser) {
@@ -133,7 +149,6 @@ export class MainLayoutComponent implements OnInit {
   }
 
   protected signOut() {
-    this.utilsService.closeMenu();
     this.authService.logout().subscribe({
       next: () => {
         this.utilsService.clearLocalStorage();
@@ -194,16 +209,19 @@ export class MainLayoutComponent implements OnInit {
           this.createFriendRequest(userToSendRequest);
         } else {
           this.openLoading = false;
-          this.utilsService.presentToast(
-            "No s'han trobat coincidències",
-            Colors.danger,
-            IconsToast.danger_close_circle
-          );
+
+          this.messageToast = "No s'han trobat coincidències";
+          this.colorToast = Colors.danger;
+          this.iconToast = IconsToast.danger_close_circle;
+          this.isToastOpen = true;
+
+          this.cdr.detectChanges();
         }
       },
       error: (e) => {
         console.error(e);
         this.openLoading = false;
+        this.cdr.detectChanges();
       },
     });
   }
@@ -222,11 +240,13 @@ export class MainLayoutComponent implements OnInit {
         .subscribe({
           next: () => {
             this.openLoading = false;
-            this.utilsService.presentToast(
-              "Sol·licitut d'amistat enviada correctament",
-              Colors.success,
-              IconsToast.success_checkmark_circle
-            );
+
+            this.messageToast = "Sol·licitut d'amistat enviada correctament";
+            this.colorToast = Colors.success;
+            this.iconToast = IconsToast.success_checkmark_circle;
+            this.isToastOpen = true;
+
+            this.cdr.detectChanges();
           },
           error: (e) => {
             this.openLoading = false;
@@ -243,11 +263,12 @@ export class MainLayoutComponent implements OnInit {
               errorMessages[e.message] ||
               "Error al enviar la sol·licitut d'amistat";
 
-            this.utilsService.presentToast(
-              toastMessage,
-              Colors.danger,
-              IconsToast.danger_close_circle
-            );
+            this.messageToast = toastMessage;
+            this.colorToast = Colors.danger;
+            this.iconToast = IconsToast.danger_close_circle;
+            this.isToastOpen = true;
+
+            this.cdr.detectChanges();
           },
         });
     }

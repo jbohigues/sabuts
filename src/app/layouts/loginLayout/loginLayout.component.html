@@ -1,4 +1,8 @@
-<app-header [title]="pageTitle" [backButton]="backButton"></app-header>
+<app-header
+  [title]="pageTitle"
+  [backButton]="backButton"
+  [needpadding]="pageTitle === 'Iniciar sessió'"
+></app-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <section>

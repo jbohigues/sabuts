@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -12,6 +12,7 @@ import {
   IonText,
   IonInput,
   IonLoading,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { LoginLayoutComponent } from '@layouts/loginLayout/loginLayout.component';
 import { Colors } from '@sharedEnums/colors';
@@ -27,6 +28,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./forgot-password.page.scss'],
   standalone: true,
   imports: [
+    IonToast,
     IonLoading,
     IonInput,
     IonText,
@@ -52,6 +54,14 @@ export class ForgotPasswordPage {
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
+  // Toast
+  isToastOpen: boolean = false;
+  iconToast: string = '';
+  colorToast: string = '';
+  messageToast: string = '';
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
   async submit() {
     this.openLoading = true;
 
@@ -61,14 +71,15 @@ export class ForgotPasswordPage {
         .sendRecoveryEmail(email)
         .then(() => {
           this.openLoading = false;
-          setTimeout(() => {
-            this.utilsService.routerLink('/auth');
-            this.utilsService.presentToast(
-              'Hem enviat un enllaç al seu correu electrònic',
-              Colors.medium,
-              IconsToast.secondary_alert
-            );
-          }, 1);
+
+          this.messageToast = 'Hem enviat un enllaç al seu correu electrònic';
+          this.colorToast = Colors.medium;
+          this.iconToast = IconsToast.secondary_alert;
+          this.isToastOpen = true;
+
+          this.cdr.detectChanges();
+
+          this.utilsService.routerLink('/auth');
         })
         .catch((e) => {
           console.error(e);
@@ -76,11 +87,13 @@ export class ForgotPasswordPage {
           const message = e.message.includes('invalid-email')
             ? 'Error: el correu electrònic no té el format correcte'
             : 'Error al enviar el correu de recuperació';
-          this.utilsService.presentToast(
-            message,
-            Colors.danger,
-            IconsToast.danger_close_circle
-          );
+
+          this.messageToast = message;
+          this.colorToast = Colors.danger;
+          this.iconToast = IconsToast.danger_close_circle;
+          this.isToastOpen = true;
+
+          this.cdr.detectChanges();
         });
     }
   }

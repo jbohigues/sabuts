@@ -4,6 +4,10 @@
 - revisar todo el tema de controladores: probarlo en movil que hay cosas raras
 - NOTIFICACIONS ??????
 
+# TUTORIAL CREAR ICONS Y SPLASH SCREEN
+
+https://www.youtube.com/watch?v=WW11WQVuS8s
+
 # General
 
 1. [x] Input password: small => minusculas, mayusculas y numeros

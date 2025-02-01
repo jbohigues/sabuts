@@ -8,6 +8,7 @@
         formControlName="email"
         label="Correu electrònic"
         label-placement="floating"
+        autocomplete="email"
         fill="outline"
         required
       ></ion-input>
@@ -30,6 +31,7 @@
         formControlName="password"
         label="Contrasenya"
         label-placement="floating"
+        autocomplete="password"
         fill="outline"
         clearOnEdit="false"
       >
@@ -67,4 +69,21 @@
     </div>
   </form>
   <ion-loading [isOpen]="openLoading"></ion-loading>
+  <ion-toast
+    [isOpen]="isToastOpen"
+    [message]="messageToast"
+    [color]="colorToast"
+    [icon]="iconToast"
+    [duration]="5000"
+    [position]="'bottom'"
+    [animated]="true"
+    [swipeGesture]="'vertical'"
+    [buttons]="[
+          {
+            icon: 'close',
+            role: 'cancel',
+          },
+        ]"
+    (didDismiss)="isToastOpen = false"
+  ></ion-toast>
 </app-login-layout>
