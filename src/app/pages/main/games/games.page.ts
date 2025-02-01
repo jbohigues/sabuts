@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, effect, inject, ViewChild } from '@angular/core';
 import {
   IonContent,
   IonRefresher,
@@ -67,7 +67,7 @@ import {
     GameCardComponent,
   ],
 })
-export class GamesPage implements OnInit {
+export class GamesPage {
   @ViewChild(IonModal) modal!: IonModal;
 
   private gameService = inject(GameService);
