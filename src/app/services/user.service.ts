@@ -9,6 +9,7 @@ import {
   getDoc,
   getDocs,
   updateDoc,
+  writeBatch,
 } from '@angular/fire/firestore';
 import { PartialUserModel, UserModel } from '@models/users.model';
 import { query, setDoc, where } from 'firebase/firestore';
@@ -82,6 +83,38 @@ export class UserService {
   deleteUser(id: string): Observable<void> {
     const userDoc = doc(this.firestore, `users/${id}`);
     return from(deleteDoc(userDoc)).pipe(map(() => void 0));
+  }
+
+  deleteUserAccount(id: string): Observable<void> {
+    const userDoc = doc(this.firestore, `users/${id}`);
+    const friendRequestsRef = collection(
+      this.firestore,
+      `users/${id}/friendRequests`
+    );
+    const friendsRef = collection(this.firestore, `users/${id}/friends`);
+
+    return from(
+      Promise.all([getDocs(friendRequestsRef), getDocs(friendsRef)])
+    ).pipe(
+      switchMap(([friendRequestsSnapshot, friendsSnapshot]) => {
+        const batch = writeBatch(this.firestore);
+
+        // Eliminar todas las solicitudes de amistad del usuario
+        friendRequestsSnapshot.docs.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+
+        // Eliminar todos los amigos del usuario
+        friendsSnapshot.docs.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+
+        // Eliminar el documento principal del usuario
+        batch.delete(userDoc);
+
+        return from(batch.commit());
+      })
+    );
   }
 
   // New Methods for Answered Questions Management

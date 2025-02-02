@@ -27,7 +27,7 @@ export class DeleteService {
           this.gameService.deleteUserGames(user.uid),
           this.friendRequestService.deleteSentFriendRequests(user.uid),
           this.friendService.deleteFriendRecords(user.uid),
-          this.userService.deleteUser(user.uid),
+          this.userService.deleteUserAccount(user.uid),
         ]).pipe(
           switchMap(() => from(user.delete())),
           catchError((error) => {
