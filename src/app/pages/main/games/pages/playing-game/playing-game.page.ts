@@ -94,7 +94,7 @@ export class PlayingGamePage {
 
   constructor(private cdr: ChangeDetectorRef) {
     this.categorieMap.set(Categories.historia_de_valencia, {
-      label: 'Història de València',
+      label: 'València',
       color: 'yellow',
     });
 
