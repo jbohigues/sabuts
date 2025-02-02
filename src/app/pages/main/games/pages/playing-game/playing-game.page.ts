@@ -69,12 +69,13 @@ export class PlayingGamePage {
   timeLeft: number = 20;
   correctAnswers: number = 0;
 
+  // Alert
+  isAlertOpen: boolean = false;
   alertHeader: string = '';
   alertMessage: string = '';
   alertButtons: AlertButton[] = [];
 
   loading: boolean = true;
-  isAlertOpen: boolean = false;
   openLoading: boolean = false;
   showQuestion: boolean = false;
   answerSelected: boolean = false;

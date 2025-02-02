@@ -8,7 +8,6 @@ import {
   onAuthStateChanged,
   sendPasswordResetEmail,
 } from '@angular/fire/auth';
-
 import { Observable, from, map } from 'rxjs';
 
 @Injectable({

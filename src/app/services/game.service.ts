@@ -12,6 +12,7 @@ import {
   where,
   orderBy,
   setDoc,
+  writeBatch,
 } from '@angular/fire/firestore';
 import { GameModel, RoundModel, UserOfGameModel } from '@models/games.model';
 import { QuestionModel } from '@models/question.model';
@@ -81,6 +82,30 @@ export class GameService {
       catchError((error) => {
         console.error('Error deleting game:', error);
         return throwError(() => new Error('Failed to delete game'));
+      })
+    );
+  }
+
+  deleteUserGames(userId: string): Observable<void> {
+    const gamesRef = collection(this.firestore, 'games');
+    const player1Query = query(gamesRef, where('player1.userId', '==', userId));
+    const player2Query = query(gamesRef, where('player2.userId', '==', userId));
+
+    return from(
+      Promise.all([getDocs(player1Query), getDocs(player2Query)])
+    ).pipe(
+      switchMap(([player1Snapshot, player2Snapshot]) => {
+        const batch = writeBatch(this.firestore);
+
+        player1Snapshot.docs.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+
+        player2Snapshot.docs.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+
+        return from(batch.commit());
       })
     );
   }

@@ -7,6 +7,9 @@ import {
   Firestore,
   getDoc,
   getDocs,
+  query,
+  where,
+  writeBatch,
 } from '@angular/fire/firestore';
 import { FriendModel, PartialFriendModel } from '@models/friends.model';
 import { UserModel, PartialUserModel } from '@models/users.model';
@@ -97,5 +100,38 @@ export class FriendService {
       `users/${userId}/friends/${friendId}`
     );
     return from(deleteDoc(friendDoc)).pipe(map(() => void 0));
+  }
+
+  deleteFriendRecords(userIdToDelete: string): Observable<void> {
+    return from(this.getAllUsers()).pipe(
+      switchMap((userIds) => {
+        const batch = writeBatch(this.firestore);
+
+        return Promise.all(
+          userIds.map((userId) => {
+            const friendsRef = collection(
+              this.firestore,
+              `users/${userId}/friends`
+            );
+            const friendQuery = query(
+              friendsRef,
+              where('friendId', '==', userIdToDelete)
+            );
+
+            return getDocs(friendQuery).then((snapshot) => {
+              snapshot.docs.forEach((doc) => {
+                batch.delete(doc.ref);
+              });
+            });
+          })
+        ).then(() => batch.commit());
+      })
+    );
+  }
+
+  private async getAllUsers(): Promise<string[]> {
+    const usersRef = collection(this.firestore, 'users');
+    const snapshot = await getDocs(usersRef);
+    return snapshot.docs.map((doc) => doc.id);
   }
 }

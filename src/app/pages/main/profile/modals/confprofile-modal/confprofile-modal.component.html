@@ -119,10 +119,27 @@
     </ion-list>
   </form>
 
+  <div class="button-container deletebutton">
+    <ion-button expand="block" type="button" (click)="showConfirmationAlert()">
+      <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      &nbsp;Eliminar compte
+    </ion-button>
+  </div>
+
   <!-- Botón Flotante para Cancelar -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="danger" size="small" (click)="cancelEdit()">
       <ion-icon name="close"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
+  <ion-alert
+    mode="md"
+    [isOpen]="isAlertOpen"
+    [header]="alertHeader"
+    [message]="alertMessage"
+    [buttons]="alertButtons"
+    keyboardClose="false"
+    backdropDismiss="false"
+  ></ion-alert>
 </ion-content>
