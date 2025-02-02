@@ -27,10 +27,14 @@ import {
   IonToolbar,
   IonTitle,
   IonNote,
+  IonAlert,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { ModalController } from '@ionic/angular';
 import { UserService } from '@services/user.service';
+import { AlertButton } from '@ionic/core';
+import { AuthService } from '@services/auth.service';
+import { DeleteService } from '@services/delete.service';
 
 @Component({
   selector: 'app-confprofile-modal',
@@ -38,6 +42,7 @@ import { UserService } from '@services/user.service';
   styleUrls: ['./confprofile-modal.component.scss'],
   standalone: true,
   imports: [
+    IonAlert,
     IonNote,
     IonTitle,
     IonToolbar,
@@ -62,10 +67,17 @@ export class ConfprofileModalComponent {
   // Injects
   private userService = inject(UserService);
   private utilsService = inject(UtilsService);
+  private deleteService = inject(DeleteService);
 
   // Objects
   editProfileForm: FormGroup;
   currentUser: UserModel | undefined;
+
+  // Alert
+  isAlertOpen: boolean = false;
+  alertHeader: string = '';
+  alertMessage: string = '';
+  alertButtons: AlertButton[] = [];
 
   constructor(private modalCtrl: ModalController) {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
@@ -177,5 +189,38 @@ export class ConfprofileModalComponent {
 
   cancelEdit() {
     return this.modalCtrl.dismiss(null, 'cancel');
+  }
+
+  protected async showConfirmationAlert() {
+    this.alertHeader = 'Eliminar compte';
+    this.alertMessage =
+      'Aquesta acció eliminarà permanentment el teu compte i totes les teves dades associades. Aquesta acció no es pot desfer. Estàs segur que vols continuar?';
+
+    this.alertButtons = [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        handler: () => {
+          this.isAlertOpen = false;
+        },
+      },
+      {
+        text: 'Acceptar',
+        handler: () => {
+          this.deleteAccount();
+        },
+      },
+    ];
+
+    this.isAlertOpen = true;
+  }
+
+  async deleteAccount(): Promise<void> {
+    this.deleteService.deleteAccount().subscribe({
+      next: (res) => {
+        console.log(res);
+        location.reload();
+      },
+    });
   }
 }

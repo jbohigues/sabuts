@@ -11,6 +11,7 @@ import {
   setDoc,
   updateDoc,
   where,
+  writeBatch,
 } from '@angular/fire/firestore';
 import {
   FriendRequestModel,
@@ -271,5 +272,39 @@ export class FriendRequestService {
         // transaction.delete(requestRef);
       })
     ).pipe(map(() => void 0));
+  }
+
+  deleteSentFriendRequests(userId: string): Observable<void> {
+    return from(this.getAllUsers()).pipe(
+      switchMap((userIds) => {
+        const batch = writeBatch(this.firestore);
+
+        return Promise.all(
+          userIds.map((receiverId) => {
+            const receiverRequestsRef = collection(
+              this.firestore,
+              `users/${receiverId}/friendRequests`
+            );
+            const sentRequestsQuery = query(
+              receiverRequestsRef,
+              where('sendingUserId', '==', userId),
+              where('status', '==', FriendRequestStatusEnum.pending)
+            );
+
+            return getDocs(sentRequestsQuery).then((snapshot) => {
+              snapshot.docs.forEach((doc) => {
+                batch.delete(doc.ref);
+              });
+            });
+          })
+        ).then(() => batch.commit());
+      })
+    );
+  }
+
+  private async getAllUsers(): Promise<string[]> {
+    const usersRef = collection(this.firestore, 'users');
+    const snapshot = await getDocs(usersRef);
+    return snapshot.docs.map((doc) => doc.id);
   }
 }
