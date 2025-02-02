@@ -60,10 +60,14 @@
         <div>
           <div class="divcategoria">
             <img
-              [src]="'assets/images/question_icons/icon_'+categorieMap.get(currentQuestion.category)?.color+'.webp'"
+              [src]="'assets/images/question_icons/icon_'+categorieMap.get(currentQuestion.category)?.color === null ? 'yellow' : categorieMap.get(currentQuestion.category)?.color+'.webp'"
               alt="Logo categoria"
             />
-            <span>{{categorieMap.get(currentQuestion.category)?.label}}</span>
+            <span
+              >{{categorieMap.get(currentQuestion.category)?.label === null ?
+              'València' :
+              categorieMap.get(currentQuestion.category)?.label}}</span
+            >
           </div>
           <div class="divcategoria">
             <p class="timer">
