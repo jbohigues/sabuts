@@ -1,5 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import { collection, Firestore, getDocs } from '@angular/fire/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  Firestore,
+  getDocs,
+  setDoc,
+  updateDoc,
+} from '@angular/fire/firestore';
 import { QuestionModel } from '@models/question.model';
 import { Observable, from, map } from 'rxjs';
 
@@ -8,6 +16,23 @@ import { Observable, from, map } from 'rxjs';
 })
 export class QuestionService {
   private firestore = inject(Firestore);
+
+  // async addQuestions() {
+  //   const questionsCollection = collection(this.firestore, 'questions');
+  //   for (const question of questions) {
+  //     try {
+  //       // Elimina el id existente para que Firestore genere uno nuevo
+  //       const { id, ...questionWithoutId } = question;
+  //       // Añade el documento y obtén la referencia
+  //       const docRef = await addDoc(questionsCollection, questionWithoutId);
+  //       // Actualiza el documento con el nuevo id
+  //       await updateDoc(docRef, { id: docRef.id });
+  //       console.log('Pregunta añadida con ID: ', docRef.id);
+  //     } catch (e) {
+  //       console.error('Error al añadir pregunta: ', e);
+  //     }
+  //   }
+  // }
 
   getQuestions(): Observable<QuestionModel[]> {
     const questionsRef = collection(this.firestore, 'questions');

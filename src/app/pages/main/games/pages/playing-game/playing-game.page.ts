@@ -98,36 +98,6 @@ export class PlayingGamePage {
       color: 'yellow',
     });
 
-    this.categorieMap.set(Categories['Arquitectura valenciana'], {
-      label: 'València',
-      color: 'yellow',
-    });
-
-    this.categorieMap.set(Categories['Art valencià'], {
-      label: 'València',
-      color: 'yellow',
-    });
-
-    this.categorieMap.set(Categories['Esports valencians'], {
-      label: 'València',
-      color: 'yellow',
-    });
-
-    this.categorieMap.set(Categories['Festes valencianes'], {
-      label: 'València',
-      color: 'yellow',
-    });
-
-    this.categorieMap.set(Categories['Gastronomia valenciana'], {
-      label: 'València',
-      color: 'yellow',
-    });
-
-    this.categorieMap.set(Categories['Geografia valenciana'], {
-      label: 'València',
-      color: 'yellow',
-    });
-
     this.categorieMap.set(Categories.falles, {
       label: 'Falles',
       color: 'red',
