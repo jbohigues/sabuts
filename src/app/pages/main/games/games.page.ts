@@ -178,8 +178,9 @@ export class GamesPage {
     this.friendService.getFriends(id).subscribe({
       next: (res) => {
         if (res) {
+          this.friendsList = res;
           this.friendsListOriginal = res;
-          this.filterFriendsYetInGame();
+          // this.filterFriendsYetInGame();
         }
       },
       error: (e) => {
@@ -188,31 +189,35 @@ export class GamesPage {
     });
   }
 
-  private filterFriendsYetInGame() {
-    this.idusers = [];
-    // Crear un Set para almacenar todos los IDs de usuarios de manera única
-    const idUsersSet = new Set(this.idusers);
+  // private filterFriendsYetInGame() {
+  //   this.idusers = [];
+  //   // Crear un Set para almacenar todos los IDs de usuarios de manera única
+  //   const idUsersSet = new Set(this.idusers);
 
-    // Agregar los IDs de los jugadores de cada juego al Set
-    this.gamesOriginal.forEach((game) => {
-      idUsersSet.add(game.player1.userId);
-      idUsersSet.add(game.player2.userId);
-    });
+  //   // Agregar los IDs de los jugadores de cada juego al Set
+  //   this.gamesOriginal.forEach((game) => {
+  //     idUsersSet.add(game.player1.userId);
+  //     idUsersSet.add(game.player2.userId);
+  //   });
 
-    // Convertir el Set a un array solo una vez
-    this.idusers = Array.from(idUsersSet);
+  //   // Convertir el Set a un array solo una vez
+  //   this.idusers = Array.from(idUsersSet);
 
-    // Filtrar la lista de amigos que no están en idusers
-    this.friendsList = this.friendsListOriginal.filter(
-      (friend) => !idUsersSet.has(friend.friendId)
-    );
-  }
+  //   // Filtrar la lista de amigos que no están en idusers
+  //   this.friendsList = this.friendsListOriginal.filter(
+  //     (friend) => !idUsersSet.has(friend.friendId)
+  //   );
+  // }
 
   protected handleInput(event: CustomEvent<SearchbarInputEventDetail>) {
     const value = event.detail.value;
+
     if (value) {
-      this.friendsList = this.friendsListOriginal.filter((friend) =>
-        friend.friendUser.userName.includes(value)
+      this.friendsList = this.friendsListOriginal.filter(
+        (friend) =>
+          friend.friendUser.userName.toLowerCase().includes(value) ||
+          friend.friendUser.email.toLowerCase().includes(value) ||
+          friend.friendUser.name.toLowerCase().includes(value)
       );
     } else {
       this.friendsList = this.friendsListOriginal;
