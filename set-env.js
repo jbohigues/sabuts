@@ -17,3 +17,4 @@ export const environment = {
 };
 `;
 fs.writeFileSync("./src/environments/environment.ts", environmentFile);
+fs.writeFileSync("./src/environments/environment.prod.ts", environmentFile);
