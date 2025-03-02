@@ -21,39 +21,20 @@ import {
   IonBadge,
   IonAlert,
   IonToast,
-  // IonModal,
-  // IonHeader,
-  // IonToolbar,
-  // IonButtons,
-  // IonSearchbar,
-  // IonItem,
-  // IonLabel,
-  // IonText,
-  // IonFab,
-  // IonFabButton,
-  // IonTitle,
 } from '@ionic/angular/standalone';
 import { PartialUserModel, UserModel } from '@models/users.model';
 import { UtilsService } from '@services/utils.service';
 import { AuthService } from '@services/auth.service';
 import { LogoComponent } from '@sharedComponents/logo/logo.component';
-import {
-  AlertButton,
-  AlertInput,
-  // OverlayEventDetail,
-  // SearchbarInputEventDetail,
-} from '@ionic/core';
+import { AlertButton, AlertInput } from '@ionic/core';
 import { FriendRequestModel } from '@models/friendRequest.model';
 import { Colors } from '@sharedEnums/colors';
-import { ErrorsEnum } from '@sharedEnums/errors';
 import { IconsToast } from '@sharedEnums/iconsToast';
-import { FriendRequestStatusEnum, GameStatusEnum } from '@sharedEnums/states';
+import { FriendRequestStatusEnum } from '@sharedEnums/states';
 import { UserService } from '@services/user.service';
 import { FriendRequestService } from '@services/friend-request.service';
 import { PartialFriendModel } from '@models/friends.model';
 import { GameModel } from '@models/games.model';
-// import { GameService } from '@services/game.service';
-// import { FriendService } from '@services/friend.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -61,17 +42,6 @@ import { GameModel } from '@models/games.model';
   styleUrls: ['./mainLayout.component.scss'],
   standalone: true,
   imports: [
-    // IonTitle,
-    // IonFabButton,
-    // IonFab,
-    // IonText,
-    // IonLabel,
-    // IonItem,
-    // IonSearchbar,
-    // IonButtons,
-    // IonToolbar,
-    // IonHeader,
-    // IonModal,
     IonToast,
     IonAlert,
     IonBadge,
@@ -95,7 +65,6 @@ import { GameModel } from '@models/games.model';
 })
 export class MainLayoutComponent implements OnInit {
   @ViewChild(IonContent, { static: false }) content!: IonContent;
-  // @ViewChild(IonModal) modal!: IonModal;
   @Input() pageTitle!: string;
   @Input() backButton!: string;
 
@@ -103,10 +72,7 @@ export class MainLayoutComponent implements OnInit {
   private authService = inject(AuthService);
   private utilsService = inject(UtilsService);
   private friendRequestService = inject(FriendRequestService);
-  // private gameService = inject(GameService);
-  // private friendService = inject(FriendService);
 
-  // modalOpen: boolean = false;
   openLoading: boolean = false;
   showScrollButton: boolean = false;
 
@@ -131,16 +97,14 @@ export class MainLayoutComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  ionViewWillEnter() {
-    this.init();
-  }
-
   ngOnInit(): void {
     this.init();
   }
 
   private init() {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
+    const user = this.authService.getCurrentUser();
+    if (!user?.emailVerified || !this.currentUser) this.signOut();
 
     // if (this.currentUser) {
     //   this.getFriends(this.currentUser.id);

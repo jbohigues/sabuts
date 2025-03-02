@@ -21,6 +21,7 @@ import { ErrorsEnum } from '@sharedEnums/errors';
 import { GameStatusEnum, RoundStatusEnum } from '@sharedEnums/states';
 import { Observable, from, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
@@ -291,7 +292,7 @@ export class GameService {
     return from(getCountFromServer(activeGamesQuery)).pipe(
       map((snapshot) => {
         const count = snapshot.data().count;
-        return count < 5;
+        return count < environment.maxGamesInPlay;
       })
     );
   }

@@ -66,6 +66,12 @@
           <a routerLink="forgot_password">Recupera-la</a>
         </p>
       </ion-text>
+      <ion-text class="ion-text-center ion-padding-top">
+        <p class="small">
+          Has de verificar el correu? <br />
+          <span (click)="sendVerification()"> Reenvia verificació </span>
+        </p>
+      </ion-text>
     </div>
   </form>
   <ion-loading [isOpen]="openLoading"></ion-loading>

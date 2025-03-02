@@ -11,4 +11,9 @@ a {
 
 p.small {
   font-size: smaller;
+
+  & > span:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
