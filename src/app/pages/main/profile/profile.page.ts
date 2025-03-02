@@ -196,9 +196,13 @@ export class ProfilePage {
 
   protected handleInput(event: CustomEvent<SearchbarInputEventDetail>) {
     const value = event.detail.value;
+
     if (value) {
-      this.friendsList = this.friendsListOriginal.filter((friend) =>
-        friend.friendUser.userName.includes(value)
+      this.friendsList = this.friendsListOriginal.filter(
+        (friend) =>
+          friend.friendUser.userName.toLowerCase().includes(value) ||
+          friend.friendUser.email.toLowerCase().includes(value) ||
+          friend.friendUser.name.toLowerCase().includes(value)
       );
     } else {
       this.friendsList = this.friendsListOriginal;

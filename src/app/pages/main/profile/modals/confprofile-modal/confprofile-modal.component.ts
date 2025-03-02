@@ -217,8 +217,7 @@ export class ConfprofileModalComponent {
 
   async deleteAccount(): Promise<void> {
     this.deleteService.deleteAccount().subscribe({
-      next: (res) => {
-        console.log(res);
+      next: () => {
         location.reload();
       },
     });
