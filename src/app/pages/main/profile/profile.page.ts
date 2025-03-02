@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  ViewChild,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -83,7 +89,7 @@ import { ModalController } from '@ionic/angular';
   ],
   providers: [ModalController],
 })
-export class ProfilePage {
+export class ProfilePage implements OnInit {
   @ViewChild(IonContent, { static: false }) content!: IonContent;
 
   // Injects
@@ -129,7 +135,7 @@ export class ProfilePage {
     private cdr: ChangeDetectorRef
   ) {}
 
-  ionViewWillEnter() {
+  ngOnInit(): void {
     this.loadUserData();
   }
 
@@ -151,7 +157,7 @@ export class ProfilePage {
   }
 
   protected refreshPage(event: any) {
-    this.ionViewWillEnter();
+    this.loadUserData();
     event.target.complete();
   }
 

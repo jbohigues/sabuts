@@ -97,10 +97,6 @@ export class MainLayoutComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  ionViewWillEnter() {
-    this.init();
-  }
-
   ngOnInit(): void {
     this.init();
   }

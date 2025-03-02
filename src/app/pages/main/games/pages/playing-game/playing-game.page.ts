@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -55,7 +61,7 @@ interface Category {
     HeaderComponent,
   ],
 })
-export class PlayingGamePage {
+export class PlayingGamePage implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('_idgame') idgame!: string;
 
@@ -119,7 +125,7 @@ export class PlayingGamePage {
     });
   }
 
-  async ionViewWillEnter() {
+  ngOnInit(): void {
     this.openLoading = true;
     this.gameService.getGameById(this.idgame).subscribe({
       next: (res) => {

@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   ViewChild,
+  OnInit,
 } from '@angular/core';
 import {
   IonContent,
@@ -75,7 +76,7 @@ import {
     GameCardComponent,
   ],
 })
-export class GamesPage {
+export class GamesPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
 
   private gameService = inject(GameService);
@@ -128,7 +129,7 @@ export class GamesPage {
     );
   }
 
-  ionViewWillEnter() {
+  ngOnInit(): void {
     this.loadUserData();
   }
 
@@ -142,7 +143,7 @@ export class GamesPage {
   }
 
   protected refreshPage(event: any) {
-    this.ionViewWillEnter();
+    this.loadUserData();
     event.target.complete();
   }
 

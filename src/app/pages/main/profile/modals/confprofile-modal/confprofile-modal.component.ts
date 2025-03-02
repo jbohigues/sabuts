@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -66,7 +66,7 @@ import { IconsToast } from '@sharedEnums/iconsToast';
     ReactiveFormsModule,
   ],
 })
-export class ConfprofileModalComponent {
+export class ConfprofileModalComponent implements OnInit {
   // Injects
   private userService = inject(UserService);
   private utilsService = inject(UtilsService);
@@ -128,7 +128,7 @@ export class ConfprofileModalComponent {
     };
   }
 
-  ionViewWillEnter() {
+  ngOnInit(): void {
     this.loadUserData();
   }
 
