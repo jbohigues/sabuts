@@ -71,6 +71,7 @@ export class AuthService {
   sendEmailVerification() {
     const user = this.auth.currentUser;
     if (user) sendEmailVerification(user);
+    return user;
   }
 
   logout(): Observable<void> {

@@ -143,3 +143,21 @@
     backdropDismiss="false"
   ></ion-alert>
 </ion-content>
+
+<ion-toast
+  [isOpen]="isToastOpen"
+  [message]="messageToast"
+  [color]="colorToast"
+  [icon]="iconToast"
+  [duration]="5000"
+  [position]="'bottom'"
+  [animated]="true"
+  [swipeGesture]="'vertical'"
+  [buttons]="[
+        {
+          icon: 'close',
+          role: 'cancel',
+        },
+      ]"
+  (didDismiss)="isToastOpen = false"
+></ion-toast>

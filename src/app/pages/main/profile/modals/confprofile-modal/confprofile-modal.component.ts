@@ -28,12 +28,15 @@ import {
   IonTitle,
   IonNote,
   IonAlert,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { ModalController } from '@ionic/angular';
 import { UserService } from '@services/user.service';
 import { AlertButton } from '@ionic/core';
 import { DeleteService } from '@services/delete.service';
+import { Colors } from '@sharedEnums/colors';
+import { IconsToast } from '@sharedEnums/iconsToast';
 
 @Component({
   selector: 'app-confprofile-modal',
@@ -41,6 +44,7 @@ import { DeleteService } from '@services/delete.service';
   styleUrls: ['./confprofile-modal.component.scss'],
   standalone: true,
   imports: [
+    IonToast,
     IonAlert,
     IonNote,
     IonTitle,
@@ -77,6 +81,12 @@ export class ConfprofileModalComponent {
   alertHeader: string = '';
   alertMessage: string = '';
   alertButtons: AlertButton[] = [];
+
+  // Toast
+  isToastOpen: boolean = false;
+  iconToast: string = '';
+  colorToast: string = '';
+  messageToast: string = '';
 
   constructor(private modalCtrl: ModalController) {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
@@ -219,6 +229,12 @@ export class ConfprofileModalComponent {
       next: () => {
         this.utilsService.removeItemOfLocalStorage('user');
         location.reload();
+      },
+      error: (e) => {
+        this.messageToast = 'Error al eliminar el compte.';
+        this.colorToast = Colors.medium;
+        this.iconToast = IconsToast.secondary_alert;
+        this.isToastOpen = true;
       },
     });
   }

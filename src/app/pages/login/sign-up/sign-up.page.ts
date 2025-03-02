@@ -99,14 +99,14 @@ export class SignUpPage {
 
       this.cdr.detectChanges();
     } else {
-      this.authService.register(email, password).subscribe({
+      this.authService.register(email.toLowerCase(), password).subscribe({
         next: (user) => {
           const backgroundColor = this.utilsService.getRandomDarkColor();
 
           const usermodel: UserModel = {
             id: user.uid,
             name,
-            email,
+            email: email.toLowerCase(),
             userName,
             lastName: '',
             avatarid: '',
