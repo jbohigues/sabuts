@@ -1,4 +1,10 @@
-import { Component, effect, inject, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  effect,
+  inject,
+  ViewChild,
+} from '@angular/core';
 import {
   IonContent,
   IonRefresher,
@@ -106,7 +112,7 @@ export class GamesPage {
   friendsListOriginal: PartialFriendModel[] = [];
   currentUser: UserModel | undefined;
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     this.breakpointObserver
       .observe([Breakpoints.XSmall])
       .subscribe((result) => {
@@ -302,15 +308,19 @@ export class GamesPage {
         if (res) {
           this.isAlertOpen = false;
           this.modal.dismiss(null, 'created');
+          this.cdr.detectChanges();
         }
       },
       error: (e) => {
         console.error(e);
+        this.isAlertOpen = false;
+        this.modalOpen = false;
 
-        this.messageToast = 'Error al crear la partida';
+        this.messageToast = e.message;
         this.colorToast = Colors.danger;
         this.iconToast = IconsToast.danger_close_circle;
         this.isToastOpen = true;
+        this.cdr.detectChanges();
       },
     });
   }

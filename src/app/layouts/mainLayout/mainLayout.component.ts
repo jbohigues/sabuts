@@ -250,18 +250,8 @@ export class MainLayoutComponent implements OnInit {
           },
           error: (e) => {
             this.openLoading = false;
-            const errorMessages: Record<string, string> = {
-              [ErrorsEnum.already_sent_request]:
-                "Ja has enviat una sol·licitut d'amistat a aquest usuari",
-              [ErrorsEnum.already_received_request]:
-                "Aquest usuari ja t'ha enviat una sol·licitut d'amistat",
-              [ErrorsEnum.already_friends]:
-                "Aquest usuari ja pertany al teu llistat d'amics",
-            };
-
             const toastMessage =
-              errorMessages[e.message] ||
-              "Error al enviar la sol·licitut d'amistat";
+              e.message || "Error al enviar la sol·licitut d'amistat";
 
             this.messageToast = toastMessage;
             this.colorToast = Colors.danger;

@@ -13,9 +13,11 @@ import {
   orderBy,
   setDoc,
   writeBatch,
+  getCountFromServer,
 } from '@angular/fire/firestore';
 import { GameModel, RoundModel, UserOfGameModel } from '@models/games.model';
 import { QuestionModel } from '@models/question.model';
+import { ErrorsEnum } from '@sharedEnums/errors';
 import { GameStatusEnum, RoundStatusEnum } from '@sharedEnums/states';
 import { Observable, from, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -55,13 +57,21 @@ export class GameService {
   // Crear una nueva partida
   createGame(game: Partial<GameModel>): Observable<string> {
     const gamesRef = collection(this.firestore, 'games');
-    return from(addDoc(gamesRef, game)).pipe(
-      switchMap((docRef) => {
-        // Actualizar el objeto game con el ID del documento
-        const gameWithId = { ...game, id: docRef.id };
+    if (!game.player1 || !game.player2)
+      return throwError(() => new Error(ErrorsEnum.not_players_in_game));
 
-        // Actualizar el documento con el nuevo ID
-        return from(setDoc(docRef, gameWithId)).pipe(map(() => docRef.id));
+    // Primero, verificamos el número de partidas activas para ambos jugadores
+    return this.checkActiveGames(game.player1.userId, game.player2.userId).pipe(
+      switchMap((canCreate) => {
+        if (!canCreate)
+          return throwError(() => new Error(ErrorsEnum.max_games_in_play));
+
+        return from(addDoc(gamesRef, game)).pipe(
+          switchMap((docRef) => {
+            const gameWithId = { ...game, id: docRef.id };
+            return from(setDoc(docRef, gameWithId)).pipe(map(() => docRef.id));
+          })
+        );
       })
     );
   }
@@ -263,5 +273,26 @@ export class GameService {
       backgroundColor: user.backgroundColor,
       score: user.score,
     };
+  }
+
+  // Método para ver la cantidad de partidas activas entre 2amigos
+  private checkActiveGames(
+    player1Id: string,
+    player2Id: string
+  ): Observable<boolean> {
+    const gamesRef = collection(this.firestore, 'games');
+    const activeGamesQuery = query(
+      gamesRef,
+      where('status', '==', GameStatusEnum.in_progress),
+      where('player1.userId', 'in', [player1Id, player2Id]),
+      where('player2.userId', 'in', [player1Id, player2Id])
+    );
+
+    return from(getCountFromServer(activeGamesQuery)).pipe(
+      map((snapshot) => {
+        const count = snapshot.data().count;
+        return count < 5;
+      })
+    );
   }
 }
