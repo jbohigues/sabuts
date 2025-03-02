@@ -158,16 +158,20 @@ export class PlayingGamePage {
 
   private setCurrentUserInPlayer1() {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
-    if (this.currentUser) {
+    if (this.currentUser && this.playingGame) {
       const currentUserIsPlayer1 =
-        this.playingGame?.player1.userId == this.currentUser.id;
+        this.playingGame.player1.userId == this.currentUser.id;
 
       if (currentUserIsPlayer1) {
-        this.currentUserPlayer = this.playingGame!.player1;
-        this.rivalPlayer = this.playingGame!.player2;
+        this.playingGame.player1.backgroundColor =
+          this.currentUser.backgroundColor;
+        this.currentUserPlayer = this.playingGame.player1;
+        this.rivalPlayer = this.playingGame.player2;
       } else {
-        this.currentUserPlayer = this.playingGame!.player2;
-        this.rivalPlayer = this.playingGame!.player1;
+        this.playingGame.player2.backgroundColor =
+          this.currentUser.backgroundColor;
+        this.currentUserPlayer = this.playingGame.player2;
+        this.rivalPlayer = this.playingGame.player1;
       }
     }
 
@@ -329,6 +333,7 @@ export class PlayingGamePage {
           if (this.playingGame) {
             this.updateGameScore(false);
             // this.clearGameOfLocalStorage();
+
             this.gameService
               .updateGame(this.playingGame.id, this.playingGame)
               .subscribe({
