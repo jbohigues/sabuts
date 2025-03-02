@@ -33,7 +33,6 @@ import { CommonModule } from '@angular/common';
 import { ModalController } from '@ionic/angular';
 import { UserService } from '@services/user.service';
 import { AlertButton } from '@ionic/core';
-import { AuthService } from '@services/auth.service';
 import { DeleteService } from '@services/delete.service';
 
 @Component({
@@ -218,6 +217,7 @@ export class ConfprofileModalComponent {
   async deleteAccount(): Promise<void> {
     this.deleteService.deleteAccount().subscribe({
       next: () => {
+        this.utilsService.removeItemOfLocalStorage('user');
         location.reload();
       },
     });

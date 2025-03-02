@@ -7,14 +7,27 @@ import {
   signOut,
   onAuthStateChanged,
   sendPasswordResetEmail,
+  sendEmailVerification,
 } from '@angular/fire/auth';
-import { Observable, from, map } from 'rxjs';
+import {
+  Observable,
+  catchError,
+  from,
+  map,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private auth = inject(Auth);
+
+  getCurrentUser() {
+    return this.auth.currentUser;
+  }
 
   login(email: string, password: string): Observable<User> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
@@ -34,11 +47,30 @@ export class AuthService {
   register(email: string, password: string): Observable<User> {
     return from(
       createUserWithEmailAndPassword(this.auth, email, password)
-    ).pipe(map((res) => res.user));
+    ).pipe(
+      switchMap((userCredential) => {
+        const user = userCredential.user;
+        return from(sendEmailVerification(user)).pipe(
+          tap(() => console.log('Correu de verificació enviat')),
+          map(() => user)
+        );
+      }),
+      catchError((error) => {
+        console.error('Error durant el registre:', error);
+        return throwError(
+          () => new Error('Fallo en el registre: ' + error.message)
+        );
+      })
+    );
   }
 
   sendRecoveryEmail(email: string) {
     return sendPasswordResetEmail(this.auth, email);
+  }
+
+  sendEmailVerification() {
+    const user = this.auth.currentUser;
+    if (user) sendEmailVerification(user);
   }
 
   logout(): Observable<void> {

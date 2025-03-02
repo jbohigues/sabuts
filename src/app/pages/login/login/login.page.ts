@@ -76,6 +76,17 @@ export class LoginPage {
     if (emailValue && passwordValue) {
       this.authService.login(emailValue, passwordValue).subscribe({
         next: (user) => {
+          if (!user.emailVerified) {
+            this.openLoading = false;
+            this.messageToast = 'Has de verificar el correu per accedir';
+            this.colorToast = Colors.danger;
+            this.iconToast = IconsToast.danger_close_circle;
+            this.isToastOpen = true;
+
+            this.cdr.detectChanges();
+            return;
+          }
+
           this.userService.getUserById(user.uid).subscribe({
             next: (res) => {
               if (res) {
@@ -118,5 +129,16 @@ export class LoginPage {
         },
       });
     }
+  }
+
+  protected sendVerification() {
+    this.authService.sendEmailVerification();
+
+    this.messageToast = 'Si us plau, verifica el teu correu electrònic';
+    this.colorToast = Colors.medium;
+    this.iconToast = IconsToast.secondary_alert;
+    this.isToastOpen = true;
+
+    this.cdr.detectChanges();
   }
 }
