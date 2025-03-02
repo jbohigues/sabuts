@@ -13,7 +13,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "config": "node set-env.js",
-    "vercel build": "npm run config && npm ci && npm run build"
+    "vercel-build": "npm run config && npm ci && npm run build"
   },
   "private": true,
   "dependencies": {
