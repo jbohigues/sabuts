@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -28,13 +28,15 @@ import {
   IonTitle,
   IonNote,
   IonAlert,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { ModalController } from '@ionic/angular';
 import { UserService } from '@services/user.service';
 import { AlertButton } from '@ionic/core';
-import { AuthService } from '@services/auth.service';
 import { DeleteService } from '@services/delete.service';
+import { Colors } from '@sharedEnums/colors';
+import { IconsToast } from '@sharedEnums/iconsToast';
 
 @Component({
   selector: 'app-confprofile-modal',
@@ -42,6 +44,7 @@ import { DeleteService } from '@services/delete.service';
   styleUrls: ['./confprofile-modal.component.scss'],
   standalone: true,
   imports: [
+    IonToast,
     IonAlert,
     IonNote,
     IonTitle,
@@ -63,7 +66,7 @@ import { DeleteService } from '@services/delete.service';
     ReactiveFormsModule,
   ],
 })
-export class ConfprofileModalComponent {
+export class ConfprofileModalComponent implements OnInit {
   // Injects
   private userService = inject(UserService);
   private utilsService = inject(UtilsService);
@@ -78,6 +81,12 @@ export class ConfprofileModalComponent {
   alertHeader: string = '';
   alertMessage: string = '';
   alertButtons: AlertButton[] = [];
+
+  // Toast
+  isToastOpen: boolean = false;
+  iconToast: string = '';
+  colorToast: string = '';
+  messageToast: string = '';
 
   constructor(private modalCtrl: ModalController) {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
@@ -119,7 +128,7 @@ export class ConfprofileModalComponent {
     };
   }
 
-  ionViewWillEnter() {
+  ngOnInit(): void {
     this.loadUserData();
   }
 
@@ -217,9 +226,15 @@ export class ConfprofileModalComponent {
 
   async deleteAccount(): Promise<void> {
     this.deleteService.deleteAccount().subscribe({
-      next: (res) => {
-        console.log(res);
+      next: () => {
+        this.utilsService.removeItemOfLocalStorage('user');
         location.reload();
+      },
+      error: (e) => {
+        this.messageToast = 'Error al eliminar el compte.';
+        this.colorToast = Colors.medium;
+        this.iconToast = IconsToast.secondary_alert;
+        this.isToastOpen = true;
       },
     });
   }

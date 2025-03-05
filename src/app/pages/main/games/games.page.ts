@@ -1,4 +1,11 @@
-import { Component, effect, inject, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  effect,
+  inject,
+  ViewChild,
+  OnInit,
+} from '@angular/core';
 import {
   IonContent,
   IonRefresher,
@@ -69,7 +76,7 @@ import {
     GameCardComponent,
   ],
 })
-export class GamesPage {
+export class GamesPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
 
   private gameService = inject(GameService);
@@ -106,7 +113,7 @@ export class GamesPage {
   friendsListOriginal: PartialFriendModel[] = [];
   currentUser: UserModel | undefined;
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     this.breakpointObserver
       .observe([Breakpoints.XSmall])
       .subscribe((result) => {
@@ -122,7 +129,7 @@ export class GamesPage {
     );
   }
 
-  ionViewWillEnter() {
+  ngOnInit(): void {
     this.loadUserData();
   }
 
@@ -136,7 +143,7 @@ export class GamesPage {
   }
 
   protected refreshPage(event: any) {
-    this.ionViewWillEnter();
+    this.loadUserData();
     event.target.complete();
   }
 
@@ -178,8 +185,9 @@ export class GamesPage {
     this.friendService.getFriends(id).subscribe({
       next: (res) => {
         if (res) {
+          this.friendsList = res;
           this.friendsListOriginal = res;
-          this.filterFriendsYetInGame();
+          // this.filterFriendsYetInGame();
         }
       },
       error: (e) => {
@@ -188,31 +196,35 @@ export class GamesPage {
     });
   }
 
-  private filterFriendsYetInGame() {
-    this.idusers = [];
-    // Crear un Set para almacenar todos los IDs de usuarios de manera única
-    const idUsersSet = new Set(this.idusers);
+  // private filterFriendsYetInGame() {
+  //   this.idusers = [];
+  //   // Crear un Set para almacenar todos los IDs de usuarios de manera única
+  //   const idUsersSet = new Set(this.idusers);
 
-    // Agregar los IDs de los jugadores de cada juego al Set
-    this.gamesOriginal.forEach((game) => {
-      idUsersSet.add(game.player1.userId);
-      idUsersSet.add(game.player2.userId);
-    });
+  //   // Agregar los IDs de los jugadores de cada juego al Set
+  //   this.gamesOriginal.forEach((game) => {
+  //     idUsersSet.add(game.player1.userId);
+  //     idUsersSet.add(game.player2.userId);
+  //   });
 
-    // Convertir el Set a un array solo una vez
-    this.idusers = Array.from(idUsersSet);
+  //   // Convertir el Set a un array solo una vez
+  //   this.idusers = Array.from(idUsersSet);
 
-    // Filtrar la lista de amigos que no están en idusers
-    this.friendsList = this.friendsListOriginal.filter(
-      (friend) => !idUsersSet.has(friend.friendId)
-    );
-  }
+  //   // Filtrar la lista de amigos que no están en idusers
+  //   this.friendsList = this.friendsListOriginal.filter(
+  //     (friend) => !idUsersSet.has(friend.friendId)
+  //   );
+  // }
 
   protected handleInput(event: CustomEvent<SearchbarInputEventDetail>) {
     const value = event.detail.value;
+
     if (value) {
-      this.friendsList = this.friendsListOriginal.filter((friend) =>
-        friend.friendUser.userName.includes(value)
+      this.friendsList = this.friendsListOriginal.filter(
+        (friend) =>
+          friend.friendUser.userName.toLowerCase().includes(value) ||
+          friend.friendUser.email.toLowerCase().includes(value) ||
+          friend.friendUser.name.toLowerCase().includes(value)
       );
     } else {
       this.friendsList = this.friendsListOriginal;
@@ -297,15 +309,19 @@ export class GamesPage {
         if (res) {
           this.isAlertOpen = false;
           this.modal.dismiss(null, 'created');
+          this.cdr.detectChanges();
         }
       },
       error: (e) => {
         console.error(e);
+        this.isAlertOpen = false;
+        this.modalOpen = false;
 
-        this.messageToast = 'Error al crear la partida';
+        this.messageToast = e.message;
         this.colorToast = Colors.danger;
         this.iconToast = IconsToast.danger_close_circle;
         this.isToastOpen = true;
+        this.cdr.detectChanges();
       },
     });
   }

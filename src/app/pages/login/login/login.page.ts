@@ -74,49 +74,74 @@ export class LoginPage {
     const emailValue = email.value;
     const passwordValue = password.value;
     if (emailValue && passwordValue) {
-      this.authService.login(emailValue, passwordValue).subscribe({
-        next: (user) => {
-          this.userService.getUserById(user.uid).subscribe({
-            next: (res) => {
-              if (res) {
-                this.utilsService.saveInLocalStorage('user', res);
-                this.openLoading = false;
-                this.formAuth.reset();
+      this.authService
+        .login(emailValue.toLowerCase(), passwordValue)
+        .subscribe({
+          next: (user) => {
+            if (!user.emailVerified) {
+              this.openLoading = false;
+              this.messageToast = 'Has de verificar el correu per accedir';
+              this.colorToast = Colors.danger;
+              this.iconToast = IconsToast.danger_close_circle;
+              this.isToastOpen = true;
 
-                this.messageToast = `Hola ${res.userName}, benvingut/a!`;
-                this.colorToast = Colors.success;
-                this.iconToast = IconsToast.success_thumbs_up;
-                this.isToastOpen = true;
+              this.cdr.detectChanges();
+              return;
+            }
 
-                this.cdr.detectChanges();
+            this.userService.getUserById(user.uid).subscribe({
+              next: (res) => {
+                if (res) {
+                  this.utilsService.saveInLocalStorage('user', res);
+                  this.openLoading = false;
+                  this.formAuth.reset();
 
-                this.utilsService.routerLink('/home');
-              } else {
-                this.openLoading = false;
-                this.messageToast =
-                  'Error al iniciar sessió: Credencials incorrectes';
-                this.colorToast = Colors.danger;
-                this.iconToast = IconsToast.danger_close_circle;
-                this.isToastOpen = true;
+                  this.messageToast = `Hola ${res.userName}, benvingut/a!`;
+                  this.colorToast = Colors.success;
+                  this.iconToast = IconsToast.success_thumbs_up;
+                  this.isToastOpen = true;
 
-                this.cdr.detectChanges();
-              }
-            },
-          });
-        },
-        error: (err) => {
-          console.error('Error en el login:', err);
-          this.openLoading = false;
+                  this.cdr.detectChanges();
 
-          this.messageToast =
-            'Error al iniciar sessió: Credencials incorrectes';
-          this.colorToast = Colors.danger;
-          this.iconToast = IconsToast.danger_close_circle;
-          this.isToastOpen = true;
+                  this.utilsService.routerLink('/home');
+                } else {
+                  this.openLoading = false;
+                  this.messageToast =
+                    'Error al iniciar sessió: Credencials incorrectes';
+                  this.colorToast = Colors.danger;
+                  this.iconToast = IconsToast.danger_close_circle;
+                  this.isToastOpen = true;
 
-          this.cdr.detectChanges();
-        },
-      });
+                  this.cdr.detectChanges();
+                }
+              },
+            });
+          },
+          error: (err) => {
+            console.error('Error en el login:', err);
+            this.openLoading = false;
+
+            this.messageToast =
+              'Error al iniciar sessió: Credencials incorrectes';
+            this.colorToast = Colors.danger;
+            this.iconToast = IconsToast.danger_close_circle;
+            this.isToastOpen = true;
+
+            this.cdr.detectChanges();
+          },
+        });
     }
+  }
+
+  protected sendVerification() {
+    const user = this.authService.sendEmailVerification();
+    if (!user) return;
+
+    this.messageToast = 'Si us plau, verifica el teu correu electrònic';
+    this.colorToast = Colors.medium;
+    this.iconToast = IconsToast.secondary_alert;
+    this.isToastOpen = true;
+
+    this.cdr.detectChanges();
   }
 }

@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -55,7 +61,7 @@ interface Category {
     HeaderComponent,
   ],
 })
-export class PlayingGamePage {
+export class PlayingGamePage implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('_idgame') idgame!: string;
 
@@ -119,7 +125,7 @@ export class PlayingGamePage {
     });
   }
 
-  async ionViewWillEnter() {
+  ngOnInit(): void {
     this.openLoading = true;
     this.gameService.getGameById(this.idgame).subscribe({
       next: (res) => {
@@ -158,16 +164,20 @@ export class PlayingGamePage {
 
   private setCurrentUserInPlayer1() {
     this.currentUser = this.utilsService.getFromLocalStorage('user');
-    if (this.currentUser) {
+    if (this.currentUser && this.playingGame) {
       const currentUserIsPlayer1 =
-        this.playingGame?.player1.userId == this.currentUser.id;
+        this.playingGame.player1.userId == this.currentUser.id;
 
       if (currentUserIsPlayer1) {
-        this.currentUserPlayer = this.playingGame!.player1;
-        this.rivalPlayer = this.playingGame!.player2;
+        this.playingGame.player1.backgroundColor =
+          this.currentUser.backgroundColor;
+        this.currentUserPlayer = this.playingGame.player1;
+        this.rivalPlayer = this.playingGame.player2;
       } else {
-        this.currentUserPlayer = this.playingGame!.player2;
-        this.rivalPlayer = this.playingGame!.player1;
+        this.playingGame.player2.backgroundColor =
+          this.currentUser.backgroundColor;
+        this.currentUserPlayer = this.playingGame.player2;
+        this.rivalPlayer = this.playingGame.player1;
       }
     }
 
@@ -329,6 +339,7 @@ export class PlayingGamePage {
           if (this.playingGame) {
             this.updateGameScore(false);
             // this.clearGameOfLocalStorage();
+
             this.gameService
               .updateGame(this.playingGame.id, this.playingGame)
               .subscribe({

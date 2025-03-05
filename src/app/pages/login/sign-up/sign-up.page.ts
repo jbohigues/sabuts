@@ -99,14 +99,14 @@ export class SignUpPage {
 
       this.cdr.detectChanges();
     } else {
-      this.authService.register(email, password).subscribe({
+      this.authService.register(email.toLowerCase(), password).subscribe({
         next: (user) => {
           const backgroundColor = this.utilsService.getRandomDarkColor();
 
           const usermodel: UserModel = {
             id: user.uid,
             name,
-            email,
+            email: email.toLowerCase(),
             userName,
             lastName: '',
             avatarid: '',
@@ -124,14 +124,15 @@ export class SignUpPage {
               this.openLoading = false;
               this.formAuth.reset();
 
-              this.messageToast = `Hola ${userName}, benvingut/a!`;
-              this.colorToast = Colors.success;
-              this.iconToast = IconsToast.success_thumbs_up;
+              this.messageToast =
+                'Registre amb èxit. Si us plau, verifica el teu correu electrònic';
+              this.colorToast = Colors.medium;
+              this.iconToast = IconsToast.secondary_alert;
               this.isToastOpen = true;
 
               this.cdr.detectChanges();
 
-              this.utilsService.routerLink('/home');
+              this.utilsService.routerLink('/login');
             },
             error: (e) => {
               console.error(e);

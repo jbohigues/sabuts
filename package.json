@@ -7,11 +7,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start_production": "ionic serve --prod",
+    "start:prod": "ionic serve --prod",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "config": "node set-env.js",
+    "vercel-build": "npm run config && npm ci && npm run build"
   },
   "private": true,
   "dependencies": {
