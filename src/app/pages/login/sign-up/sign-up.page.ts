@@ -23,6 +23,7 @@ import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
 import { UserModel } from '@models/users.model';
 import { UserService } from '@services/user.service';
+import { IonicStorageService } from '@services/ionicStorage.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -48,6 +49,7 @@ export class SignUpPage {
   private userService = inject(UserService);
   private authService = inject(AuthService);
   private utilsService = inject(UtilsService);
+  private ionicStorageService = inject(IonicStorageService);
 
   //Variables
   openLoading: boolean = false;
@@ -86,23 +88,15 @@ export class SignUpPage {
     const { name, userName, email, password } = this.formAuth.value;
     if (!name || !userName || !email || !password) return;
 
-    const availableUserName = await this.userService.checkUsernameAvailability(
-      userName
-    );
-    if (!availableUserName) {
-      this.openLoading = false;
+    this.userService.checkUsernameAvailability(userName).then((isAvailable) => {
+      if (!isAvailable) {
+        this.presentError("El nom d'usuari no està disponible");
+        return;
+      }
 
-      this.messageToast = "El nom d'usuari no està disponible";
-      this.colorToast = Colors.danger;
-      this.iconToast = IconsToast.danger_close_circle;
-      this.isToastOpen = true;
-
-      this.cdr.detectChanges();
-    } else {
       this.authService.register(email.toLowerCase(), password).subscribe({
         next: (user) => {
           const backgroundColor = this.utilsService.getRandomDarkColor();
-
           const usermodel: UserModel = {
             id: user.uid,
             name,
@@ -112,57 +106,67 @@ export class SignUpPage {
             avatarid: '',
             backgroundColor,
             totalPoints: 0,
+            answeredQuestions: [],
             createdAt: new Date(),
             updatedAt: new Date(),
             isAdmin: false,
             active: true,
           };
 
-          this.userService.createUser(usermodel).subscribe({
-            next: () => {
-              this.utilsService.saveInLocalStorage('user', usermodel);
-              this.openLoading = false;
-              this.formAuth.reset();
+          // Crear usuario y reservar nombre simultáneamente
+          this.userService
+            .createUserAndUsername(usermodel, userName)
+            .subscribe({
+              next: async () => {
+                await this.ionicStorageService.set('currentUser', usermodel);
+                this.openLoading = false;
+                this.formAuth.reset();
+                this.messageToast =
+                  'Registre amb èxit. Si us plau, verifica el teu correu electrònic';
+                this.colorToast = Colors.medium;
+                this.iconToast = IconsToast.secondary_alert;
+                this.isToastOpen = true;
 
-              this.messageToast =
-                'Registre amb èxit. Si us plau, verifica el teu correu electrònic';
-              this.colorToast = Colors.medium;
-              this.iconToast = IconsToast.secondary_alert;
-              this.isToastOpen = true;
+                this.cdr.detectChanges();
+                this.utilsService.routerLink('/login');
+              },
+              error: (e) => {
+                const message = this.customMessage(e);
 
-              this.cdr.detectChanges();
-
-              this.utilsService.routerLink('/login');
-            },
-            error: (e) => {
-              console.error(e);
-              this.presentError(e);
-            },
-          });
+                console.error(e);
+                this.presentError(message);
+              },
+            });
         },
         error: (e) => {
+          const message = this.customMessage(e);
+
           console.error("Error al registrar l'usuari:", e);
-          this.presentError(e);
+          this.presentError(message);
         },
       });
-    }
+    });
   }
 
-  private presentError(e: any) {
-    const message =
-      e.message.includes('email-already-in-use') ||
+  private customMessage(e: any) {
+    return e.message.includes('email-already-in-use') ||
       e.message.includes('EMAIL_EXISTS')
-        ? 'Error: el correu electrònic ja és registrat'
-        : e.message.includes('invalid-email')
-        ? 'Error: el correu electrònic no és vàlid'
-        : "Error: error al registrar l'usuari";
+      ? 'Error: el correu electrònic ja és registrat'
+      : e.message.includes('invalid-email')
+      ? 'Error: el correu electrònic no és vàlid'
+      : "Error: error al registrar l'usuari";
+  }
+
+  private presentError(message: string) {
+    console.log(message);
+
+    this.openLoading = false;
 
     this.messageToast = message;
     this.colorToast = Colors.danger;
     this.iconToast = IconsToast.danger_close_circle;
     this.isToastOpen = true;
 
-    this.openLoading = false;
     this.cdr.detectChanges();
   }
 }

@@ -37,7 +37,6 @@ import {
   FriendRequestModel,
   PartialFriendRequestModel,
 } from '@models/friendRequest.model';
-import { UtilsService } from '@services/utils.service';
 import { FriendService } from '@services/friend.service';
 import { PartialFriendModel } from '@models/friends.model';
 import { FriendRequestService } from '@services/friend-request.service';
@@ -54,6 +53,7 @@ import {
   SearchbarInputEventDetail,
 } from '@ionic/core';
 import { ModalController } from '@ionic/angular';
+import { IonicStorageService } from '@services/ionicStorage.service';
 
 @Component({
   selector: 'app-profile',
@@ -94,8 +94,8 @@ export class ProfilePage implements OnInit {
 
   // Injects
   private userService = inject(UserService);
-  private utilsService = inject(UtilsService);
   private friendService = inject(FriendService);
+  private ionicStorageService = inject(IonicStorageService);
   private friendRequestService = inject(FriendRequestService);
 
   // Variables
@@ -161,8 +161,8 @@ export class ProfilePage implements OnInit {
     event.target.complete();
   }
 
-  private loadUserData() {
-    this.currentUser = this.utilsService.getFromLocalStorage('user');
+  private async loadUserData() {
+    this.currentUser = await this.ionicStorageService.get('currentUser');
     if (this.currentUser && this.currentUser.id)
       this.getUserInfo(this.currentUser.id);
     else location.reload();
@@ -282,7 +282,7 @@ export class ProfilePage implements OnInit {
   private async sendFriendRequest(searchItem: string) {
     this.openLoading = true;
 
-    this.userService.findUserByEmailOrUserName(searchItem).subscribe({
+    this.userService.findUserByEmail(searchItem).subscribe({
       next: (res) => {
         if (res) {
           const userToSendRequest = res;

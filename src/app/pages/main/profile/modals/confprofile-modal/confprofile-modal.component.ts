@@ -10,7 +10,6 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { UserModel } from '@models/users.model';
-import { UtilsService } from '@services/utils.service';
 import {
   IonButton,
   IonInput,
@@ -37,6 +36,7 @@ import { AlertButton } from '@ionic/core';
 import { DeleteService } from '@services/delete.service';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
+import { IonicStorageService } from '@services/ionicStorage.service';
 
 @Component({
   selector: 'app-confprofile-modal',
@@ -69,8 +69,8 @@ import { IconsToast } from '@sharedEnums/iconsToast';
 export class ConfprofileModalComponent implements OnInit {
   // Injects
   private userService = inject(UserService);
-  private utilsService = inject(UtilsService);
   private deleteService = inject(DeleteService);
+  private ionicStorageService = inject(IonicStorageService);
 
   // Objects
   editProfileForm: FormGroup;
@@ -89,8 +89,6 @@ export class ConfprofileModalComponent implements OnInit {
   messageToast: string = '';
 
   constructor(private modalCtrl: ModalController) {
-    this.currentUser = this.utilsService.getFromLocalStorage('user');
-
     this.editProfileForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
@@ -128,7 +126,8 @@ export class ConfprofileModalComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.currentUser = await this.ionicStorageService.get('currentUser');
     this.loadUserData();
   }
 
@@ -185,8 +184,8 @@ export class ConfprofileModalComponent implements OnInit {
       };
 
       this.userService.updateUser(this.currentUser!.id, partialUser).subscribe({
-        next: () => {
-          this.utilsService.saveInLocalStorage('user', this.currentUser);
+        next: async () => {
+          await this.ionicStorageService.set('currentUser', this.currentUser);
           return this.modalCtrl.dismiss(null, 'updated');
         },
         error: (e) => {
@@ -227,7 +226,7 @@ export class ConfprofileModalComponent implements OnInit {
   async deleteAccount(): Promise<void> {
     this.deleteService.deleteAccount().subscribe({
       next: () => {
-        this.utilsService.removeItemOfLocalStorage('user');
+        this.ionicStorageService.remove('currentUser');
         location.reload();
       },
       error: (e) => {

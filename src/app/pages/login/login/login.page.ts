@@ -23,6 +23,7 @@ import { UtilsService } from '@services/utils.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { UserService } from '@services/user.service';
+import { IonicStorageService } from '@services/ionicStorage.service';
 
 @Component({
   selector: 'app-login',
@@ -49,6 +50,7 @@ export class LoginPage {
   private userService = inject(UserService);
   private authService = inject(AuthService);
   private utilsService = inject(UtilsService);
+  private ionicStorageService = inject(IonicStorageService);
 
   // Variables
   openLoading: boolean = false;
@@ -90,9 +92,9 @@ export class LoginPage {
             }
 
             this.userService.getUserById(user.uid).subscribe({
-              next: (res) => {
+              next: async (res) => {
                 if (res) {
-                  this.utilsService.saveInLocalStorage('user', res);
+                  await this.ionicStorageService.set('currentUser', res);
                   this.openLoading = false;
                   this.formAuth.reset();
 

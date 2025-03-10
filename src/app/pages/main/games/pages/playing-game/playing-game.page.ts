@@ -32,7 +32,9 @@ import { environment } from 'src/environments/environment';
 import confetti from 'canvas-confetti';
 import { GameStatusEnum } from '@sharedEnums/states';
 import { UserService } from '@services/user.service';
-import { forkJoin } from 'rxjs';
+import { firstValueFrom, forkJoin } from 'rxjs';
+import { IonicStorageService } from '@services/ionicStorage.service';
+import { QuestionService } from '@services/question.service';
 
 interface Category {
   label: string;
@@ -65,9 +67,12 @@ export class PlayingGamePage implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('_idgame') idgame!: string;
 
+  private cdr = inject(ChangeDetectorRef);
   private gameService = inject(GameService);
   private userService = inject(UserService);
   private utilsService = inject(UtilsService);
+  private questionService = inject(QuestionService);
+  private ionicStorageService = inject(IonicStorageService);
 
   // Variables
   progress: number = 0;
@@ -81,7 +86,6 @@ export class PlayingGamePage implements OnInit {
   alertMessage: string = '';
   alertButtons: AlertButton[] = [];
 
-  loading: boolean = true;
   openLoading: boolean = false;
   showQuestion: boolean = false;
   answerSelected: boolean = false;
@@ -89,6 +93,7 @@ export class PlayingGamePage implements OnInit {
   // Objects
   timer: any;
   categories = Categories;
+  questions: QuestionModel[] = [];
   playingGame: GameModel | undefined;
   currentUser: UserModel | undefined;
   currentAnswer: AnswerModel | undefined;
@@ -98,8 +103,8 @@ export class PlayingGamePage implements OnInit {
 
   categorieMap: Map<string, Category> = new Map();
 
-  constructor(private cdr: ChangeDetectorRef) {
-    this.categorieMap.set(Categories.historia_de_valencia, {
+  constructor() {
+    this.categorieMap.set(Categories.historia, {
       label: 'València',
       color: 'yellow',
     });
@@ -125,45 +130,55 @@ export class PlayingGamePage implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.openLoading = true;
-    this.gameService.getGameById(this.idgame).subscribe({
-      next: (res) => {
-        if (res) {
-          this.playingGame = res;
-          this.setCurrentUserInPlayer1();
-        }
-      },
-      error: (e) => {
-        console.error(e);
-      },
-    });
-
-    // this.loadGameOfLocalStorage();
-
-    // if (this.playingGame) {
-    //   this.setCurrentUserInPlayer1();
-    // } else {
-    //   this.gameService.getGameById(this.idgame).subscribe({
-    //     next: (res) => {
-    //       if (res) {
-    //         this.playingGame = res;
-    //         this.setCurrentUserInPlayer1();
-    //       }
-    //     },
-    //     error: (e) => {
-    //       console.error(e);
-    //     },
-    //   });
-    // }
-  }
-
   ionViewWillLeave() {
     this.stopTimer();
   }
 
-  private setCurrentUserInPlayer1() {
-    this.currentUser = this.utilsService.getFromLocalStorage('user');
+  ngOnInit() {
+    this.openLoading = true;
+    this.getAllDataOfStorage();
+  }
+
+  private async getAllDataOfStorage() {
+    this.currentUser = await this.ionicStorageService.get('currentUser');
+
+    this.playingGame =
+      (await this.ionicStorageService.get(`playingGame_${this.idgame}`)) ||
+      (await this.getGameById());
+
+    this.currentUserPlayer = await this.ionicStorageService.get(
+      `currentUserPlayer_${this.idgame}`
+    );
+
+    this.rivalPlayer = await this.ionicStorageService.get(
+      `rivalPlayer_${this.idgame}`
+    );
+
+    if (!this.currentUserPlayer || !this.rivalPlayer)
+      this.setCurrentUserInPlayer1();
+
+    this.correctAnswers =
+      (await this.ionicStorageService.get(`correctAnswers_${this.idgame}`)) ||
+      0;
+
+    this.questions =
+      (await this.ionicStorageService.get(`questions_${this.idgame}`)) ||
+      this.getRandomQuestions();
+
+    this.openLoading = false;
+    this.cdr.detectChanges();
+  }
+
+  private async getGameById(): Promise<GameModel> {
+    const game = await firstValueFrom(
+      this.gameService.getGameById(this.idgame)
+    );
+
+    await this.ionicStorageService.set(`playingGame_${game.id}`, game);
+    return game;
+  }
+
+  private async setCurrentUserInPlayer1() {
     if (this.currentUser && this.playingGame) {
       const currentUserIsPlayer1 =
         this.playingGame.player1.userId == this.currentUser.id;
@@ -179,28 +194,40 @@ export class PlayingGamePage implements OnInit {
         this.currentUserPlayer = this.playingGame.player2;
         this.rivalPlayer = this.playingGame.player1;
       }
+
+      this.ionicStorageService.set(
+        `currentUserPlayer_${this.idgame}`,
+        this.currentUserPlayer
+      );
+
+      this.ionicStorageService.set(
+        `rivalPlayer_${this.idgame}`,
+        this.rivalPlayer
+      );
     }
-
-    this.loading = false;
-    this.openLoading = false;
-
-    this.cdr.detectChanges();
   }
 
-  protected makeQuestion() {
-    this.answerSelected = false;
-    this.gameService.getRandomQuestion().subscribe({
-      next: (res) => {
-        if (res) {
-          this.currentQuestion = res;
-          this.showQuestion = true;
-          this.startTimer();
+  private getRandomQuestions() {
+    this.questionService
+      .getRandomQuestions(this.currentUser!.id)
+      .then((res) => {
+        if (res && Array.isArray(res)) {
+          this.questions = res;
+          this.ionicStorageService.set(
+            `questions_${this.idgame}`,
+            this.questions
+          );
         }
-      },
-      error: (e) => {
-        console.error(e);
-      },
-    });
+      });
+  }
+
+  protected async makeQuestion() {
+    this.answerSelected = false;
+
+    this.currentQuestion = this.questions[this.correctAnswers];
+
+    this.showQuestion = true;
+    this.startTimer();
   }
 
   private startTimer() {
@@ -232,11 +259,19 @@ export class PlayingGamePage implements OnInit {
     this.showErrorAnswerMessage(true);
   }
 
-  protected answerQuestion(answer: AnswerModel) {
+  protected async answerQuestion(answer: AnswerModel) {
     this.stopTimer();
 
     this.answerSelected = true;
     this.currentAnswer = answer;
+
+    if (!this.currentUser!.answeredQuestions)
+      this.currentUser!.answeredQuestions = [];
+
+    this.currentUser!.answeredQuestions.push(
+      this.questions[this.correctAnswers].id
+    );
+    await this.ionicStorageService.set(`currentUser`, this.currentUser);
 
     if (answer.isCorrect) {
       this.playCorrectSound();
@@ -257,12 +292,20 @@ export class PlayingGamePage implements OnInit {
     audio.play();
   }
 
-  private incrementScore() {
+  private async incrementScore() {
     if (this.playingGame && this.currentUserPlayer) {
       this.correctAnswers++;
       this.currentUserPlayer.score = this.currentUserPlayer.score + 1;
 
-      // this.saveGameInLocalStorage();
+      await this.ionicStorageService.set(
+        `correctAnswers_${this.playingGame.id}`,
+        this.correctAnswers
+      );
+
+      await this.ionicStorageService.set(
+        `currentUserPlayer_${this.playingGame.id}`,
+        this.currentUserPlayer
+      );
 
       if (this.currentUserPlayer.score == environment.pointsToWinGame) {
         this.fireConfetti();
@@ -272,37 +315,7 @@ export class PlayingGamePage implements OnInit {
     }
   }
 
-  // private saveGameInLocalStorage() {
-  //   if (this.playingGame) {
-  //     this.utilsService.saveInLocalStorage(
-  //       `play_${this.playingGame.id}`,
-  //       this.playingGame
-  //     );
-
-  //     this.utilsService.saveInLocalStorage(
-  //       `correctanswers_play_${this.playingGame.id}`,
-  //       this.correctAnswers
-  //     );
-  //   }
-  // }
-
-  // private loadGameOfLocalStorage() {
-  //   this.playingGame = this.utilsService.getFromLocalStorage(
-  //     `play_${this.idgame}`
-  //   );
-  //   this.correctAnswers = this.utilsService.getFromLocalStorage(
-  //     `correctanswers_play_${this.idgame}`
-  //   );
-  // }
-
-  // private clearGameOfLocalStorage() {
-  //   this.utilsService.removeItemOfLocalStorage(`play_${this.idgame}`);
-  //   this.utilsService.removeItemOfLocalStorage(
-  //     `correctanswers_play_${this.idgame}`
-  //   );
-  // }
-
-  private updateGameScore(wingame: boolean) {
+  private async updateGameScore(wingame: boolean) {
     if (this.playingGame && this.rivalPlayer && this.currentUserPlayer) {
       const currentUserIsPlayer1 =
         this.playingGame?.player1.userId == this.currentUserPlayer.userId;
@@ -325,33 +338,39 @@ export class PlayingGamePage implements OnInit {
         this.playingGame.endTime = new Date();
         this.playingGame.status = GameStatusEnum.finished;
       }
+
+      await this.ionicStorageService.set(
+        `playingGame_${this.playingGame.id}`,
+        this.playingGame
+      );
     }
   }
 
   private async showMaxCorrectAnswersMessage() {
+    this.updateGameScore(false);
+
+    if (this.playingGame) {
+      this.gameService
+        .updateGame(this.playingGame.id, this.playingGame)
+        .subscribe({
+          next: () => {
+            this.cleanAllInfoOfIonicStorage();
+          },
+          error: (e) => console.error(e),
+        });
+    }
+
     this.alertHeader = 'Màxim de respostes correctes';
     this.alertMessage = `Has aplegat al màxim de respostes correctes, has d'esperar fins que responga el teu contrincant`;
 
     this.alertButtons = [
       {
         text: 'Acceptar',
-        handler: () => {
-          if (this.playingGame) {
-            this.updateGameScore(false);
-            // this.clearGameOfLocalStorage();
+        handler: async () => {
+          this.isAlertOpen = false;
+          this.cdr.detectChanges();
 
-            this.gameService
-              .updateGame(this.playingGame.id, this.playingGame)
-              .subscribe({
-                next: () => {
-                  this.isAlertOpen = false;
-                  this.cdr.detectChanges();
-
-                  this.utilsService.routerLink('games', true);
-                },
-                error: (e) => console.error(e),
-              });
-          }
+          this.utilsService.routerLink('games', true);
         },
       },
     ];
@@ -360,37 +379,36 @@ export class PlayingGamePage implements OnInit {
   }
 
   private async showWinGameMessage() {
+    this.updateGameScore(true);
+
+    if (this.playingGame && this.currentUser) {
+      this.currentUser.totalPoints += 5;
+
+      forkJoin([
+        this.gameService.updateGame(this.playingGame.id, this.playingGame),
+        this.userService.updateUser(this.currentUser.id, {
+          totalPoints: this.currentUser.totalPoints,
+        }),
+      ]).subscribe({
+        next: () => {
+          this.cleanAllInfoOfIonicStorage();
+        },
+        error: (e) => console.error(e),
+      });
+    }
+
     this.alertHeader = 'ENHORABONA!';
     this.alertMessage = ``;
 
     this.alertButtons = [
       {
         text: 'Acceptar',
-        handler: () => {
-          if (this.playingGame && this.currentUser) {
-            this.updateGameScore(true);
+        handler: async () => {
+          await this.ionicStorageService.set(`currentUser`, this.currentUser);
 
-            this.currentUser.totalPoints += 5;
-
-            forkJoin([
-              this.gameService.updateGame(
-                this.playingGame.id,
-                this.playingGame
-              ),
-              this.userService.updateUser(this.currentUser.id, {
-                totalPoints: this.currentUser.totalPoints,
-              }),
-            ]).subscribe({
-              error: (e) => console.error(e),
-              complete: () => {
-                // this.clearGameOfLocalStorage();
-                this.utilsService.saveInLocalStorage('user', this.currentUser);
-                this.isAlertOpen = false;
-                this.cdr.detectChanges();
-                this.utilsService.routerLink('games');
-              },
-            });
-          }
+          this.isAlertOpen = false;
+          this.cdr.detectChanges();
+          this.utilsService.routerLink('games');
         },
       },
     ];
@@ -400,7 +418,17 @@ export class PlayingGamePage implements OnInit {
 
   private async showErrorAnswerMessage(isTimeOut: boolean) {
     this.updateGameScore(false);
-    // this.saveGameInLocalStorage();
+
+    if (this.playingGame) {
+      this.gameService
+        .updateGame(this.playingGame.id, this.playingGame)
+        .subscribe({
+          next: () => {
+            this.cleanAllInfoOfIonicStorage();
+          },
+          error: (e) => console.error(e),
+        });
+    }
 
     this.alertHeader = isTimeOut ? 'Oooooh...' : 'INCORRECTE...';
     this.alertMessage = `${
@@ -410,19 +438,9 @@ export class PlayingGamePage implements OnInit {
     this.alertButtons = [
       {
         text: 'Acceptar',
-        handler: () => {
-          // this.clearGameOfLocalStorage();
-          if (this.playingGame) {
-            this.gameService
-              .updateGame(this.playingGame.id, this.playingGame)
-              .subscribe({
-                next: () => {
-                  this.isAlertOpen = false;
-                  this.utilsService.routerLink('games', true);
-                },
-                error: (e) => console.error(e),
-              });
-          }
+        handler: async () => {
+          this.isAlertOpen = false;
+          this.utilsService.routerLink('games', true);
         },
       },
     ];
@@ -438,5 +456,13 @@ export class PlayingGamePage implements OnInit {
     };
 
     confetti(Object.assign({}, defaults));
+  }
+
+  private cleanAllInfoOfIonicStorage() {
+    this.ionicStorageService.remove(`questions_${this.idgame}`);
+    this.ionicStorageService.remove(`playingGame_${this.idgame}`);
+    this.ionicStorageService.remove(`rivalPlayer_${this.idgame}`);
+    this.ionicStorageService.remove(`correctAnswers_${this.idgame}`);
+    this.ionicStorageService.remove(`currentUserPlayer_${this.idgame}`);
   }
 }
