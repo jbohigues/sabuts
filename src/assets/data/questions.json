@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va fundar la ciutat de València?",
     "answers": [
       { "isCorrect": false, "value": "218 a.C." },
@@ -12,7 +12,7 @@
   },
   {
     "id": 2,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Qui va fundar la ciutat de València?",
     "answers": [
       { "isCorrect": false, "value": "Escipió l'Africà" },
@@ -23,7 +23,7 @@
   },
   {
     "id": 3,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "En quin any va conquistar Jaume I la ciutat de València?",
     "answers": [
       { "isCorrect": false, "value": "1232" },
@@ -89,7 +89,7 @@
   },
   {
     "id": 9,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin riu passa per València?",
     "answers": [
       { "isCorrect": false, "value": "El Xúquer" },
@@ -100,7 +100,7 @@
   },
   {
     "id": 10,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin és el nom de la catedral de València?",
     "answers": [
       { "isCorrect": false, "value": "Catedral de Sant Vicent" },
@@ -158,7 +158,7 @@
   },
   {
     "id": 15,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin rei moro va governar València abans de la conquesta cristiana?",
     "answers": [
       { "isCorrect": true, "value": "Abu Zayd" },
@@ -169,7 +169,7 @@
   },
   {
     "id": 16,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "En quin any es va inaugurar la Ciutat de les Arts i les Ciències?",
     "answers": [
       { "isCorrect": false, "value": "1992" },
@@ -180,7 +180,7 @@
   },
   {
     "id": 17,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin és el nom de la festa que se celebra el 9 d'octubre a València?",
     "answers": [
       { "isCorrect": false, "value": "Dia de les Falles" },
@@ -224,7 +224,7 @@
   },
   {
     "id": 21,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va fundar la Universitat de València?",
     "answers": [
       { "isCorrect": false, "value": "1348" },
@@ -235,7 +235,7 @@
   },
   {
     "id": 22,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Qui va ser l'últim rei moro de València?",
     "answers": [
       { "isCorrect": false, "value": "Abu Zayd" },
@@ -246,7 +246,7 @@
   },
   {
     "id": 23,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin és el nom de la plaça principal de València?",
     "answers": [
       { "isCorrect": false, "value": "Plaça de la Reina" },
@@ -301,7 +301,7 @@
   },
   {
     "id": 28,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va construir la Llotja de la Seda de València?",
     "answers": [
       { "isCorrect": false, "value": "1238" },
@@ -312,7 +312,7 @@
   },
   {
     "id": 29,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Qui va ser el primer president de la Generalitat Valenciana després de la dictadura?",
     "answers": [
       { "isCorrect": false, "value": "Joan Lerma" },
@@ -370,7 +370,7 @@
   },
   {
     "id": 34,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va inaugurar el Palau de les Arts Reina Sofia?",
     "answers": [
       { "isCorrect": false, "value": "1998" },
@@ -381,7 +381,7 @@
   },
   {
     "id": 35,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Qui va ser el primer arquebisbe de València després de la conquesta cristiana?",
     "answers": [
       { "isCorrect": false, "value": "Sant Vicent Ferrer" },
@@ -392,7 +392,7 @@
   },
   {
     "id": 36,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin és el nom de la festa que se celebra el 17 de gener a València?",
     "answers": [
       { "isCorrect": false, "value": "Sant Vicent Màrtir" },
@@ -436,7 +436,7 @@
   },
   {
     "id": 40,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "En quin any es va fundar el Tribunal de les Aigües de València?",
     "answers": [
       { "isCorrect": false, "value": "1238" },
@@ -447,7 +447,7 @@
   },
   {
     "id": 41,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Qui va ser el primer rei cristià de València?",
     "answers": [
       { "isCorrect": false, "value": "Pere el Gran" },
@@ -458,7 +458,7 @@
   },
   {
     "id": 42,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin és el nom de la festa que se celebra el 22 de gener a València?",
     "answers": [
       { "isCorrect": false, "value": "Sant Vicent Ferrer" },
@@ -502,7 +502,7 @@
   },
   {
     "id": 46,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "En quin any es va inaugurar el Mercat Central de València?",
     "answers": [
       { "isCorrect": false, "value": "1900" },
@@ -513,7 +513,7 @@
   },
   {
     "id": 47,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Qui va ser l'últim virrei de València?",
     "answers": [
       { "isCorrect": true, "value": "Antonio Folch de Cardona" },
@@ -557,7 +557,7 @@
   },
   {
     "id": 51,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin rei va atorgar a València el títol de 'Molt Noble i Lleial Ciutat'?",
     "answers": [
       { "isCorrect": false, "value": "Jaume I" },
@@ -612,7 +612,7 @@
   },
   {
     "id": 56,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "En quin any es va construir el Micalet?",
     "answers": [
       { "isCorrect": false, "value": "1238" },
@@ -667,7 +667,7 @@
   },
   {
     "id": 61,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va fundar el Jardí Botànic de València?",
     "answers": [
       { "isCorrect": false, "value": "1567" },
@@ -722,7 +722,7 @@
   },
   {
     "id": 66,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va inaugurar l'Estació del Nord de València?",
     "answers": [
       { "isCorrect": false, "value": "1852" },
@@ -777,7 +777,7 @@
   },
   {
     "id": 71,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va fundar el Tribunal de les Aigües de València?",
     "answers": [
       { "isCorrect": false, "value": "1238" },
@@ -832,7 +832,7 @@
   },
   {
     "id": 76,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va fundar la Universitat Politècnica de València?",
     "answers": [
       { "isCorrect": false, "value": "1932" },
@@ -887,7 +887,7 @@
   },
   {
     "id": 81,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va celebrar l'Exposició Regional Valenciana?",
     "answers": [
       { "isCorrect": false, "value": "1888" },
@@ -942,7 +942,7 @@
   },
   {
     "id": 86,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va inaugurar el Palau de la Generalitat Valenciana?",
     "answers": [
       { "isCorrect": false, "value": "1418" },
@@ -997,7 +997,7 @@
   },
   {
     "id": 91,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va fundar el Real Club Nàutic de València?",
     "answers": [
       { "isCorrect": false, "value": "1867" },
@@ -1052,7 +1052,7 @@
   },
   {
     "id": 96,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va inaugurar el Palau de la Música de València?",
     "answers": [
       { "isCorrect": false, "value": "1978" },
@@ -1107,7 +1107,7 @@
   },
   {
     "id": 101,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va fundar el València Club de Futbol?",
     "answers": [
       { "isCorrect": false, "value": "1910" },
@@ -1162,7 +1162,7 @@
   },
   {
     "id": 106,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va inaugurar el Bioparc de València?",
     "answers": [
       { "isCorrect": false, "value": "2000" },
@@ -1217,7 +1217,7 @@
   },
   {
     "id": 111,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va inaugurar l'Oceanogràfic de València?",
     "answers": [
       { "isCorrect": false, "value": "1998" },
@@ -1272,7 +1272,7 @@
   },
   {
     "id": 116,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va celebrar la Copa Amèrica de vela a València?",
     "answers": [
       { "isCorrect": false, "value": "2003" },
@@ -1327,7 +1327,7 @@
   },
   {
     "id": 121,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va inaugurar el Museu de Belles Arts de València?",
     "answers": [
       { "isCorrect": false, "value": "1800" },
@@ -1382,7 +1382,7 @@
   },
   {
     "id": 126,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va fundar el Levante Unión Deportiva?",
     "answers": [
       { "isCorrect": false, "value": "1900" },
@@ -1437,7 +1437,7 @@
   },
   {
     "id": 131,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va inaugurar l'Alqueria del Basket, la ciutat esportiva del València Basket?",
     "answers": [
       { "isCorrect": false, "value": "2010" },
@@ -1492,7 +1492,7 @@
   },
   {
     "id": 136,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va fundar la Reial Acadèmia de Belles Arts de Sant Carles?",
     "answers": [
       { "isCorrect": false, "value": "1700" },
@@ -1547,7 +1547,7 @@
   },
   {
     "id": 141,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va fundar la Societat d'Amics del País de València?",
     "answers": [
       { "isCorrect": false, "value": "1750" },
@@ -1602,7 +1602,7 @@
   },
   {
     "id": 146,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va inaugurar l'Estadi de Mestalla?",
     "answers": [
       { "isCorrect": false, "value": "1910" },
@@ -1657,7 +1657,7 @@
   },
   {
     "id": 151,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "En quin any es va fundar la Universitat de València?",
     "answers": [
       { "isCorrect": false, "value": "1400" },
@@ -1668,7 +1668,7 @@
   },
   {
     "id": 152,
-    "category": "Gastronomia valenciana",
+    "category": "historia",
     "question": "Quin és l'ingredient principal de l'all i pebre?",
     "answers": [
       { "isCorrect": false, "value": "Pollastre" },
@@ -1679,7 +1679,7 @@
   },
   {
     "id": 153,
-    "category": "Geografia valenciana",
+    "category": "historia",
     "question": "Quina és la muntanya més alta de la Comunitat Valenciana?",
     "answers": [
       { "isCorrect": true, "value": "Penyagolosa" },
@@ -1690,7 +1690,7 @@
   },
   {
     "id": 154,
-    "category": "Art valencià",
+    "category": "historia",
     "question": "Quin pintor valencià va crear 'El col·loqui dels gossos'?",
     "answers": [
       { "isCorrect": false, "value": "Joaquín Sorolla" },
@@ -1701,7 +1701,7 @@
   },
   {
     "id": 155,
-    "category": "Esports valencians",
+    "category": "historia",
     "question": "Quin esport tradicional valencià es juga amb una pilota de cuir?",
     "answers": [
       { "isCorrect": false, "value": "Colombicultura" },
@@ -1712,7 +1712,7 @@
   },
   {
     "id": 156,
-    "category": "Festes valencianes",
+    "category": "historia",
     "question": "En quina ciutat se celebra la festa de la Magdalena?",
     "answers": [
       { "isCorrect": false, "value": "València" },
@@ -1745,7 +1745,7 @@
   },
   {
     "id": 159,
-    "category": "Arquitectura valenciana",
+    "category": "historia",
     "question": "Quin arquitecte va dissenyar la Ciutat de les Arts i les Ciències?",
     "answers": [
       { "isCorrect": false, "value": "Norman Foster" },
@@ -1756,7 +1756,7 @@
   },
   {
     "id": 160,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin rei va atorgar els Furs de València?",
     "answers": [
       { "isCorrect": true, "value": "Jaume I" },
@@ -1767,7 +1767,7 @@
   },
   {
     "id": 161,
-    "category": "Gastronomia valenciana",
+    "category": "historia",
     "question": "Quin és l'ingredient principal de l'orxata?",
     "answers": [
       { "isCorrect": false, "value": "Ametlla" },
@@ -1778,7 +1778,7 @@
   },
   {
     "id": 162,
-    "category": "Geografia valenciana",
+    "category": "historia",
     "question": "Quin és el riu més llarg que passa per la Comunitat Valenciana?",
     "answers": [
       { "isCorrect": false, "value": "Túria" },
@@ -1789,7 +1789,7 @@
   },
   {
     "id": 163,
-    "category": "Art valencià",
+    "category": "historia",
     "question": "Quin estil arquitectònic predomina en la Llotja de la Seda de València?",
     "answers": [
       { "isCorrect": false, "value": "Romànic" },
@@ -1800,7 +1800,7 @@
   },
   {
     "id": 164,
-    "category": "Esports valencians",
+    "category": "historia",
     "question": "En quin esport destaca el valencià David Ferrer?",
     "answers": [
       { "isCorrect": true, "value": "Tennis" },
@@ -1811,7 +1811,7 @@
   },
   {
     "id": 165,
-    "category": "Festes valencianes",
+    "category": "historia",
     "question": "Quina festa se celebra a Elx el 14 i 15 d'agost?",
     "answers": [
       { "isCorrect": false, "value": "Les Fogueres" },
@@ -1844,7 +1844,7 @@
   },
   {
     "id": 168,
-    "category": "Arquitectura valenciana",
+    "category": "historia",
     "question": "En quin any es va construir el Mercat Central de València?",
     "answers": [
       { "isCorrect": false, "value": "1890" },
@@ -1855,7 +1855,7 @@
   },
   {
     "id": 169,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any va tenir lloc la Batalla d'Almansa?",
     "answers": [
       { "isCorrect": false, "value": "1705" },
@@ -1866,7 +1866,7 @@
   },
   {
     "id": 170,
-    "category": "Gastronomia valenciana",
+    "category": "historia",
     "question": "Quin és l'ingredient principal de la fideuà?",
     "answers": [
       { "isCorrect": false, "value": "Arròs" },
@@ -1877,7 +1877,7 @@
   },
   {
     "id": 171,
-    "category": "Geografia valenciana",
+    "category": "historia",
     "question": "Quina és l'illa més gran de la Comunitat Valenciana?",
     "answers": [
       { "isCorrect": true, "value": "Tabarca" },
@@ -1888,7 +1888,7 @@
   },
   {
     "id": 172,
-    "category": "Art valencià",
+    "category": "historia",
     "question": "Quin pintor valencià va crear 'El crit'?",
     "answers": [
       { "isCorrect": false, "value": "Joaquín Sorolla" },
@@ -1899,7 +1899,7 @@
   },
   {
     "id": 173,
-    "category": "Esports valencians",
+    "category": "historia",
     "question": "En quin esport destaca la valenciana Ana Carrascosa?",
     "answers": [
       { "isCorrect": false, "value": "Natació" },
@@ -1910,7 +1910,7 @@
   },
   {
     "id": 174,
-    "category": "Festes valencianes",
+    "category": "historia",
     "question": "En quina ciutat se celebra la festa de les Fogueres?",
     "answers": [
       { "isCorrect": false, "value": "València" },
@@ -1943,7 +1943,7 @@
   },
   {
     "id": 177,
-    "category": "Arquitectura valenciana",
+    "category": "historia",
     "question": "Quin estil arquitectònic predomina en el Palau del Marqués de Dosaigües?",
     "answers": [
       { "isCorrect": false, "value": "Gòtic" },
@@ -1954,7 +1954,7 @@
   },
   {
     "id": 178,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin any es va produir la Revolta de les Germanies?",
     "answers": [
       { "isCorrect": false, "value": "1500" },
@@ -1965,7 +1965,7 @@
   },
   {
     "id": 179,
-    "category": "Gastronomia valenciana",
+    "category": "historia",
     "question": "Quin és l'ingredient principal de l'esgarrat?",
     "answers": [
       { "isCorrect": false, "value": "Carn" },
@@ -1976,7 +1976,7 @@
   },
   {
     "id": 180,
-    "category": "Geografia valenciana",
+    "category": "historia",
     "question": "Quin és el cap més meridional de la Comunitat Valenciana?",
     "answers": [
       { "isCorrect": false, "value": "Cap de Sant Antoni" },
@@ -1987,7 +1987,7 @@
   },
   {
     "id": 181,
-    "category": "Art valencià",
+    "category": "historia",
     "question": "Quin pintor valencià va crear la sèrie 'Visió d'Espanya' per a la Hispanic Society of America?",
     "answers": [
       { "isCorrect": true, "value": "Joaquín Sorolla" },
@@ -1998,7 +1998,7 @@
   },
   {
     "id": 182,
-    "category": "Esports valencians",
+    "category": "historia",
     "question": "Quin equip de futbol valencià ha guanyat més vegades la Lliga espanyola?",
     "answers": [
       { "isCorrect": true, "value": "València CF" },
@@ -2009,7 +2009,7 @@
   },
   {
     "id": 183,
-    "category": "Festes valencianes",
+    "category": "historia",
     "question": "En quina localitat se celebra la Tomatina?",
     "answers": [
       { "isCorrect": false, "value": "Xàtiva" },
@@ -2042,7 +2042,7 @@
   },
   {
     "id": 186,
-    "category": "Arquitectura valenciana",
+    "category": "historia",
     "question": "Quin any es va inaugurar l'Hemisfèric a la Ciutat de les Arts i les Ciències?",
     "answers": [
       { "isCorrect": false, "value": "1995" },
@@ -2053,7 +2053,7 @@
   },
   {
     "id": 187,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "Quin rei va conquerir València als musulmans?",
     "answers": [
       { "isCorrect": true, "value": "Jaume I" },
@@ -2064,7 +2064,7 @@
   },
   {
     "id": 188,
-    "category": "Gastronomia valenciana",
+    "category": "historia",
     "question": "Quin és l'ingredient principal de l'arnadí?",
     "answers": [
       { "isCorrect": false, "value": "Arròs" },
@@ -2075,7 +2075,7 @@
   },
   {
     "id": 189,
-    "category": "Geografia valenciana",
+    "category": "historia",
     "question": "Quina és la comarca més septentrional de la Comunitat Valenciana?",
     "answers": [
       { "isCorrect": true, "value": "Els Ports" },
@@ -2086,7 +2086,7 @@
   },
   {
     "id": 190,
-    "category": "Art valencià",
+    "category": "historia",
     "question": "Quin escultor valencià va crear l'escultura 'La Pamela' a València?",
     "answers": [
       { "isCorrect": false, "value": "Andreu Alfaro" },
@@ -2097,7 +2097,7 @@
   },
   {
     "id": 191,
-    "category": "Esports valencians",
+    "category": "historia",
     "question": "En quin esport destaca el valencià David Casinos?",
     "answers": [
       { "isCorrect": false, "value": "Natació" },
@@ -2108,7 +2108,7 @@
   },
   {
     "id": 192,
-    "category": "Festes valencianes",
+    "category": "historia",
     "question": "Quina festa se celebra a Alcoi el 23 d'abril?",
     "answers": [
       { "isCorrect": false, "value": "Les Falles" },
@@ -2141,7 +2141,7 @@
   },
   {
     "id": 195,
-    "category": "Arquitectura valenciana",
+    "category": "historia",
     "question": "Quin arquitecte va dissenyar l'Estació del Nord de València?",
     "answers": [
       { "isCorrect": true, "value": "Demetrio Ribes" },
@@ -2152,7 +2152,7 @@
   },
   {
     "id": 196,
-    "category": "historia_de_valencia",
+    "category": "historia",
     "question": "En quin any es va produir l'expulsió dels moriscos del Regne de València?",
     "answers": [
       { "isCorrect": false, "value": "1492" },
@@ -2163,7 +2163,7 @@
   },
   {
     "id": 197,
-    "category": "Gastronomia valenciana",
+    "category": "historia",
     "question": "Quin és l'ingredient principal de la coca de llanda?",
     "answers": [
       { "isCorrect": false, "value": "Xocolata" },
@@ -2174,7 +2174,7 @@
   },
   {
     "id": 198,
-    "category": "Geografia valenciana",
+    "category": "historia",
     "question": "Quin és el parc natural més gran de la Comunitat Valenciana?",
     "answers": [
       { "isCorrect": false, "value": "L'Albufera" },
@@ -2185,7 +2185,7 @@
   },
   {
     "id": 199,
-    "category": "Art valencià",
+    "category": "historia",
     "question": "Quin pintor valencià va crear 'La barraca'?",
     "answers": [
       { "isCorrect": true, "value": "Joaquín Sorolla" },
@@ -2196,7 +2196,7 @@
   },
   {
     "id": 200,
-    "category": "Esports valencians",
+    "category": "historia",
     "question": "Quin pilot valencià ha guanyat el Campionat del Món de MotoGP?",
     "answers": [
       { "isCorrect": false, "value": "Héctor Barberá" },

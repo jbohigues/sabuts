@@ -35,6 +35,7 @@ import { UserService } from '@services/user.service';
 import { FriendRequestService } from '@services/friend-request.service';
 import { PartialFriendModel } from '@models/friends.model';
 import { GameModel } from '@models/games.model';
+import { IonicStorageService } from '@services/ionicStorage.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -68,9 +69,11 @@ export class MainLayoutComponent implements OnInit {
   @Input() pageTitle!: string;
   @Input() backButton!: string;
 
+  private cdr = inject(ChangeDetectorRef);
   private userService = inject(UserService);
   private authService = inject(AuthService);
   private utilsService = inject(UtilsService);
+  private ionicStorageService = inject(IonicStorageService);
   private friendRequestService = inject(FriendRequestService);
 
   openLoading: boolean = false;
@@ -95,27 +98,21 @@ export class MainLayoutComponent implements OnInit {
   colorToast: string = '';
   messageToast: string = '';
 
-  constructor(private cdr: ChangeDetectorRef) {}
-
   ngOnInit(): void {
     this.init();
   }
 
-  private init() {
-    this.currentUser = this.utilsService.getFromLocalStorage('user');
+  private async init() {
+    this.currentUser = await this.ionicStorageService.get('currentUser');
     const user = this.authService.getCurrentUser();
     if (!user?.emailVerified || !this.currentUser) this.signOut();
-
-    // if (this.currentUser) {
-    //   this.getFriends(this.currentUser.id);
-    //   this.getActiveGamesByUser(this.currentUser.id);
-    // }
   }
 
   protected signOut() {
     this.authService.logout().subscribe({
       next: () => {
-        this.utilsService.clearLocalStorage();
+        this.utilsService.routerLink('login');
+        this.ionicStorageService.clear();
       },
     });
   }
@@ -166,7 +163,7 @@ export class MainLayoutComponent implements OnInit {
   private async sendFriendRequest(searchItem: string) {
     this.openLoading = true;
 
-    this.userService.findUserByEmailOrUserName(searchItem).subscribe({
+    this.userService.findUserByEmail(searchItem).subscribe({
       next: (res) => {
         if (res) {
           const userToSendRequest = res;

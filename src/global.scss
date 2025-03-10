@@ -9,6 +9,8 @@
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
 
+@use "./theme/variables.scss" as *;
+
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
 
@@ -37,5 +39,3 @@
 
 @import "@ionic/angular/css/palettes/dark.always.css"; // Siempre oscuro
 // @import "@ionic/angular/css/palettes/dark.system.css"; // Detecta el modo oscuro del dispositivo
-
-@import "./theme/variables.scss";

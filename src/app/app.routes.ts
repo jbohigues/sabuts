@@ -9,7 +9,7 @@ export const routes: Routes = [
     redirectTo: 'home',
   },
   {
-    path: '',
+    path: 'home',
     loadChildren: () => import('@routes/main.routes').then((m) => m.routes),
     canActivate: [AuthGuard],
   },

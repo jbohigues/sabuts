@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { PlayingGameGuard } from '@guards/playing-game.guard';
 
 export const routes: Routes = [
   {
@@ -9,7 +10,7 @@ export const routes: Routes = [
       ),
     children: [
       {
-        path: 'home',
+        path: '',
         loadComponent: () =>
           import('@pages/main/home/home.page').then((m) => m.HomePage),
       },
@@ -37,6 +38,7 @@ export const routes: Routes = [
       import('@pages/main/games/pages/playing-game/playing-game.page').then(
         (m) => m.PlayingGamePage
       ),
+    canActivate: [PlayingGameGuard],
   },
   {
     path: '',
