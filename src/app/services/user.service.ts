@@ -1,7 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { user } from '@angular/fire/auth';
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
@@ -12,9 +10,9 @@ import {
   writeBatch,
 } from '@angular/fire/firestore';
 import { PartialUserModel, UserModel } from '@models/users.model';
-import { query, setDoc, where } from 'firebase/firestore';
+import { query, where } from 'firebase/firestore';
 
-import { Observable, forkJoin, from, map, switchMap } from 'rxjs';
+import { Observable, from, map, switchMap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -38,9 +36,7 @@ export class UserService {
     );
   }
 
-  findUserByEmailOrUserName(
-    email: string
-  ): Observable<PartialUserModel | null> {
+  findUserByEmail(email: string): Observable<PartialUserModel | null> {
     const usersRef = collection(this.firestore, 'users');
     const emailQuery = query(usersRef, where('email', '==', email));
 
@@ -63,16 +59,38 @@ export class UserService {
     );
   }
 
-  createUser(user: UserModel): Observable<void> {
+  // createUser(user: UserModel): Observable<void> {
+  //   const userDocRef = doc(this.firestore, `users/${user.id}`);
+  //   // Crear el usuario con campos adicionales para las subcolecciones
+  //   const userData = {
+  //     ...user,
+  //     uid: user.id,
+  //     friends: {}, // Campo vacío para representar la subcolección
+  //     friendRequests: {}, // Campo vacío para representar la subcolección
+  //   };
+  //   return from(setDoc(userDocRef, userData));
+  // }
+
+  // createUsername(username: string, uid: string): Observable<void> {
+  //   const usernameDocRef = doc(this.firestore, `usernames/${username}`);
+  //   return from(setDoc(usernameDocRef, { uid }));
+  // }
+
+  createUserAndUsername(user: UserModel, username: string): Observable<void> {
+    const batch = writeBatch(this.firestore);
+
     const userDocRef = doc(this.firestore, `users/${user.id}`);
-    // Crear el usuario con campos adicionales para las subcolecciones
-    const userData = {
+    const usernameDocRef = doc(this.firestore, `usernames/${username}`);
+
+    batch.set(userDocRef, {
       ...user,
       uid: user.id,
-      friends: {}, // Campo vacío para representar la subcolección
-      friendRequests: {}, // Campo vacío para representar la subcolección
-    };
-    return from(setDoc(userDocRef, userData));
+      friends: {},
+      friendRequests: {},
+    });
+    batch.set(usernameDocRef, { uid: user.id });
+
+    return from(batch.commit());
   }
 
   updateUser(id: string, user: Partial<UserModel>): Observable<void> {
@@ -85,6 +103,11 @@ export class UserService {
     return from(deleteDoc(userDoc)).pipe(map(() => void 0));
   }
 
+  deleteUserName(id: string): Observable<void> {
+    const userDoc = doc(this.firestore, `usernames/${id}`);
+    return from(deleteDoc(userDoc)).pipe(map(() => void 0));
+  }
+
   deleteUserAccount(id: string): Observable<void> {
     const userDoc = doc(this.firestore, `users/${id}`);
     const friendRequestsRef = collection(
@@ -93,77 +116,122 @@ export class UserService {
     );
     const friendsRef = collection(this.firestore, `users/${id}/friends`);
 
-    return from(
-      Promise.all([getDocs(friendRequestsRef), getDocs(friendsRef)])
-    ).pipe(
-      switchMap(([friendRequestsSnapshot, friendsSnapshot]) => {
-        const batch = writeBatch(this.firestore);
+    return from(getDoc(userDoc)).pipe(
+      switchMap((userSnapshot) => {
+        if (!userSnapshot.exists()) {
+          return throwError(() => new Error('User not found'));
+        }
+        const userData = userSnapshot.data();
+        const username = userData['userName'].toLowerCase().replace(' ', '_');
+        console.log(username);
 
-        // Eliminar todas las solicitudes de amistad del usuario
-        friendRequestsSnapshot.docs.forEach((doc) => {
-          batch.delete(doc.ref);
-        });
+        return from(
+          Promise.all([
+            getDocs(friendRequestsRef),
+            getDocs(friendsRef),
+            username
+              ? getDoc(doc(this.firestore, `usernames/${username}`))
+              : Promise.resolve(null),
+          ])
+        ).pipe(
+          switchMap(
+            ([friendRequestsSnapshot, friendsSnapshot, usernameSnapshot]) => {
+              const batch = writeBatch(this.firestore);
 
-        // Eliminar todos los amigos del usuario
-        friendsSnapshot.docs.forEach((doc) => {
-          batch.delete(doc.ref);
-        });
+              // Eliminar todas las solicitudes de amistad del usuario
+              friendRequestsSnapshot.docs.forEach((doc) => {
+                batch.delete(doc.ref);
+              });
 
-        // Eliminar el documento principal del usuario
-        batch.delete(userDoc);
+              // Eliminar todos los amigos del usuario
+              friendsSnapshot.docs.forEach((doc) => {
+                batch.delete(doc.ref);
+              });
 
-        return from(batch.commit());
-      })
-    );
-  }
+              // Eliminar la entrada en usernames si existe
+              if (usernameSnapshot && usernameSnapshot.exists()) {
+                batch.delete(usernameSnapshot.ref);
+              }
 
-  // New Methods for Answered Questions Management
-  addAnsweredQuestion(
-    userId: string,
-    questionId: string,
-    wasCorrect: boolean
-  ): Observable<void> {
-    const answeredQuestionsRef = collection(
-      this.firestore,
-      `users/${userId}/answeredQuestions`
-    );
-    const data = { questionId, answeredAt: new Date(), wasCorrect };
-    return from(addDoc(answeredQuestionsRef, data)).pipe(map(() => void 0));
-  }
+              // Eliminar el documento principal del usuario
+              batch.delete(userDoc);
 
-  getAnsweredQuestions(userId: string): Observable<string[]> {
-    const answeredQuestionsRef = collection(
-      this.firestore,
-      `users/${userId}/answeredQuestions`
-    );
-    return from(getDocs(answeredQuestionsRef)).pipe(
-      map((snapshot) => snapshot.docs.map((doc) => doc.data()['questionId']))
-    );
-  }
-
-  resetAnsweredQuestions(userId: string): Observable<void> {
-    const answeredQuestionsRef = collection(
-      this.firestore,
-      `users/${userId}/answeredQuestions`
-    );
-    return from(getDocs(answeredQuestionsRef)).pipe(
-      switchMap((snapshot) => {
-        const deleteOps = snapshot.docs.map((doc) => deleteDoc(doc.ref));
-        return forkJoin(deleteOps).pipe(map(() => void 0));
+              return from(batch.commit());
+            }
+          )
+        );
       })
     );
   }
 
   async checkUsernameAvailability(
     username: string,
-    iduser?: string
+    currentUserId?: string
   ): Promise<boolean> {
-    const usersRef = collection(this.firestore, 'users');
-    const q = query(usersRef, where('userName', '==', username));
-    const querySnapshot = await getDocs(q);
+    const usernameDocRef = doc(this.firestore, `usernames/${username}`);
+    const docSnapshot = await getDoc(usernameDocRef);
 
-    if (querySnapshot.empty) return true;
-    if (iduser) return querySnapshot.docs.some((doc) => doc.id === iduser); // El usuario encontrado es él mismo
+    if (!docSnapshot.exists()) return true; // El nombre de usuario no existe, por lo tanto está disponible
+
+    // Si el documento existe y se proporcionó un currentUserId, verifica si pertenece al usuario actual
+    if (currentUserId) {
+      const data = docSnapshot.data();
+      return data && data['uid'] === currentUserId;
+    }
+
+    // El nombre de usuario existe y no pertenece al usuario actual
     return false;
   }
+
+  // async migrateUsernamesCollection() {
+  //   const usersRef = collection(this.firestore, 'users');
+  //   const usernamesRef = collection(this.firestore, 'usernames');
+
+  //   let batch = writeBatch(this.firestore);
+  //   let count = 0;
+  //   let batchCount = 0;
+
+  //   try {
+  //     const querySnapshot = await getDocs(usersRef);
+
+  //     for (const userDoc of querySnapshot.docs) {
+  //       const userData = userDoc.data();
+  //       const username = userData['userName'];
+  //       const uid = userDoc.id;
+
+  //       if (username) {
+  //         const usernameDocRef = doc(
+  //           usernamesRef,
+  //           username.toLowerCase().replace(' ', '_')
+  //         );
+  //         batch.set(usernameDocRef, { uid });
+
+  //         count++;
+
+  //         // Firestore permite un máximo de 500 operaciones por lote
+  //         if (count % 499 === 0) {
+  //           await batch.commit();
+  //           batch = writeBatch(this.firestore);
+  //           batchCount++;
+  //           console.log(
+  //             `Committed batch ${batchCount}. Total usernames processed: ${count}`
+  //           );
+  //         }
+  //       }
+  //     }
+
+  //     // Commit any remaining operations
+  //     if (count % 499 !== 0) {
+  //       await batch.commit();
+  //       batchCount++;
+  //       console.log(
+  //         `Final batch committed. Total usernames processed: ${count}`
+  //       );
+  //     }
+
+  //     console.log(`Migration complete. Total usernames migrated: ${count}`);
+  //   } catch (error) {
+  //     console.error('Error during migration:', error);
+  //   }
+  // }
 }

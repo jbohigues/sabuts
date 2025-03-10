@@ -1,6 +1,5 @@
 'use strict';
 import { Injectable, NgZone, signal } from '@angular/core';
-import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -44,23 +43,23 @@ export class UtilsService {
     return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
   }
 
-  //! LOCALSTORAGE
-  saveInLocalStorage(key: string, value: any) {
-    return localStorage.setItem(key, JSON.stringify(value));
-  }
+  // //! LOCALSTORAGE
+  // saveInLocalStorage(key: string, value: any) {
+  //   return localStorage.setItem(key, JSON.stringify(value));
+  // }
 
-  getFromLocalStorage(key: string) {
-    const value = localStorage.getItem(key);
-    if (value) return JSON.parse(value);
-    return null;
-  }
+  // getFromLocalStorage(key: string) {
+  //   const value = localStorage.getItem(key);
+  //   if (value) return JSON.parse(value);
+  //   return null;
+  // }
 
-  removeItemOfLocalStorage(key: string) {
-    localStorage.removeItem(key);
-  }
+  // removeItemOfLocalStorage(key: string) {
+  //   localStorage.removeItem(key);
+  // }
 
-  clearLocalStorage() {
-    localStorage.clear();
-    this.routerLink('login');
-  }
+  // clearLocalStorage() {
+  //   localStorage.clear();
+  //   this.routerLink('login');
+  // }
 }

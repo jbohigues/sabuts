@@ -168,13 +168,9 @@ export class FriendRequestService {
           );
         }
 
-        // Si no existe ninguna solicitud en ninguna dirección, procedemos a crear la nueva solicitud
-        const newId = doc(receiverRequestsRef).id;
-        const requestWithId = { ...request, id: newId };
-
         return from(
-          setDoc(doc(receiverRequestsRef, newId), requestWithId)
-        ).pipe(map(() => newId));
+          setDoc(doc(receiverRequestsRef, request.sendingUserId), request)
+        ).pipe(map(() => request.sendingUserId));
       })
     );
   }
