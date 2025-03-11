@@ -162,8 +162,8 @@ export class PlayingGamePage implements OnInit {
       0;
 
     this.questions =
-      (await this.ionicStorageService.get(`questions_${this.idgame}`)) ||
-      this.getRandomQuestions();
+      (await this.ionicStorageService.get(`questions_${this.idgame}`)) || [];
+    if (!this.questions.length) this.getRandomQuestions();
 
     this.openLoading = false;
     this.cdr.detectChanges();
