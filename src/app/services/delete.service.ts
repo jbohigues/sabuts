@@ -1,41 +1,150 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
-import { catchError, forkJoin, from, of, switchMap, throwError } from 'rxjs';
-import { UserService } from './user.service';
-import { FriendRequestService } from './friend-request.service';
-import { GameService } from './game.service';
-import { FriendService } from './friend.service';
+import { Auth, deleteUser } from '@angular/fire/auth';
+import {
+  collection,
+  doc,
+  Firestore,
+  getDoc,
+  getDocs,
+  query,
+  where,
+  writeBatch,
+} from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DeleteService {
   private auth = inject(Auth);
-  private gameService = inject(GameService);
-  private userService = inject(UserService);
-  private friendService = inject(FriendService);
-  private friendRequestService = inject(FriendRequestService);
+  private firestore = inject(Firestore);
 
-  deleteAccount() {
-    return of(this.auth.currentUser).pipe(
-      switchMap((user) => {
-        if (!user) {
-          return throwError(() => new Error('No user logged in'));
-        }
+  async deleteUserAccount(userId: string, username: string): Promise<void> {
+    const batch = writeBatch(this.firestore);
+    const userDocRef = doc(this.firestore, `users/${userId}`);
 
-        return forkJoin([
-          this.gameService.deleteUserGames(user.uid),
-          this.friendRequestService.deleteSentFriendRequests(user.uid),
-          this.friendService.deleteFriendRecords(user.uid),
-          this.userService.deleteUserAccount(user.uid),
-        ]).pipe(
-          switchMap(() => from(user.delete())),
-          catchError((error) => {
-            console.error('Error deleting account:', error);
-            return throwError(() => error);
-          })
-        );
-      })
+    // Obtener los datos del usuario
+    const userDoc = await getDoc(userDocRef);
+    if (!userDoc.exists()) {
+      throw new Error('Usuari no trobat');
+    }
+
+    // Extraer los IDs de los amigos
+    const friendsCollectionRef = collection(userDocRef, 'friends');
+    const friendsSnapshot = await getDocs(friendsCollectionRef);
+    const friendIds = friendsSnapshot.docs.map((doc) => doc.id);
+
+    // Eliminar las partidas en las que participa el usuario
+    await this.deleteUserGames(userId, batch);
+
+    // Eliminar las solicitudes de amistad enviadas por el usuario
+    await this.deleteSentFriendRequests(userId, batch);
+
+    // Eliminar al usuario de las listas de amigos
+    await this.removeFromFriendLists(userId, friendIds, batch);
+
+    // Eliminar el documento del usuario y su username
+    await this.deleteUserDocument(userId, username, batch);
+
+    // Confirmar todas las operaciones en Firestore
+    await batch.commit();
+
+    // Eliminar la cuenta de autenticación de Firebase
+    await this.deleteAuthAccount();
+  }
+
+  private async deleteUserGames(userId: string, batch: any): Promise<void> {
+    const gamesQuery = query(
+      collection(this.firestore, 'games'),
+      where('player1.userId', '==', userId)
     );
+    const games2Query = query(
+      collection(this.firestore, 'games'),
+      where('player2.userId', '==', userId)
+    );
+
+    const [snapshot1, snapshot2] = await Promise.all([
+      getDocs(gamesQuery),
+      getDocs(games2Query),
+    ]);
+
+    snapshot1.docs
+      .concat(snapshot2.docs)
+      .forEach((doc) => batch.delete(doc.ref));
+  }
+
+  private async deleteSentFriendRequests(
+    userId: string,
+    batch: any
+  ): Promise<void> {
+    // Obtener todos los usuarios
+    const usersSnapshot = await getDocs(collection(this.firestore, 'users'));
+
+    // Iterar sobre cada usuario y buscar solicitudes enviadas por el usuario actual
+    for (const userDoc of usersSnapshot.docs) {
+      const friendRequestsRef = collection(
+        this.firestore,
+        `users/${userDoc.id}/friendRequests`
+      );
+      const friendRequestsQuery = query(
+        friendRequestsRef,
+        where('sendingUserId', '==', userId)
+      );
+
+      const friendRequestsSnapshot = await getDocs(friendRequestsQuery);
+
+      // Eliminar todas las solicitudes encontradas
+      friendRequestsSnapshot.docs.forEach((doc) => batch.delete(doc.ref));
+    }
+  }
+
+  private async removeFromFriendLists(
+    userId: string,
+    friendIds: string[],
+    batch: any
+  ): Promise<void> {
+    // Iterar sobre cada amigo y eliminar el documento correspondiente en la subcolección "friends"
+    friendIds.forEach((friendId) => {
+      const friendDocRef = doc(
+        this.firestore,
+        `users/${friendId}/friends/${userId}`
+      );
+      batch.delete(friendDocRef);
+    });
+  }
+
+  private async deleteUserDocument(
+    userId: string,
+    username: string,
+    batch: any
+  ): Promise<void> {
+    const userDocRef = doc(this.firestore, `users/${userId}`);
+    const usernameDocRef = doc(this.firestore, `usernames/${username}`);
+
+    // Eliminar los documentos de la subcolección "friendRequests"
+    const friendRequestsCollectionRef = collection(
+      this.firestore,
+      `users/${userId}/friendRequests`
+    );
+    const friendRequestsSnapshot = await getDocs(friendRequestsCollectionRef);
+    friendRequestsSnapshot.docs.forEach((doc) => batch.delete(doc.ref));
+
+    // Eliminar los documentos de la subcolección "friends"
+    const friendsCollectionRef = collection(
+      this.firestore,
+      `users/${userId}/friends`
+    );
+    const friendsSnapshot = await getDocs(friendsCollectionRef);
+    friendsSnapshot.docs.forEach((doc) => batch.delete(doc.ref));
+
+    // Eliminar el documento principal del usuario y su username
+    batch.delete(userDocRef);
+    batch.delete(usernameDocRef);
+  }
+
+  private async deleteAuthAccount(): Promise<void> {
+    const user = this.auth.currentUser;
+    if (user) {
+      await deleteUser(user);
+    }
   }
 }
