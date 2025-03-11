@@ -9,7 +9,7 @@ export const routes: Routes = [
     redirectTo: 'home',
   },
   {
-    path: 'home',
+    path: '',
     loadChildren: () => import('@routes/main.routes').then((m) => m.routes),
     canActivate: [AuthGuard],
   },
@@ -20,7 +20,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    pathMatch: 'full',
-    redirectTo: 'home',
+    loadComponent: () =>
+      import('./pages/notfound/notfound.page').then((m) => m.NotfoundPage),
   },
 ];

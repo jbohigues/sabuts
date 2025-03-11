@@ -10,7 +10,7 @@ export const routes: Routes = [
       ),
     children: [
       {
-        path: '',
+        path: 'home',
         loadComponent: () =>
           import('@pages/main/home/home.page').then((m) => m.HomePage),
       },

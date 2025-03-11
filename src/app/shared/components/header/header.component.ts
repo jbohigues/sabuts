@@ -27,9 +27,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
 })
 export class HeaderComponent {
-  @Input() title!: string;
-  @Input() backButton!: string;
+  @Input() title: string | undefined;
+  @Input() backButton: string | undefined;
   @Input() menuButton: boolean = false;
   @Input() needpadding: boolean = false;
-  constructor() {}
 }
