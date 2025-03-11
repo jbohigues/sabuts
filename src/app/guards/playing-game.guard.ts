@@ -6,7 +6,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Auth, user } from '@angular/fire/auth';
-import { map, switchMap, take } from 'rxjs/operators';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { asyncScheduler, Observable, scheduled } from 'rxjs';
 import { GameService } from '@services/game.service';
 
@@ -18,7 +18,6 @@ export const PlayingGameGuard: CanActivateFn = (
   const gameService = inject(GameService);
 
   const gameId = activatedRouteSnapshot.paramMap.get('_idgame');
-  console.log(gameId);
 
   if (!gameId) {
     return scheduled([router.parseUrl('/games')], asyncScheduler);
@@ -43,6 +42,10 @@ export const PlayingGameGuard: CanActivateFn = (
             game.player2.userId === user.uid;
 
           return isUserInGame && isUsersTurn ? true : router.parseUrl('/games');
+        }),
+        catchError(() => {
+          location.reload();
+          return scheduled([router.parseUrl('/games')], asyncScheduler);
         })
       );
     })

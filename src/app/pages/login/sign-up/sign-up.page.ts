@@ -158,8 +158,6 @@ export class SignUpPage {
   }
 
   private presentError(message: string) {
-    console.log(message);
-
     this.openLoading = false;
 
     this.messageToast = message;
