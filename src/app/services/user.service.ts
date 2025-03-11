@@ -93,9 +93,53 @@ export class UserService {
     return from(batch.commit());
   }
 
-  updateUser(id: string, user: Partial<UserModel>): Observable<void> {
-    const userDoc = doc(this.firestore, `users/${id}`);
-    return from(updateDoc(userDoc, user)).pipe(map(() => void 0));
+  // updateUser(id: string, user: Partial<UserModel>): Observable<void> {
+  //   const userDoc = doc(this.firestore, `users/${id}`);
+  //   return from(updateDoc(userDoc, user)).pipe(map(() => void 0));
+  // }
+
+  updateUser(
+    id: string,
+    user: Partial<UserModel>,
+    oldUserName?: string
+  ): Observable<void> {
+    const userDocRef = doc(this.firestore, `users/${id}`);
+
+    // Si se incluye un nuevo username, manejamos la actualización en la colección "usernames"
+    if (oldUserName && user.userName) {
+      const newUsername = user.userName
+        .toLowerCase()
+        .replaceAll(' ', '_')
+        .trim();
+      const newUsernameDocRef = doc(this.firestore, `usernames/${newUsername}`);
+      const oldUsernameDocRef = doc(this.firestore, `usernames/${oldUserName}`); // Necesitas pasar el username actual como parte del objeto `user`
+
+      return from(getDoc(newUsernameDocRef)).pipe(
+        switchMap((docSnapshot) => {
+          if (docSnapshot.exists()) {
+            throw new Error('El nombre de usuario ya está en uso.');
+          }
+
+          const batch = writeBatch(this.firestore);
+
+          // Eliminar el antiguo documento de username
+          batch.delete(oldUsernameDocRef);
+
+          // Crear el nuevo documento de username
+          batch.set(newUsernameDocRef, { uid: id });
+
+          // Actualizar el documento del usuario
+          batch.update(userDocRef, { ...user });
+
+          // Confirmar los cambios
+          return from(batch.commit());
+        }),
+        map(() => void 0)
+      );
+    }
+
+    // Si no hay cambio de username, solo actualizamos el usuario
+    return from(updateDoc(userDocRef, user)).pipe(map(() => void 0));
   }
 
   deleteUser(id: string): Observable<void> {
@@ -123,7 +167,6 @@ export class UserService {
         }
         const userData = userSnapshot.data();
         const username = userData['userName'].toLowerCase().replace(' ', '_');
-        console.log(username);
 
         return from(
           Promise.all([
