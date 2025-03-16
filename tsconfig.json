@@ -20,6 +20,7 @@
     "lib": ["es2022", "dom"],
     "useDefineForClassFields": false,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "paths": {
       "@ionic/angular": ["node_modules/@ionic/angular"],
       "@ionic/angular/standalone": ["node_modules/@ionic/angular/standalone"],
@@ -30,7 +31,8 @@
       "@pages/*": ["src/app/pages/*"],
       "@services/*": ["src/app/services/*"],
       "@sharedComponents/*": ["src/app/shared/components/*"],
-      "@sharedEnums/*": ["src/app/shared/enums/*"]
+      "@sharedEnums/*": ["src/app/shared/enums/*"],
+      "@assets/*": ["src/assets/*"]
     }
   },
   "angularCompilerOptions": {

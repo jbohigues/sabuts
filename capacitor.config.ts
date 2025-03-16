@@ -16,7 +16,7 @@ const config: CapacitorConfig = {
       androidSplashResourceName: 'splash',
       androidScaleType: 'CENTER_CROP',
       showSpinner: false,
-      androidSpinnerStyle: 'large',
+      androidSpinnerStyle: 'small',
       iosSpinnerStyle: 'small',
       spinnerColor: '#999999',
       splashFullScreen: true,

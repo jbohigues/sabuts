@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { IonText, IonLabel, IonImg } from '@ionic/angular/standalone';
+import { Component, Input } from '@angular/core';
+import { IonText, IonLabel } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-custom-item',
@@ -8,12 +8,9 @@ import { IonText, IonLabel, IonImg } from '@ionic/angular/standalone';
   standalone: true,
   imports: [IonText, IonLabel],
 })
-export class CustomItemComponent implements OnInit {
+export class CustomItemComponent {
   @Input() alt!: string;
   @Input() src!: string;
   @Input() h2!: string;
   @Input() p!: string;
-  constructor() {}
-
-  ngOnInit() {}
 }

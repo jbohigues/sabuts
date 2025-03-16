@@ -25,6 +25,8 @@ import {
 } from '@angular/fire/analytics';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { IonicStorageModule } from '@ionic/storage-angular';
+import { Drivers } from '@ionic/storage';
 
 if (environment.production) {
   enableProdMode();
@@ -42,6 +44,16 @@ bootstrapApplication(AppComponent, {
     provideAnalytics(() => getAnalytics()),
     provideStorage(() => getStorage()),
     provideIonicAngular(),
+    importProvidersFrom(
+      IonicStorageModule.forRoot({
+        name: '_mystorage',
+        driverOrder: [
+          Drivers.SecureStorage,
+          Drivers.IndexedDB,
+          Drivers.LocalStorage,
+        ],
+      })
+    ),
     ScreenTrackingService, // forma parte de Analytics
     UserTrackingService, // forma parte de Analytics
     //! TODO get a reCAPTCHA Enterprise here https://console.cloud.google.com/security/recaptcha?project=_

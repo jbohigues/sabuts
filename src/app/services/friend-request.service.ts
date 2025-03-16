@@ -168,13 +168,9 @@ export class FriendRequestService {
           );
         }
 
-        // Si no existe ninguna solicitud en ninguna dirección, procedemos a crear la nueva solicitud
-        const newId = doc(receiverRequestsRef).id;
-        const requestWithId = { ...request, id: newId };
-
         return from(
-          setDoc(doc(receiverRequestsRef, newId), requestWithId)
-        ).pipe(map(() => newId));
+          setDoc(doc(receiverRequestsRef, request.sendingUserId), request)
+        ).pipe(map(() => request.sendingUserId));
       })
     );
   }
@@ -247,7 +243,12 @@ export class FriendRequestService {
         // TODO: Opcionalmente, eliminar la solicitud de amistad
         // transaction.delete(requestRef);
       })
-    ).pipe(map(() => void 0));
+    ).pipe(
+      map(() => void 0),
+      catchError((e) => {
+        throw new Error(e);
+      })
+    );
   }
 
   rejectFriendRequest(userId: string, requestId: string): Observable<void> {

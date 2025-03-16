@@ -37,7 +37,6 @@ import {
   FriendRequestModel,
   PartialFriendRequestModel,
 } from '@models/friendRequest.model';
-import { UtilsService } from '@services/utils.service';
 import { FriendService } from '@services/friend.service';
 import { PartialFriendModel } from '@models/friends.model';
 import { FriendRequestService } from '@services/friend-request.service';
@@ -54,6 +53,7 @@ import {
   SearchbarInputEventDetail,
 } from '@ionic/core';
 import { ModalController } from '@ionic/angular';
+import { IonicStorageService } from '@services/ionicStorage.service';
 
 @Component({
   selector: 'app-profile',
@@ -94,8 +94,8 @@ export class ProfilePage implements OnInit {
 
   // Injects
   private userService = inject(UserService);
-  private utilsService = inject(UtilsService);
   private friendService = inject(FriendService);
+  private ionicStorageService = inject(IonicStorageService);
   private friendRequestService = inject(FriendRequestService);
 
   // Variables
@@ -161,8 +161,8 @@ export class ProfilePage implements OnInit {
     event.target.complete();
   }
 
-  private loadUserData() {
-    this.currentUser = this.utilsService.getFromLocalStorage('user');
+  private async loadUserData() {
+    this.currentUser = await this.ionicStorageService.get('currentUser');
     if (this.currentUser && this.currentUser.id)
       this.getUserInfo(this.currentUser.id);
     else location.reload();
@@ -281,8 +281,19 @@ export class ProfilePage implements OnInit {
 
   private async sendFriendRequest(searchItem: string) {
     this.openLoading = true;
+    if (searchItem == this.currentUser?.email) {
+      this.openLoading = false;
 
-    this.userService.findUserByEmailOrUserName(searchItem).subscribe({
+      this.messageToast = 'Has ficat el teu correu electrònic';
+      this.colorToast = Colors.danger;
+      this.iconToast = IconsToast.danger_close_circle;
+      this.isToastOpen = true;
+
+      this.cdr.detectChanges();
+      return;
+    }
+
+    this.userService.findUserByEmail(searchItem).subscribe({
       next: (res) => {
         if (res) {
           const userToSendRequest = res;
@@ -332,18 +343,8 @@ export class ProfilePage implements OnInit {
           },
           error: (e) => {
             this.openLoading = false;
-            const errorMessages: Record<string, string> = {
-              [ErrorsEnum.already_sent_request]:
-                "Ja has enviat una sol·licitut d'amistat a aquest usuari",
-              [ErrorsEnum.already_received_request]:
-                "Aquest usuari ja t'ha enviat una sol·licitut d'amistat",
-              [ErrorsEnum.already_friends]:
-                "Aquest usuari ja pertany al teu llistat d'amics",
-            };
-
             const toastMessage =
-              errorMessages[e.message] ||
-              "Error al enviar la sol·licitut d'amistat";
+              e.message || "Error al enviar la sol·licitut d'amistat";
 
             this.messageToast = toastMessage;
             this.colorToast = Colors.danger;
@@ -377,7 +378,17 @@ export class ProfilePage implements OnInit {
           },
           error: (e) => {
             console.error(e);
+
             this.openLoading = false;
+
+            const message = e.message.includes('permission-denied')
+              ? 'Permissos insuficients'
+              : 'Error al acceptar la petició';
+            this.messageToast = message;
+            this.colorToast = Colors.danger;
+            this.iconToast = IconsToast.danger_close_circle;
+            this.isToastOpen = true;
+
             this.cdr.detectChanges();
           },
         });
@@ -406,6 +417,15 @@ export class ProfilePage implements OnInit {
           error: (e) => {
             console.error(e);
             this.openLoading = false;
+
+            const message = e.message.includes('permission-denied')
+              ? 'Permissos insuficients'
+              : 'Error al rebutjar la petició';
+            this.messageToast = message;
+            this.colorToast = Colors.danger;
+            this.iconToast = IconsToast.danger_close_circle;
+            this.isToastOpen = true;
+
             this.cdr.detectChanges();
           },
         });

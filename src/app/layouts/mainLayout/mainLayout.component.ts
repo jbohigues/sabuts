@@ -35,6 +35,7 @@ import { UserService } from '@services/user.service';
 import { FriendRequestService } from '@services/friend-request.service';
 import { PartialFriendModel } from '@models/friends.model';
 import { GameModel } from '@models/games.model';
+import { IonicStorageService } from '@services/ionicStorage.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -68,9 +69,11 @@ export class MainLayoutComponent implements OnInit {
   @Input() pageTitle!: string;
   @Input() backButton!: string;
 
+  private cdr = inject(ChangeDetectorRef);
   private userService = inject(UserService);
   private authService = inject(AuthService);
   private utilsService = inject(UtilsService);
+  private ionicStorageService = inject(IonicStorageService);
   private friendRequestService = inject(FriendRequestService);
 
   openLoading: boolean = false;
@@ -95,27 +98,21 @@ export class MainLayoutComponent implements OnInit {
   colorToast: string = '';
   messageToast: string = '';
 
-  constructor(private cdr: ChangeDetectorRef) {}
-
   ngOnInit(): void {
     this.init();
   }
 
-  private init() {
-    this.currentUser = this.utilsService.getFromLocalStorage('user');
+  private async init() {
+    this.currentUser = await this.ionicStorageService.get('currentUser');
     const user = this.authService.getCurrentUser();
     if (!user?.emailVerified || !this.currentUser) this.signOut();
-
-    // if (this.currentUser) {
-    //   this.getFriends(this.currentUser.id);
-    //   this.getActiveGamesByUser(this.currentUser.id);
-    // }
   }
 
   protected signOut() {
     this.authService.logout().subscribe({
       next: () => {
-        this.utilsService.clearLocalStorage();
+        this.utilsService.routerLink('login');
+        this.ionicStorageService.clear();
       },
     });
   }
@@ -166,7 +163,7 @@ export class MainLayoutComponent implements OnInit {
   private async sendFriendRequest(searchItem: string) {
     this.openLoading = true;
 
-    this.userService.findUserByEmailOrUserName(searchItem).subscribe({
+    this.userService.findUserByEmail(searchItem).subscribe({
       next: (res) => {
         if (res) {
           const userToSendRequest = res;
@@ -227,152 +224,4 @@ export class MainLayoutComponent implements OnInit {
         });
     }
   }
-
-  // private getFriends(id: string) {
-  //   this.friendService.getFriends(id).subscribe({
-  //     next: (res) => {
-  //       if (res) {
-  //         this.friendsListOriginal = res;
-  //         console.log(this.friendsListOriginal);
-
-  //         this.filterFriendsYetInGame();
-  //       }
-  //     },
-  //     error: (e) => {
-  //       console.error(e);
-  //     },
-  //   });
-  // }
-
-  // private filterFriendsYetInGame() {
-  //   this.idusers = [];
-  //   // Crear un Set para almacenar todos los IDs de usuarios de manera única
-  //   const idUsersSet = new Set(this.idusers);
-
-  //   // Agregar los IDs de los jugadores de cada juego al Set
-  //   this.gamesOriginal.forEach((game) => {
-  //     idUsersSet.add(game.player1.userId);
-  //     idUsersSet.add(game.player2.userId);
-  //   });
-
-  //   // Convertir el Set a un array solo una vez
-  //   this.idusers = Array.from(idUsersSet);
-
-  //   // Filtrar la lista de amigos que no están en idusers
-  //   this.friendsList = this.friendsListOriginal.filter(
-  //     (friend) => !idUsersSet.has(friend.friendId)
-  //   );
-  //   console.log(this.friendsList);
-  // }
-
-  // private getActiveGamesByUser(id: string) {
-  //   this.gameService.getActiveGamesByUser(id).subscribe({
-  //     next: (res) => {
-  //       if (res) this.gamesOriginal = res;
-  //       console.log(this.gamesOriginal);
-  //     },
-  //     error: (e) => {
-  //       console.error(e);
-  //     },
-  //   });
-  // }
-
-  // protected cancel() {
-  //   this.modalOpen = false;
-  // }
-
-  // protected onDidDismiss(event: CustomEvent<OverlayEventDetail<any>>) {
-  //   this.modalOpen = false;
-  //   if (event.detail.role == 'created')
-  //     this.exitOperation('Partida creada amb èxit');
-  // }
-
-  // private exitOperation(message: string) {
-  //   if (this.currentUser) {
-  //     // this.getActiveGamesByUser(this.currentUser.id);
-  //     // this.getFriends(this.currentUser.id);
-  //     this.utilsService.presentToast(
-  //       message,
-  //       Colors.success,
-  //       IconsToast.success_checkmark_circle
-  //     );
-  //   }
-  // }
-
-  // protected handleInput(event: CustomEvent<SearchbarInputEventDetail>) {
-  //   const value = event.detail.value;
-  //   if (value) {
-  //     this.friendsList = this.friendsListOriginal.filter((friend) =>
-  //       friend.friendUser.userName.includes(value)
-  //     );
-  //   } else {
-  //     this.friendsList = this.friendsListOriginal;
-  //   }
-  // }
-
-  // Mensaje confirmacion
-  // protected async confirmCreateGame(friend: PartialFriendModel) {
-  //   this.alertHeader = 'Confirmar partida';
-  //   this.alertMessage = `Estàs segur de voler començar una partida amb @${friend.friendUser.userName}?`;
-
-  //   this.alertButtons = [
-  //     {
-  //       text: 'Cancel·lar',
-  //       role: 'cancel',
-  //       cssClass: 'secondary',
-  //     },
-  //     {
-  //       text: 'Acceptar',
-  //       handler: () => {
-  //         this.createGame(friend);
-  //       },
-  //     },
-  //   ];
-
-  //   this.isAlertOpen = true;
-  // }
-
-  // private createGame(friend: PartialFriendModel) {
-  //   if (!this.currentUser) throw new Error('User no logged');
-  //   const game: GameModel = {
-  //     id: '',
-  //     currentTurn: {
-  //       playerId: this.currentUser.id,
-  //       roundNumber: 0,
-  //     },
-  //     player1: {
-  //       score: 0,
-  //       userId: this.currentUser.id,
-  //       userName: this.currentUser.userName,
-  //       backgroundColor: this.currentUser.backgroundColor,
-  //     },
-  //     player2: {
-  //       score: 0,
-  //       userId: friend.friendUser.id,
-  //       userName: friend.friendUser.userName,
-  //       backgroundColor: friend.friendUser.backgroundColor,
-  //     },
-  //     rounds: [],
-  //     startTime: new Date(),
-  //     updatedAt: new Date(),
-  //     status: GameStatusEnum.in_progress,
-  //   };
-
-  //   this.gameService.createGame(game).subscribe({
-  //     next: (res) => {
-  //       if (res) {
-  //         this.isAlertOpen = false;
-  //         this.modal.dismiss(null, 'created');
-  //       }
-  //     },
-  //     error: (e) => {
-  //       console.error(e);
-  //       this.utilsService.presentToast(
-  //         'Error al crear la partida',
-  //         Colors.danger,
-  //         IconsToast.danger_close_circle
-  //       );
-  //     },
-  //   });
-  // }
 }

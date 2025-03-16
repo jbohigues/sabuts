@@ -54,11 +54,16 @@
 
     <div>
       <ion-button expand="block" type="submit" [disabled]="formAuth.invalid">
+        <ion-icon slot="start" name="log-in-outline"></ion-icon>
         Iniciar sessió
       </ion-button>
       <ion-button color="secondary" expand="block" routerLink="sign_up">
+        <ion-icon slot="start" name="person-add-outline"></ion-icon>
         Registrar-te
-        <ion-icon slot="end" name="person-add-outline"></ion-icon>
+      </ion-button>
+      <ion-button color="medium" expand="block" [routerLink]="'/about'">
+        <ion-icon slot="start" name="help-circle-outline"></ion-icon>
+        Què és sabuts
       </ion-button>
       <ion-text class="ion-text-center ion-padding-top">
         <p class="small">

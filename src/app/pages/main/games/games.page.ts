@@ -5,6 +5,7 @@ import {
   inject,
   ViewChild,
   OnInit,
+  OnDestroy,
 } from '@angular/core';
 import {
   IonContent,
@@ -45,6 +46,8 @@ import {
   OverlayEventDetail,
   SearchbarInputEventDetail,
 } from '@ionic/core/components';
+import { Subscription } from 'rxjs';
+import { IonicStorageService } from '@services/ionicStorage.service';
 
 @Component({
   selector: 'app-games',
@@ -76,13 +79,17 @@ import {
     GameCardComponent,
   ],
 })
-export class GamesPage implements OnInit {
+export class GamesPage implements OnInit, OnDestroy {
   @ViewChild(IonModal) modal!: IonModal;
 
+  private cdr = inject(ChangeDetectorRef);
   private gameService = inject(GameService);
   private utilsService = inject(UtilsService);
   private friendService = inject(FriendService);
   private breakpointObserver = inject(BreakpointObserver);
+  private ionicStorageService = inject(IonicStorageService);
+
+  private subscription: Subscription = new Subscription();
 
   // Variables
   totalScore: number = 0;
@@ -113,20 +120,17 @@ export class GamesPage implements OnInit {
   friendsListOriginal: PartialFriendModel[] = [];
   currentUser: UserModel | undefined;
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor() {
     this.breakpointObserver
       .observe([Breakpoints.XSmall])
       .subscribe((result) => {
         this.isSmallScreen = result.matches; // true si es pequeño, false si no
       });
 
-    effect(
-      () => {
-        this.needReload = this.utilsService.needReloadSignal();
-        if (this.needReload) this.loadUserData();
-      },
-      { allowSignalWrites: true }
-    );
+    effect(() => {
+      this.needReload = this.utilsService.needReloadSignal();
+      if (this.needReload) this.loadUserData();
+    });
   }
 
   ngOnInit(): void {
@@ -147,10 +151,10 @@ export class GamesPage implements OnInit {
     event.target.complete();
   }
 
-  private loadUserData() {
+  private async loadUserData() {
     if (this.needReload) this.utilsService.needReloadSignal.set(false);
 
-    this.currentUser = this.utilsService.getFromLocalStorage('user');
+    this.currentUser = await this.ionicStorageService.get('currentUser');
     if (this.currentUser) this.getUserInfo(this.currentUser.id);
     else location.reload();
   }
@@ -305,7 +309,7 @@ export class GamesPage implements OnInit {
     };
 
     this.gameService.createGame(game).subscribe({
-      next: (res) => {
+      next: async (res) => {
         if (res) {
           this.isAlertOpen = false;
           this.modal.dismiss(null, 'created');
@@ -317,7 +321,15 @@ export class GamesPage implements OnInit {
         this.isAlertOpen = false;
         this.modalOpen = false;
 
-        this.messageToast = e.message;
+        const message =
+          e.message.includes('permission-denied') ||
+          e.message.includes('Missing or insufficient permissions')
+            ? 'Permissos insuficients'
+            : e.message
+            ? e.message
+            : 'Error al crear la partida';
+
+        this.messageToast = message;
         this.colorToast = Colors.danger;
         this.iconToast = IconsToast.danger_close_circle;
         this.isToastOpen = true;
@@ -328,5 +340,17 @@ export class GamesPage implements OnInit {
 
   protected deletedGame(event: boolean) {
     if (event) this.exitOperation('Partida eliminada amb èxit');
+    else {
+      this.messageToast = 'Error al eliminar la partida';
+      this.colorToast = Colors.danger;
+      this.iconToast = IconsToast.danger_close_circle;
+      this.isToastOpen = true;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

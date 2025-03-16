@@ -10,6 +10,7 @@ export interface PartialUserModel {
 
 export interface UserModel extends PartialUserModel {
   lastName: string;
+  answeredQuestions: string[];
   createdAt: Date;
   updatedAt: Date;
   isAdmin: boolean;
