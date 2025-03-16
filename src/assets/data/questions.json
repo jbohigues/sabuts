@@ -1097,12 +1097,12 @@
   {
     "id": 100,
     "category": "poble_de_cullera",
-    "question": "Quin és el nom de la muntanya més alta de Cullera?",
+    "question": "Quina és la cova més coneguda de Cullera?",
     "answers": [
-      { "isCorrect": false, "value": "El Montgó" },
-      { "isCorrect": true, "value": "La Muntanya de l'Or" },
-      { "isCorrect": false, "value": "El Mondúver" },
-      { "isCorrect": false, "value": "La Serra Grossa" }
+      { "isCorrect": false, "value": "Cova Negra" },
+      { "isCorrect": true, "value": "Cova del Dragut" },
+      { "isCorrect": false, "value": "Cova Tallada" },
+      { "isCorrect": false, "value": "Cova del Rull" }
     ]
   },
   {
@@ -1471,12 +1471,12 @@
   {
     "id": 134,
     "category": "literatura",
-    "question": "Qui va escriure 'El desig dels dies'?",
+    "question": "Quin escriptor valencià va escriure 'Llibre d'Amic e Amat'?",
     "answers": [
-      { "isCorrect": false, "value": "Joan Fuster" },
-      { "isCorrect": false, "value": "Vicent Andrés Estellés" },
-      { "isCorrect": true, "value": "Josep Piera" },
-      { "isCorrect": false, "value": "Maria Beneyto" }
+      { "isCorrect": false, "value": "Ausiàs March" },
+      { "isCorrect": false, "value": "Joanot Martorell" },
+      { "isCorrect": false, "value": "Enric Valor" },
+      { "isCorrect": true, "value": "Ramon Llull" }
     ]
   },
   {
@@ -1724,12 +1724,15 @@
   {
     "id": 157,
     "category": "musica",
-    "question": "Quin instrument de vent és típic de la música valenciana?",
+    "question": "Quina és la banda de música més antiga de la Comunitat Valenciana?",
     "answers": [
-      { "isCorrect": true, "value": "Dolçaina" },
-      { "isCorrect": false, "value": "Flauta travessera" },
-      { "isCorrect": false, "value": "Saxofon" },
-      { "isCorrect": false, "value": "Trompeta" }
+      {
+        "isCorrect": true,
+        "value": "Societat Musical Santa Cecília de Cullera"
+      },
+      { "isCorrect": false, "value": "Unió Musical de Llíria" },
+      { "isCorrect": false, "value": "Banda Primitiva de Llíria" },
+      { "isCorrect": false, "value": "Centre Instructiu Musical de Benimaclet" }
     ]
   },
   {
@@ -1823,12 +1826,12 @@
   {
     "id": 166,
     "category": "musica",
-    "question": "Quin compositor valencià va escriure el 'Concert d'Aranjuez'?",
+    "question": "Quin compositor valencià va escriure l'òpera 'Tirant lo Blanc'?",
     "answers": [
-      { "isCorrect": false, "value": "Manuel Palau" },
-      { "isCorrect": true, "value": "Joaquín Rodrigo" },
       { "isCorrect": false, "value": "Óscar Esplá" },
-      { "isCorrect": false, "value": "Salvador Giner" }
+      { "isCorrect": false, "value": "Matilde Salvador" },
+      { "isCorrect": true, "value": "Amando Blanquer" },
+      { "isCorrect": false, "value": "Manuel Palau" }
     ]
   },
   {
@@ -2032,12 +2035,12 @@
   {
     "id": 185,
     "category": "literatura",
-    "question": "Qui va escriure 'Nosaltres, els valencians'?",
+    "question": "Quin poeta valencià és conegut per 'Coral romput'?",
     "answers": [
-      { "isCorrect": true, "value": "Joan Fuster" },
-      { "isCorrect": false, "value": "Vicent Andrés Estellés" },
-      { "isCorrect": false, "value": "Enric Valor" },
-      { "isCorrect": false, "value": "Manuel Sanchis Guarner" }
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": true, "value": "Vicent Andrés Estellés" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" },
+      { "isCorrect": false, "value": "Enric Valor" }
     ]
   },
   {
@@ -2203,6 +2206,229 @@
       { "isCorrect": false, "value": "Nico Terol" },
       { "isCorrect": true, "value": "Jorge Martínez 'Aspar'" },
       { "isCorrect": false, "value": "Héctor Faubel" }
+    ]
+  },
+  {
+    "id": 201,
+    "category": "historia",
+    "question": "Quin any es va signar el Tractat d'Almizra?",
+    "answers": [
+      { "isCorrect": false, "value": "1238" },
+      { "isCorrect": false, "value": "1301" },
+      { "isCorrect": true, "value": "1244" },
+      { "isCorrect": false, "value": "1276" }
+    ]
+  },
+  {
+    "id": 202,
+    "category": "falles",
+    "question": "Quin és el nom del premi que es dona al ninot més votat pel públic?",
+    "answers": [
+      { "isCorrect": true, "value": "Ninot Indultat" },
+      { "isCorrect": false, "value": "Premi Faller" },
+      { "isCorrect": false, "value": "Falla de Bronze" },
+      { "isCorrect": false, "value": "Guardó Popular" }
+    ]
+  },
+  {
+    "id": 203,
+    "category": "musica",
+    "question": "Quina és la dansa tradicional valenciana més popular?",
+    "answers": [
+      { "isCorrect": false, "value": "La Sardana" },
+      { "isCorrect": false, "value": "El Ball de Bastons" },
+      { "isCorrect": false, "value": "La Muixeranga" },
+      { "isCorrect": true, "value": "La Jota Valenciana" }
+    ]
+  },
+  {
+    "id": 204,
+    "category": "literatura",
+    "question": "Quin escriptor valencià va publicar 'La casa sota la sorra'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Fuster" },
+      { "isCorrect": true, "value": "Joaquim Carbó" },
+      { "isCorrect": false, "value": "Enric Valor" },
+      { "isCorrect": false, "value": "Vicent Andrés Estellés" }
+    ]
+  },
+  {
+    "id": 205,
+    "category": "poble_de_cullera",
+    "question": "Quin esdeveniment històric està relacionat amb la Torre del Marenyet de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Conquesta de Jaume I" },
+      { "isCorrect": false, "value": "Guerra de Successió" },
+      {
+        "isCorrect": true,
+        "value": "Defensa contra els atacs pirates berberiscs"
+      },
+      { "isCorrect": false, "value": "Batalla del Puig" }
+    ]
+  },
+  {
+    "id": 206,
+    "category": "historia",
+    "question": "Quin any es va inaugurar el primer tramvia de València?",
+    "answers": [
+      { "isCorrect": true, "value": "1876" },
+      { "isCorrect": false, "value": "1890" },
+      { "isCorrect": false, "value": "1905" },
+      { "isCorrect": false, "value": "1921" }
+    ]
+  },
+  {
+    "id": 207,
+    "category": "falles",
+    "question": "Quina és la falla més antiga de València?",
+    "answers": [
+      { "isCorrect": false, "value": "Falla Na Jordana" },
+      { "isCorrect": false, "value": "Falla Convent Jerusalem" },
+      { "isCorrect": false, "value": "Falla Sueca-Literato Azorín" },
+      { "isCorrect": true, "value": "Falla del Pilar" }
+    ]
+  },
+  {
+    "id": 208,
+    "category": "musica",
+    "question": "Quin compositor valencià va escriure 'La filla del rei barbut'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joaquín Rodrigo" },
+      { "isCorrect": false, "value": "Amando Blanquer" },
+      { "isCorrect": true, "value": "Matilde Salvador" },
+      { "isCorrect": false, "value": "Manuel Palau" }
+    ]
+  },
+  {
+    "id": 209,
+    "category": "literatura",
+    "question": "Quin autor valencià va escriure 'Primavera, estiu, etc.'?",
+    "answers": [
+      { "isCorrect": false, "value": "Isabel-Clara Simó" },
+      { "isCorrect": true, "value": "Marta Rojals" },
+      { "isCorrect": false, "value": "Ferran Torrent" },
+      { "isCorrect": false, "value": "Josep Piera" }
+    ]
+  },
+  {
+    "id": 210,
+    "category": "historia",
+    "question": "Quina batalla decisiva va consolidar la conquesta cristiana del Regne de València?",
+    "answers": [
+      { "isCorrect": true, "value": "Batalla del Puig" },
+      { "isCorrect": false, "value": "Batalla d'Almansa" },
+      { "isCorrect": false, "value": "Batalla de Llevant" },
+      { "isCorrect": false, "value": "Batalla de la Foia de Bunyol" }
+    ]
+  },
+  {
+    "id": 211,
+    "category": "falles",
+    "question": "Quin any es va proclamar oficialment el primer Ninot Indultat?",
+    "answers": [
+      { "isCorrect": false, "value": "1940" },
+      { "isCorrect": false, "value": "1929" },
+      { "isCorrect": false, "value": "1952" },
+      { "isCorrect": true, "value": "1934" }
+    ]
+  },
+  {
+    "id": 212,
+    "category": "musica",
+    "question": "Quin compositor valencià és conegut per la seua obra 'Tabarca'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joaquín Rodrigo" },
+      { "isCorrect": true, "value": "Óscar Esplá" },
+      { "isCorrect": false, "value": "Manuel Palau" },
+      { "isCorrect": false, "value": "Vicent Asencio" }
+    ]
+  },
+  {
+    "id": 213,
+    "category": "historia",
+    "question": "Quin rei va concedir a València la seua primera carta de població?",
+    "answers": [
+      { "isCorrect": false, "value": "Pere el Gran" },
+      { "isCorrect": true, "value": "Jaume I" },
+      { "isCorrect": false, "value": "Ferran el Catòlic" },
+      { "isCorrect": false, "value": "Alfons el Magnànim" }
+    ]
+  },
+  {
+    "id": 214,
+    "category": "falles",
+    "question": "Quina és la falla infantil més antiga de València?",
+    "answers": [
+      { "isCorrect": true, "value": "Falla del Pilar" },
+      { "isCorrect": false, "value": "Falla Na Jordana" },
+      { "isCorrect": false, "value": "Falla Convent Jerusalem" },
+      { "isCorrect": false, "value": "Falla El Mercat" }
+    ]
+  },
+  {
+    "id": 215,
+    "category": "musica",
+    "question": "Quina és la festa de música tradicional més important de la Comunitat Valenciana?",
+    "answers": [
+      { "isCorrect": false, "value": "Festival FIB" },
+      { "isCorrect": true, "value": "Trobada de Música Tradicional" },
+      { "isCorrect": false, "value": "Arenal Sound" },
+      { "isCorrect": false, "value": "Festivern" }
+    ]
+  },
+  {
+    "id": 216,
+    "category": "literatura",
+    "question": "Quin escriptor valencià va publicar el llibre 'Raons i paraules'?",
+    "answers": [
+      { "isCorrect": false, "value": "Joan Francesc Mira" },
+      { "isCorrect": false, "value": "Josep Piera" },
+      { "isCorrect": false, "value": "Isabel-Clara Simó" },
+      { "isCorrect": true, "value": "Enric Valor" }
+    ]
+  },
+  {
+    "id": 217,
+    "category": "poble_de_cullera",
+    "question": "Quin famós pirata es diu que va atacar Cullera en el segle XVI?",
+    "answers": [
+      { "isCorrect": false, "value": "Barbanegra" },
+      { "isCorrect": true, "value": "Dragut" },
+      { "isCorrect": false, "value": "Francis Drake" },
+      { "isCorrect": false, "value": "Jean Lafitte" }
+    ]
+  },
+  {
+    "id": 218,
+    "category": "poble_de_cullera",
+    "question": "Quin és el principal producte agrícola cultivat a Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "Les taronges" },
+      { "isCorrect": false, "value": "Les ametles" },
+      { "isCorrect": false, "value": "Les olives" },
+      { "isCorrect": true, "value": "L'arròs" }
+    ]
+  },
+  {
+    "id": 219,
+    "category": "poble_de_cullera",
+    "question": "Quin antic ofici mariner era tradicional a Cullera abans del turisme?",
+    "answers": [
+      { "isCorrect": true, "value": "La pesca" },
+      { "isCorrect": false, "value": "La fabricació de ceràmica" },
+      { "isCorrect": false, "value": "L’explotació de salines" },
+      { "isCorrect": false, "value": "La construcció naval" }
+    ]
+  },
+  {
+    "id": 220,
+    "category": "poble_de_cullera",
+    "question": "Quin és l’edifici històric on es troba el Museu d’Història i Arqueologia de Cullera?",
+    "answers": [
+      { "isCorrect": false, "value": "El Castell de Cullera" },
+      { "isCorrect": true, "value": "Casa de l’Ensenyança" },
+      { "isCorrect": false, "value": "El Far de Cullera" },
+      { "isCorrect": false, "value": "La Casa Consistorial" }
     ]
   }
 ]

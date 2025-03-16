@@ -8,6 +8,7 @@
     "ng": "ng",
     "start": "ng serve",
     "start:prod": "ionic serve --prod",
+    "serve:prod": "ng serve --configuration=production",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
