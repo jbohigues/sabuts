@@ -48,7 +48,6 @@ import {
 } from '@ionic/core/components';
 import { Subscription } from 'rxjs';
 import { IonicStorageService } from '@services/ionicStorage.service';
-import { QuestionService } from '@services/question.service';
 
 @Component({
   selector: 'app-games',
@@ -322,7 +321,15 @@ export class GamesPage implements OnInit, OnDestroy {
         this.isAlertOpen = false;
         this.modalOpen = false;
 
-        this.messageToast = e.message;
+        const message =
+          e.message.includes('permission-denied') ||
+          e.message.includes('Missing or insufficient permissions')
+            ? 'Permissos insuficients'
+            : e.message
+            ? e.message
+            : 'Error al crear la partida';
+
+        this.messageToast = message;
         this.colorToast = Colors.danger;
         this.iconToast = IconsToast.danger_close_circle;
         this.isToastOpen = true;
@@ -333,6 +340,12 @@ export class GamesPage implements OnInit, OnDestroy {
 
   protected deletedGame(event: boolean) {
     if (event) this.exitOperation('Partida eliminada amb èxit');
+    else {
+      this.messageToast = 'Error al eliminar la partida';
+      this.colorToast = Colors.danger;
+      this.iconToast = IconsToast.danger_close_circle;
+      this.isToastOpen = true;
+    }
   }
 
   ngOnDestroy() {

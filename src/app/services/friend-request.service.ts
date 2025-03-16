@@ -243,7 +243,12 @@ export class FriendRequestService {
         // TODO: Opcionalmente, eliminar la solicitud de amistad
         // transaction.delete(requestRef);
       })
-    ).pipe(map(() => void 0));
+    ).pipe(
+      map(() => void 0),
+      catchError((e) => {
+        throw new Error(e);
+      })
+    );
   }
 
   rejectFriendRequest(userId: string, requestId: string): Observable<void> {

@@ -24,6 +24,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { UserService } from '@services/user.service';
 import { IonicStorageService } from '@services/ionicStorage.service';
+import { DeleteService } from '@services/delete.service';
 
 @Component({
   selector: 'app-login',
@@ -50,6 +51,7 @@ export class LoginPage {
   private userService = inject(UserService);
   private authService = inject(AuthService);
   private utilsService = inject(UtilsService);
+  private deleteService = inject(DeleteService);
   private ionicStorageService = inject(IonicStorageService);
 
   // Variables
@@ -93,7 +95,25 @@ export class LoginPage {
 
             this.userService.getUserById(user.uid).subscribe({
               next: async (res) => {
-                if (res) {
+                if (!('email' in res)) {
+                  this.deleteService
+                    .deleteAuthAccount()
+                    .then(async () => {
+                      await this.ionicStorageService.clear();
+                      this.openLoading = false;
+
+                      this.messageToast = `Compte eliminat amb èxit`;
+                      this.colorToast = Colors.success;
+                      this.iconToast = IconsToast.success_thumbs_up;
+                      this.isToastOpen = true;
+
+                      this.cdr.detectChanges();
+                    })
+                    .catch((e) => {
+                      this.catchError(e);
+                      this.openLoading = false;
+                    });
+                } else if (res) {
                   await this.ionicStorageService.set('currentUser', res);
                   this.openLoading = false;
                   this.formAuth.reset();
@@ -142,6 +162,23 @@ export class LoginPage {
     this.messageToast = 'Si us plau, verifica el teu correu electrònic';
     this.colorToast = Colors.medium;
     this.iconToast = IconsToast.secondary_alert;
+    this.isToastOpen = true;
+
+    this.cdr.detectChanges();
+  }
+
+  catchError(e: any) {
+    console.error('Error al eliminar el compte:', e);
+    this.openLoading = false;
+
+    const message =
+      e.message && e.message.includes('requires-recent-login')
+        ? 'Ha de reiniciar sessió per a eliminar el compte amb èxit'
+        : 'Error al eliminar el compte';
+
+    this.messageToast = message;
+    this.colorToast = Colors.danger;
+    this.iconToast = IconsToast.danger_close_circle;
     this.isToastOpen = true;
 
     this.cdr.detectChanges();

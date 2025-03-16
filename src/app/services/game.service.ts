@@ -115,7 +115,12 @@ export class GameService {
         return from(addDoc(gamesRef, game)).pipe(
           switchMap((docRef) => {
             const gameWithId = { ...game, id: docRef.id };
-            return from(setDoc(docRef, gameWithId)).pipe(map(() => docRef.id));
+            return from(setDoc(docRef, gameWithId)).pipe(
+              map(() => docRef.id),
+              catchError((e) => {
+                throw new Error(e);
+              })
+            );
           })
         );
       })

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, deleteUser } from '@angular/fire/auth';
+import { Auth, AuthErrorCodes, deleteUser } from '@angular/fire/auth';
 import {
   collection,
   doc,
@@ -19,37 +19,45 @@ export class DeleteService {
   private firestore = inject(Firestore);
 
   async deleteUserAccount(userId: string, username: string): Promise<void> {
-    const batch = writeBatch(this.firestore);
-    const userDocRef = doc(this.firestore, `users/${userId}`);
+    const user = this.auth.currentUser;
+    if (!user) throw new Error('No hay usuario autenticado');
 
-    // Obtener los datos del usuario
-    const userDoc = await getDoc(userDocRef);
-    if (!userDoc.exists()) {
-      throw new Error('Usuari no trobat');
+    try {
+      const batch = writeBatch(this.firestore);
+      const userDocRef = doc(this.firestore, `users/${userId}`);
+
+      // Obtener los datos del usuario
+      const userDoc = await getDoc(userDocRef);
+      if (!userDoc.exists()) {
+        throw new Error('Usuari no trobat');
+      }
+
+      // Extraer los IDs de los amigos
+      const friendsCollectionRef = collection(userDocRef, 'friends');
+      const friendsSnapshot = await getDocs(friendsCollectionRef);
+      const friendIds = friendsSnapshot.docs.map((doc) => doc.id);
+
+      // Eliminar las partidas en las que participa el usuario
+      await this.deleteUserGames(userId, batch);
+
+      // Eliminar las solicitudes de amistad enviadas por el usuario
+      await this.deleteSentFriendRequests(userId, batch);
+
+      // Eliminar al usuario de las listas de amigos
+      await this.removeFromFriendLists(userId, friendIds, batch);
+
+      // Eliminar el documento del usuario y su username
+      await this.deleteUserDocument(userId, username, batch);
+
+      // Confirmar todas las operaciones en Firestore
+      await batch.commit();
+
+      // // Intentar eliminar la cuenta de autenticación
+      // const authResult = await this.deleteAuthAccount();
+      // return authResult;
+    } catch (error) {
+      throw error;
     }
-
-    // Extraer los IDs de los amigos
-    const friendsCollectionRef = collection(userDocRef, 'friends');
-    const friendsSnapshot = await getDocs(friendsCollectionRef);
-    const friendIds = friendsSnapshot.docs.map((doc) => doc.id);
-
-    // Eliminar las partidas en las que participa el usuario
-    await this.deleteUserGames(userId, batch);
-
-    // Eliminar las solicitudes de amistad enviadas por el usuario
-    await this.deleteSentFriendRequests(userId, batch);
-
-    // Eliminar al usuario de las listas de amigos
-    await this.removeFromFriendLists(userId, friendIds, batch);
-
-    // Eliminar el documento del usuario y su username
-    await this.deleteUserDocument(userId, username, batch);
-
-    // Confirmar todas las operaciones en Firestore
-    await batch.commit();
-
-    // Eliminar la cuenta de autenticación de Firebase
-    await this.deleteAuthAccount();
   }
 
   private async deleteUserGames(userId: string, batch: any): Promise<void> {
@@ -141,10 +149,34 @@ export class DeleteService {
     batch.delete(usernameDocRef);
   }
 
-  private async deleteAuthAccount(): Promise<void> {
+  async deleteAuthAccount(): Promise<void> {
     const user = this.auth.currentUser;
-    if (user) {
+    if (!user) throw new Error('No hay usuario autenticado');
+
+    try {
       await deleteUser(user);
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
+
+  // async deleteAuthAccount(): Promise<{
+  //   success: boolean;
+  //   requiresReauth: boolean;
+  // }> {
+  //   const user = this.auth.currentUser;
+  //   if (!user) throw new Error('No hay usuario autenticado');
+
+  //   try {
+  //     await deleteUser(user);
+  //     return { success: true, requiresReauth: false };
+  //   } catch (error: any) {
+  //     if (error.code === AuthErrorCodes.CREDENTIAL_TOO_OLD_LOGIN_AGAIN) {
+  //       return { success: false, requiresReauth: true };
+  //     }
+  //     throw new Error(
+  //       error.message || 'Error al eliminar la cuenta de autenticación'
+  //     );
+  //   }
+  // }
 }

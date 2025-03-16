@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -30,7 +30,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { ModalController } from '@ionic/angular';
 import { UserService } from '@services/user.service';
-import { AlertButton } from '@ionic/core';
+import { AlertButton, AlertInput } from '@ionic/core';
 import { DeleteService } from '@services/delete.service';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
@@ -67,6 +67,7 @@ import { IonicStorageService } from '@services/ionicStorage.service';
 })
 export class ConfprofileModalComponent implements OnInit {
   // Injects
+  private cdr = inject(ChangeDetectorRef);
   private userService = inject(UserService);
   private deleteService = inject(DeleteService);
   private ionicStorageService = inject(IonicStorageService);
@@ -81,6 +82,7 @@ export class ConfprofileModalComponent implements OnInit {
   isAlertOpen: boolean = false;
   alertHeader: string = '';
   alertMessage: string = '';
+  alertInputs: AlertInput[] = [];
   alertButtons: AlertButton[] = [];
 
   // Toast
@@ -154,6 +156,7 @@ export class ConfprofileModalComponent implements OnInit {
     if (!name || !userName || !backgroundColor) return;
 
     const goodUserName = userName.toLowerCase().replaceAll(' ', '_').trim();
+
     this.userService
       .checkUsernameAvailability(goodUserName, this.currentUser.id)
       .then((isAvailable) => {
@@ -182,8 +185,13 @@ export class ConfprofileModalComponent implements OnInit {
           updatedAt,
         };
 
+        const oldUserNameToFunction =
+          this.oldUserName == this.currentUser.userName
+            ? undefined
+            : this.oldUserName;
+
         this.userService
-          .updateUser(this.currentUser!.id, partialUser, this.oldUserName)
+          .updateUser(this.currentUser!.id, partialUser, oldUserNameToFunction)
           .subscribe({
             next: async () => {
               await this.ionicStorageService.set(
@@ -231,20 +239,76 @@ export class ConfprofileModalComponent implements OnInit {
     this.isAlertOpen = true;
   }
 
+  // protected async showPasswordAlert() {
+  //   this.alertHeader = 'Eliminar compte';
+  //   this.alertMessage = 'Escriu la contrasenya per a confirmar la operació';
+
+  //   this.alertInputs = [
+  //     {
+  //       type: 'password',
+  //       name: 'password',
+  //       label: 'Contrasenya',
+  //       placeholder: 'Introdueix la contrasenya'
+  //     }
+  //   ]
+
+  //   this.alertButtons = [
+  //     {
+  //       text: 'Acceptar',
+  //       handler: () => {
+  //         this.deleteAccount();
+  //       },
+  //     },
+  //   ];
+
+  //   this.isAlertOpen = true;
+  // }
+
   async deleteAccount(): Promise<void> {
     if (!this.currentUser) return;
     this.openLoading = true;
     this.deleteService
       .deleteUserAccount(this.currentUser.id, this.currentUser.userName)
-      .then(async () => {
-        await this.ionicStorageService.remove('currentUser');
-        location.reload();
+      .then(() => {
+        // console.log('all eliminado');
+        // if (res && res.requiresReauth) {
+        // }
+
+        this.deleteService
+          .deleteAuthAccount()
+          .then(async () => {
+            // await this.ionicStorageService.clear();
+            // this.openLoading = false;
+            // location.reload();
+          })
+          .catch((e) => {
+            this.catchError(e);
+          })
+          .finally(async () => {
+            await this.ionicStorageService.clear();
+            this.openLoading = false;
+            location.reload();
+          });
       })
       .catch((e) => {
-        console.error('Error al eliminar la cuenta:', e);
-      })
-      .then(() => {
-        this.openLoading = false;
+        this.catchError(e);
       });
+  }
+
+  catchError(e: any) {
+    console.error('Error al eliminar el compte:', e);
+    this.openLoading = false;
+
+    const message =
+      e.message && e.message.includes('requires-recent-login')
+        ? 'Ha de reiniciar sessió per a eliminar el compte amb èxit'
+        : 'Error al eliminar el compte';
+
+    this.messageToast = message;
+    this.colorToast = Colors.danger;
+    this.iconToast = IconsToast.danger_close_circle;
+    this.isToastOpen = true;
+
+    this.cdr.detectChanges();
   }
 }

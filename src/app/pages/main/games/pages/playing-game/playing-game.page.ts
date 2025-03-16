@@ -184,15 +184,17 @@ export class PlayingGamePage implements OnInit {
         this.playingGame.player1.userId == this.currentUser.id;
 
       if (currentUserIsPlayer1) {
+        this.rivalPlayer = this.playingGame.player2;
+        this.currentUserPlayer = this.playingGame.player1;
+        this.playingGame.player1.userName = this.currentUser.userName;
         this.playingGame.player1.backgroundColor =
           this.currentUser.backgroundColor;
-        this.currentUserPlayer = this.playingGame.player1;
-        this.rivalPlayer = this.playingGame.player2;
       } else {
+        this.rivalPlayer = this.playingGame.player1;
+        this.currentUserPlayer = this.playingGame.player2;
+        this.playingGame.player2.userName = this.currentUser.userName;
         this.playingGame.player2.backgroundColor =
           this.currentUser.backgroundColor;
-        this.currentUserPlayer = this.playingGame.player2;
-        this.rivalPlayer = this.playingGame.player1;
       }
 
       this.ionicStorageService.set(
@@ -405,6 +407,8 @@ export class PlayingGamePage implements OnInit {
         text: 'Acceptar',
         handler: async () => {
           await this.ionicStorageService.set(`currentUser`, this.currentUser);
+
+          this.utilsService.needReloadSignal.set(true);
 
           this.isAlertOpen = false;
           this.cdr.detectChanges();
