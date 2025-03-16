@@ -1,5 +1,5 @@
 export interface QuestionModel {
-  id?: string;
+  id: string;
   category: string;
   question: string;
   answers: AnswerModel[];

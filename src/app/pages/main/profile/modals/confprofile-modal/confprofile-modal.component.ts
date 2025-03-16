@@ -1,16 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import {
   FormGroup,
   Validators,
   FormsModule,
   ReactiveFormsModule,
   FormControl,
-  AbstractControl,
-  AsyncValidatorFn,
-  ValidationErrors,
 } from '@angular/forms';
 import { UserModel } from '@models/users.model';
-import { UtilsService } from '@services/utils.service';
 import {
   IonButton,
   IonInput,
@@ -29,14 +25,16 @@ import {
   IonNote,
   IonAlert,
   IonToast,
+  IonLoading,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { ModalController } from '@ionic/angular';
 import { UserService } from '@services/user.service';
-import { AlertButton } from '@ionic/core';
+import { AlertButton, AlertInput } from '@ionic/core';
 import { DeleteService } from '@services/delete.service';
 import { Colors } from '@sharedEnums/colors';
 import { IconsToast } from '@sharedEnums/iconsToast';
+import { IonicStorageService } from '@services/ionicStorage.service';
 
 @Component({
   selector: 'app-confprofile-modal',
@@ -44,6 +42,7 @@ import { IconsToast } from '@sharedEnums/iconsToast';
   styleUrls: ['./confprofile-modal.component.scss'],
   standalone: true,
   imports: [
+    IonLoading,
     IonToast,
     IonAlert,
     IonNote,
@@ -68,11 +67,14 @@ import { IconsToast } from '@sharedEnums/iconsToast';
 })
 export class ConfprofileModalComponent implements OnInit {
   // Injects
+  private cdr = inject(ChangeDetectorRef);
   private userService = inject(UserService);
-  private utilsService = inject(UtilsService);
   private deleteService = inject(DeleteService);
+  private ionicStorageService = inject(IonicStorageService);
 
   // Objects
+  oldUserName: string = '';
+  openLoading: boolean = false;
   editProfileForm: FormGroup;
   currentUser: UserModel | undefined;
 
@@ -80,6 +82,7 @@ export class ConfprofileModalComponent implements OnInit {
   isAlertOpen: boolean = false;
   alertHeader: string = '';
   alertMessage: string = '';
+  alertInputs: AlertInput[] = [];
   alertButtons: AlertButton[] = [];
 
   // Toast
@@ -89,23 +92,17 @@ export class ConfprofileModalComponent implements OnInit {
   messageToast: string = '';
 
   constructor(private modalCtrl: ModalController) {
-    this.currentUser = this.utilsService.getFromLocalStorage('user');
-
     this.editProfileForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(20),
       ]),
-      userName: new FormControl(
-        '',
-        [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(20),
-        ],
-        [this.checkUsernameAvailability(this.currentUser?.id)]
-      ),
+      userName: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(20),
+      ]),
       backgroundColor: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       totalPoints: new FormControl(0),
@@ -115,25 +112,14 @@ export class ConfprofileModalComponent implements OnInit {
     this.editProfileForm.get('totalPoints')?.disable();
   }
 
-  checkUsernameAvailability(userId?: string): AsyncValidatorFn {
-    return (control: AbstractControl): Promise<ValidationErrors | null> => {
-      const username = control.value;
-
-      // Si el campo está vacío, no hacemos la validación asíncrona
-      if (!username) return Promise.resolve(null);
-
-      return this.userService.checkUsernameAvailability(username, userId).then(
-        (isAvailable) => (isAvailable ? null : { usernameTaken: true }) // Si no está disponible, retornamos un error
-      );
-    };
-  }
-
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.currentUser = await this.ionicStorageService.get('currentUser');
     this.loadUserData();
   }
 
   private loadUserData() {
     if (this.currentUser) {
+      this.oldUserName = this.currentUser.userName;
       this.editProfileForm.updateValueAndValidity();
       const { name, userName, email, totalPoints } = this.currentUser;
       const backgroundColor = !this.currentUser.backgroundColor.includes('#')
@@ -164,36 +150,65 @@ export class ConfprofileModalComponent implements OnInit {
   }
 
   async onSubmit() {
-    if (this.currentUser) {
-      const updatedAt = new Date();
-      const { name, userName, backgroundColor } = this.editProfileForm.value;
-      if (!name || !userName || !backgroundColor) return;
+    if (!this.currentUser) return;
+    const updatedAt = new Date();
+    const { name, userName, backgroundColor } = this.editProfileForm.value;
+    if (!name || !userName || !backgroundColor) return;
 
-      this.currentUser = {
-        ...this.currentUser,
-        name,
-        userName,
-        backgroundColor,
-        updatedAt,
-      };
+    const goodUserName = userName.toLowerCase().replaceAll(' ', '_').trim();
 
-      const partialUser: Partial<UserModel> = {
-        name,
-        userName,
-        backgroundColor,
-        updatedAt,
-      };
+    this.userService
+      .checkUsernameAvailability(goodUserName, this.currentUser.id)
+      .then((isAvailable) => {
+        if (!isAvailable) {
+          this.messageToast = "El nom d'usuari no està disponible";
+          this.colorToast = Colors.danger;
+          this.iconToast = IconsToast.danger_close_circle;
+          this.isToastOpen = true;
+          return;
+        }
 
-      this.userService.updateUser(this.currentUser!.id, partialUser).subscribe({
-        next: () => {
-          this.utilsService.saveInLocalStorage('user', this.currentUser);
-          return this.modalCtrl.dismiss(null, 'updated');
-        },
-        error: (e) => {
-          console.error(e);
-        },
+        if (!this.currentUser) return;
+
+        this.currentUser = {
+          ...this.currentUser,
+          name,
+          userName,
+          backgroundColor,
+          updatedAt,
+        };
+
+        const partialUser: Partial<UserModel> = {
+          name,
+          userName,
+          backgroundColor,
+          updatedAt,
+        };
+
+        const oldUserNameToFunction =
+          this.oldUserName == this.currentUser.userName
+            ? undefined
+            : this.oldUserName;
+
+        this.userService
+          .updateUser(this.currentUser!.id, partialUser, oldUserNameToFunction)
+          .subscribe({
+            next: async () => {
+              await this.ionicStorageService.set(
+                'currentUser',
+                this.currentUser
+              );
+              return this.modalCtrl.dismiss(null, 'updated');
+            },
+            error: (e) => {
+              console.error(e);
+              this.messageToast = e;
+              this.colorToast = Colors.danger;
+              this.iconToast = IconsToast.danger_close_circle;
+              this.isToastOpen = true;
+            },
+          });
       });
-    }
   }
 
   cancelEdit() {
@@ -224,18 +239,76 @@ export class ConfprofileModalComponent implements OnInit {
     this.isAlertOpen = true;
   }
 
+  // protected async showPasswordAlert() {
+  //   this.alertHeader = 'Eliminar compte';
+  //   this.alertMessage = 'Escriu la contrasenya per a confirmar la operació';
+
+  //   this.alertInputs = [
+  //     {
+  //       type: 'password',
+  //       name: 'password',
+  //       label: 'Contrasenya',
+  //       placeholder: 'Introdueix la contrasenya'
+  //     }
+  //   ]
+
+  //   this.alertButtons = [
+  //     {
+  //       text: 'Acceptar',
+  //       handler: () => {
+  //         this.deleteAccount();
+  //       },
+  //     },
+  //   ];
+
+  //   this.isAlertOpen = true;
+  // }
+
   async deleteAccount(): Promise<void> {
-    this.deleteService.deleteAccount().subscribe({
-      next: () => {
-        this.utilsService.removeItemOfLocalStorage('user');
-        location.reload();
-      },
-      error: (e) => {
-        this.messageToast = 'Error al eliminar el compte.';
-        this.colorToast = Colors.medium;
-        this.iconToast = IconsToast.secondary_alert;
-        this.isToastOpen = true;
-      },
-    });
+    if (!this.currentUser) return;
+    this.openLoading = true;
+    this.deleteService
+      .deleteUserAccount(this.currentUser.id, this.currentUser.userName)
+      .then(() => {
+        // console.log('all eliminado');
+        // if (res && res.requiresReauth) {
+        // }
+
+        this.deleteService
+          .deleteAuthAccount()
+          .then(async () => {
+            // await this.ionicStorageService.clear();
+            // this.openLoading = false;
+            // location.reload();
+          })
+          .catch((e) => {
+            this.catchError(e);
+          })
+          .finally(async () => {
+            await this.ionicStorageService.clear();
+            this.openLoading = false;
+            location.reload();
+          });
+      })
+      .catch((e) => {
+        this.catchError(e);
+      });
+  }
+
+  catchError(e: any) {
+    console.error('Error al eliminar el compte:', e);
+    this.openLoading = false;
+
+    const message =
+      e.message && e.message.includes('requires-recent-login')
+        ? 'Ha de reiniciar sessió per a eliminar el compte amb èxit'
+        : 'Error al eliminar el compte';
+
+    this.messageToast = message;
+    this.colorToast = Colors.danger;
+    this.iconToast = IconsToast.danger_close_circle;
+    this.isToastOpen = true;
+
+    this.cdr.detectChanges();
   }
 }

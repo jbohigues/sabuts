@@ -10,7 +10,7 @@
     class="logofondo"
   ></ion-img>
 
-  @if (!loading && currentUserPlayer && rivalPlayer) {
+  @if (!openLoading && currentUserPlayer && rivalPlayer) {
   <section>
     <article>
       <div class="flexdiv">
@@ -95,12 +95,22 @@
       <ion-progress-bar [buffer]="buffer" [value]="progress"></ion-progress-bar>
 
       @if(answerSelected) {
-      <ion-button expand="block" type="submit" (click)="makeQuestion()">
+      <ion-button
+        expand="block"
+        type="submit"
+        [disabled]="!questions.length"
+        (click)="makeQuestion()"
+      >
         Continuar
         <ion-icon slot="end" name="arrow-forward"></ion-icon>
       </ion-button>
       } } @else {
-      <ion-button expand="block" type="submit" (click)="makeQuestion()">
+      <ion-button
+        expand="block"
+        type="submit"
+        [disabled]="!questions.length"
+        (click)="makeQuestion()"
+      >
         Respondre pregunta
         <ion-icon slot="end" name="arrow-forward"></ion-icon>
       </ion-button>

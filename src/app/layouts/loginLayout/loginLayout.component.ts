@@ -1,4 +1,4 @@
-import { Component, Input, type OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IonContent } from '@ionic/angular/standalone';
 import { HeaderComponent } from '@sharedComponents/header/header.component';
 
@@ -9,9 +9,7 @@ import { HeaderComponent } from '@sharedComponents/header/header.component';
   templateUrl: './loginLayout.component.html',
   styleUrl: './loginLayout.component.scss',
 })
-export class LoginLayoutComponent implements OnInit {
+export class LoginLayoutComponent {
   @Input() pageTitle!: string;
   @Input() backButton!: string;
-
-  ngOnInit(): void {}
 }

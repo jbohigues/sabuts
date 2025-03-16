@@ -35,15 +35,6 @@ export class AuthService {
     );
   }
 
-  isLoggedIn(): Observable<boolean> {
-    return new Observable((observer) => {
-      onAuthStateChanged(this.auth, (res) => {
-        if (res) observer.next(true);
-        else observer.next(false);
-      });
-    });
-  }
-
   register(email: string, password: string): Observable<User> {
     return from(
       createUserWithEmailAndPassword(this.auth, email, password)

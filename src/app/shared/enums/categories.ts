@@ -1,5 +1,5 @@
 export enum Categories {
-  historia_de_valencia = 'historia_de_valencia',
+  historia = 'historia',
   falles = 'falles',
   musica = 'musica',
   literatura = 'literatura',

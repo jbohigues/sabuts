@@ -78,3 +78,6 @@ Thumbs.db
 # Environment files
 /src/environments/*.ts
 !/src/environments/environment.demo.ts
+
+# My files
+/database_in_use.json

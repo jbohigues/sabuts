@@ -1,0 +1,52 @@
+p {
+  color: var(--ion-text-color-step-300);
+  margin-bottom: 1rem;
+}
+
+.escutimage,
+.logo_punt_volat {
+  display: block;
+  margin: 0 auto;
+  padding-bottom: 1rem;
+}
+
+.escutimage,
+.logo_punt_volat {
+  width: 10rem;
+}
+
+.logo_punt_volat {
+  padding-top: 1rem;
+}
+
+.logosabuts {
+  max-width: 70%;
+  margin: 0 auto;
+}
+
+.presentationcard {
+  position: relative;
+}
+
+.logoratpenat {
+  position: absolute;
+  bottom: -20px;
+  right: -10px;
+  width: 6rem;
+  animation: jumping 0.7s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  transform-origin: bottom center;
+}
+
+@keyframes jumping {
+  0% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  50% {
+    transform: translateY(-15px);
+    animation-timing-function: ease-in;
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

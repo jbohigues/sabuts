@@ -115,6 +115,7 @@ export class GameCardComponent implements OnInit {
       },
       error: (e) => {
         console.error(e);
+        this.deletedEmitter.emit(false);
       },
     });
   }
