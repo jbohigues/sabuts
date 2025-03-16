@@ -19,6 +19,12 @@ export const routes: Routes = [
     canActivate: [NoAuthGuard],
   },
   {
+    path: 'about',
+    loadComponent: () =>
+      import('./pages/about/about.page').then((m) => m.AboutPage),
+    canActivate: [NoAuthGuard],
+  },
+  {
     path: '**',
     loadComponent: () =>
       import('./pages/notfound/notfound.page').then((m) => m.NotfoundPage),
